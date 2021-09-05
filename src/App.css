@@ -1,38 +1,83 @@
+body {
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  padding: 10px;
+  height: 100vh;
+  background-color: #264653;
+  width: auto;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: #2a9d8f;
+  padding: 10px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
+  color: #ffe8d6;
+}
+
+.summoner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+.button-warrior-minor-text {
+  font-size: smaller;
+}
+
+footer {
+  text-align: center;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  font-size: 14px;
+  background-color: #264653;
+  color: #ffe8d6;
+}
+
+.button-warrior {
+  display: flex;
+  background-color: #2a9d8f;
+  color: #ffe8d6;
+  font-weight: bold;
+  align-content: center;
+  justify-content: space-around;
+  border-radius: 12px;
+  padding: 10px;
+  margin: 20px 0px;
+  text-align: center;
+}
+
+.welcome-warrior {
+  margin: 20px;
+  text-align: center;
+  color: #ffe8d6;
+}
+
+.button-summon-data {
+  display: flex;
+  background-color: #2a9d8f;
+  color: #ffe8d6;
+  font-weight: bold;
+  padding: 10px;
+  margin: 5px 5px;
+  text-align: center;
+}
+
+.stat-desc {
+  background-color: #2a9d8f;
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  margin: 25px 150px;
 }
