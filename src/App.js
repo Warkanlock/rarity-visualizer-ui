@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useState } from "react";
 import "./App.css";
@@ -16,7 +17,7 @@ import {
 
 function App() {
   const [error, setError] = useState({ isError: false, stack: null });
-  const [context, setContext] = useContext(RarityContext);
+  const [, setContext] = useContext(RarityContext);
 
   React.useEffect(() => {
     loadRarityData();
