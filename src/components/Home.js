@@ -35,7 +35,23 @@ const Home = (props) => {
           .send({ from: context.accounts[0] });
         NotificationManager.success(
           "Summoner went for an adventure!",
-          "Adventure began!"
+          "Information"
+        );
+      }
+    } catch (ex) {
+      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    }
+  };
+
+  const levelUpPlayer = async () => {
+    try {
+      if (summonId != null) {
+        await context.contract.methods
+          .level_up(summonId)
+          .send({ from: context.accounts[0] });
+        NotificationManager.success(
+          "You just level up your player!",
+          "Information"
         );
       }
     } catch (ex) {
@@ -71,6 +87,9 @@ const Home = (props) => {
         </button>
         <button className="button-summon-data" onClick={getSummonerState}>
           Information
+        </button>
+        <button className="button-summon-data" onClick={levelUpPlayer}>
+          Level up
         </button>
       </div>
       {summonData != null && <SummonStats {...summonData}></SummonStats>}
