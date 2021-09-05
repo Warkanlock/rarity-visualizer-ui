@@ -30,14 +30,16 @@ const Home = (props) => {
   const sendToAdventure = async () => {
     try {
       if (summonId != null) {
-        await context.contract.methods.adventure(summonId).call();
+        await context.contract.methods
+          .adventure(summonId)
+          .send({ from: context.accounts[0] });
         NotificationManager.success(
           "Summoner went for an adventure!",
           "Adventure began!"
         );
       }
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${ex}`);
+      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
   };
 

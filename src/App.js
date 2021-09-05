@@ -9,7 +9,10 @@ import {
 } from "./utils/config";
 import { RarityContext } from "./context/RarityProvider";
 import { Home } from "./components/Home";
-import { NotificationContainer } from "react-notifications";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
 
 function App() {
   const [error, setError] = useState({ isError: false, stack: null });
@@ -21,14 +24,24 @@ function App() {
 
   const loadRarityData = async () => {
     try {
-      const web3 = new Web3(Web3.givenProvider || WEB3_FANTOM_INSTANCE);
-      web3.eth.handleRevert = true;
-      const accounts = await web3.eth.getAccounts();
-      const rarityContract = new web3.eth.Contract(RARITY_ABI, RARITY_ADDRESS);
-      setContext({
-        accounts: accounts,
-        contract: rarityContract,
-      });
+      if (window.ethereum) {
+        await window.ethereum.send("eth_requestAccounts");
+        const web3 = new Web3(Web3.givenProvider || WEB3_FANTOM_INSTANCE);
+        web3.eth.handleRevert = true;
+        const accounts = await web3.eth.getAccounts();
+        const rarityContract = new web3.eth.Contract(
+          RARITY_ABI,
+          RARITY_ADDRESS
+        );
+        setContext({
+          accounts: accounts,
+          contract: rarityContract,
+        });
+      } else {
+        NotificationManager.error(
+          "Please, try to use Metamask or some client to connect your wallet"
+        );
+      }
     } catch (ex) {
       setError({ isError: true, stack: ex });
     }
