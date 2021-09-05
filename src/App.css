@@ -22,6 +22,16 @@ body {
   color: #ffe8d6;
 }
 
+.container-summon-data {
+  display: flex;
+  width: 200px;
+  margin: 0px 10px;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-direction: column;
+}
+
 .summoner-container {
   display: flex;
   align-items: center;
@@ -31,6 +41,7 @@ body {
 
 .button-warrior-minor-text {
   font-size: smaller;
+  text-align: left;
 }
 
 footer {

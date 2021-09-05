@@ -3,11 +3,13 @@ import { RarityContext } from "../context/RarityProvider";
 import { SummonStats } from "./SummonStats";
 import { NotificationManager } from "react-notifications";
 import "react-notifications/lib/notifications.css";
+import { CLASSES_TYPE } from "../utils/classes";
 
 const Home = (props) => {
   const [context] = useContext(RarityContext);
   const [summonData, setSummonData] = useState(null);
   const [summonId, setSummonId] = useState(112220);
+  const [classId, setClassId] = useState(1);
 
   const getSummonerState = async () => {
     try {
@@ -59,6 +61,27 @@ const Home = (props) => {
     }
   };
 
+  const summonPlayer = async () => {
+    try {
+      setSummonData(null);
+      if (classId != null) {
+        const response = await context.contract.methods
+          .summon(classId)
+          .send({ from: context.accounts[0] });
+        NotificationManager.success(
+          `You just summon your player! ${response}`,
+          "Information"
+        );
+      }
+    } catch (ex) {
+      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    }
+  };
+
+  const selectClassType = (event) => {
+    setClassId(event.target.value);
+  };
+
   const changeSummonId = (event) => {
     setSummonId(event.target.value);
   };
@@ -69,9 +92,10 @@ const Home = (props) => {
       <div className="button-warrior">
         <p>
           Your warrior{" "}
-          <span className="button-warrior-minor-text">
-            (use your summoner id)
-          </span>
+          <p className="button-warrior-minor-text">- use your summoner id</p>
+          <p className="button-warrior-minor-text">
+            - if you don't have a summoner id, please summon one
+          </p>
         </p>
         <input
           className="button-summon-data"
@@ -82,6 +106,20 @@ const Home = (props) => {
         />
       </div>
       <div className="summoner-container">
+        <div className="container-summon-data">
+          <button className="button-summon-data" onClick={summonPlayer}>
+            Summon a new warrior
+          </button>
+          <select className="button-summon-data" onChange={selectClassType}>
+            {Object.keys(CLASSES_TYPE).map((key) => {
+              return (
+                <option value={key} key={`${key}-class-type`}>
+                  {CLASSES_TYPE[key]}
+                </option>
+              );
+            })}
+          </select>
+        </div>
         <button className="button-summon-data" onClick={sendToAdventure}>
           Go to an adventure
         </button>
