@@ -47,8 +47,6 @@ function App() {
     }
   };
 
-  console.log(context);
-
   return (
     <div className="App">
       <header className="App-header">Rarity Visualizer - WIP 0.1</header>

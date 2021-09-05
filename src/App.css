@@ -26,8 +26,7 @@ body {
   display: flex;
   width: 200px;
   margin: 0px 10px;
-  justify-content: center;
-  align-items: center;
+  align-items: left;
   align-content: center;
   flex-direction: column;
 }

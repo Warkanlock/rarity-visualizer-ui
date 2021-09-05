@@ -9,6 +9,7 @@ const Home = (props) => {
   const [context] = useContext(RarityContext);
   const [summonData, setSummonData] = useState(null);
   const [summonId, setSummonId] = useState(112220);
+  const [lastSummon, setLastSummon] = useState(null);
   const [classId, setClassId] = useState(1);
 
   const getSummonerState = async () => {
@@ -25,7 +26,7 @@ const Home = (props) => {
         NotificationManager.success("Information retrieval successfully");
       }
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${ex}`);
+      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
   };
 
@@ -68,9 +69,11 @@ const Home = (props) => {
         const response = await context.contract.methods
           .summon(classId)
           .send({ from: context.accounts[0] });
+        setLastSummon(response.events.summoned.returnValues[2]);
         NotificationManager.success(
-          `You just summon your player! ${response}`,
-          "Information"
+          `You just summon your player! ${response.events.summoned.returnValues[2]}`,
+          "Information",
+          100000
         );
       }
     } catch (ex) {
@@ -119,6 +122,9 @@ const Home = (props) => {
               );
             })}
           </select>
+          <div className="button-summon-data">
+            <div>Last id summoned: {lastSummon}</div>
+          </div>
         </div>
         <button className="button-summon-data" onClick={sendToAdventure}>
           Go to an adventure
