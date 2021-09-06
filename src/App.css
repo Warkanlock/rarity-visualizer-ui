@@ -84,6 +84,11 @@ footer {
   text-align: center;
 }
 
+.button-summon-data:hover {
+  background-color: #ffe8d6;
+  color: #2a9d8f;
+}
+
 .stat-desc-single {
   padding: 10px;
   display: flex;

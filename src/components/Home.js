@@ -12,6 +12,7 @@ const Home = (props) => {
   const [lastSummon, setLastSummon] = useState(null);
   const [classId, setClassId] = useState(1);
   const [adventureTime, setAdventureTime] = useState(null);
+  const [switchAdventure, setSwitchAdventure] = useState(false);
 
   useEffect(() => {
     const isReadyForAdventure = async () => {
@@ -26,7 +27,7 @@ const Home = (props) => {
     };
 
     isReadyForAdventure();
-  }, [context.contract, summonId]);
+  }, [context.contract, summonId, switchAdventure]);
 
   const getSummonerState = async () => {
     try {
@@ -75,6 +76,7 @@ const Home = (props) => {
         await context.contract.methods
           .adventure(summonId)
           .send({ from: context.accounts[0] });
+        setSwitchAdventure(!switchAdventure);
         NotificationManager.success(
           "Summoner went for an adventure!",
           "Information"
