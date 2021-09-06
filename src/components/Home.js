@@ -18,10 +18,29 @@ const Home = (props) => {
         const summonData = await context.contract.methods
           .summoner(summonId)
           .call();
+        console.log(summonId);
+
+        const attributesData = await context.contract_attributes.methods
+          .ability_scores(summonId)
+          .call();
+
+        const levelPoints = await context.contract_attributes.methods
+          .level_points_spent(summonId)
+          .call();
+
         setSummonData({
           xp: parseFloat(summonData[0]) / 1e18,
           classType: summonData[2],
           level: summonData[3],
+          levelPoints: levelPoints,
+          attributes: {
+            strength: attributesData.strength,
+            dexterity: attributesData.dexterity,
+            constitution: attributesData.constitution,
+            intelligence: attributesData.intelligence,
+            wisdom: attributesData.wisdom,
+            charisma: attributesData.charisma,
+          },
         });
         NotificationManager.success("Information retrieval successfully");
       }
@@ -136,7 +155,9 @@ const Home = (props) => {
           Level up
         </button>
       </div>
-      {summonData != null && <SummonStats {...summonData}></SummonStats>}
+      {summonData != null && (
+        <SummonStats summonId={summonId} {...summonData}></SummonStats>
+      )}
     </div>
   );
 };

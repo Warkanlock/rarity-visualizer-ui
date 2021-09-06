@@ -6,6 +6,7 @@ function RarityProvider({ children }) {
   const [context, setContext] = React.useState({
     accounts: [],
     contract: null,
+    contract_attributes: null,
   });
 
   return (

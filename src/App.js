@@ -7,6 +7,8 @@ import {
   WEB3_FANTOM_INSTANCE,
   RARITY_ABI,
   RARITY_ADDRESS,
+  RARITY_ABI_ATTRIBUTES,
+  RARITY_ADDRESS_ATTRIBUTES,
 } from "./utils/config";
 import { RarityContext } from "./context/RarityProvider";
 import { Home } from "./components/Home";
@@ -34,9 +36,14 @@ function App() {
           RARITY_ABI,
           RARITY_ADDRESS
         );
+        const attributesContract = new web3.eth.Contract(
+          RARITY_ABI_ATTRIBUTES,
+          RARITY_ADDRESS_ATTRIBUTES
+        );
         setContext({
           accounts: accounts,
           contract: rarityContract,
+          contract_attributes: attributesContract,
         });
       } else {
         NotificationManager.error(
