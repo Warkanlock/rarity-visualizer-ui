@@ -143,7 +143,7 @@ const Home = (props) => {
         </p>
         <input
           className="button-summon-data"
-          defaultValue={112220}
+          defaultValue={""}
           name="summonId"
           type="number"
           onChange={changeSummonId}
