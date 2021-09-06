@@ -62,7 +62,7 @@ function App() {
       <NotificationContainer />
       <footer>
         Made with 💙 by <a href="https://twitter.com/@txxnano">@txxnano</a>{" "}
-        (tips <code>0x47cf12443248277E14E41886bA6e4885845c8345</code>)
+        (tips <code>0xC0a210490f9e0968D24372459780D694F18694D4</code>)
       </footer>
     </div>
   );
