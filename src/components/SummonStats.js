@@ -30,8 +30,10 @@ const SummonStats = ({
   };
 
   return (
-    <>
-      <div>
+    <div className="d-flex">
+      <div className="summoner-stats">
+        <h3>Stats:</h3>
+        <hr />
         <p className="stat-desc">XP: {xp}</p>
         <p className="stat-desc">Level: {level}</p>
         <p className="stat-desc">Class: {CLASSES_TYPE[classType]}</p>
@@ -63,7 +65,7 @@ const SummonStats = ({
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 

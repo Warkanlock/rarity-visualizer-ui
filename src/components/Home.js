@@ -111,27 +111,47 @@ const Home = (props) => {
   return (
     <div>
       <div className="welcome-warrior">Welcome - {context.accounts[0]}</div>
-      <div className="button-warrior">
-        <p>
-          Your warrior{" "}
-          <p className="button-warrior-minor-text">- use your summoner id</p>
-          <p className="button-warrior-minor-text">
-            - if you don't have a summoner id, please summon one
-          </p>
-        </p>
-        <input
-          className="button-summon-data"
-          defaultValue={112220}
-          name="summonId"
-          type="number"
-          onChange={changeSummonId}
-        />
-      </div>
-      <div className="summoner-container">
-        <div className="container-summon-data">
+      <div className="container-warrior">
+        <div className="actions-warrior">
+          <div className="title-warrior">
+            Your warrior
+            <div class="tooltip">
+              <i
+                class="fa fa-info-circle"
+                style={{ fontSize: "14px", marginLeft: "10px" }}
+              ></i>
+              <div class="right">
+                <div class="text-content">
+                  <ul>
+                    <li>Use your summoner id.</li>
+                    <li>If you don't have a summoner id, please summon one.</li>
+                  </ul>
+                </div>
+                <i></i>
+              </div>
+            </div>
+          </div>
+          <div className="d-flex">
+            <div>
+              <label>Summoner ID:</label>
+              <input
+                className="button-summon-data"
+                placeholder="Summoner ID"
+                defaultValue={112220}
+                name="summonId"
+                type="number"
+                onChange={changeSummonId}
+              />
+            </div>
+            <div className="last-summoned-id">
+              Last id summoned:
+              <div>{lastSummon}</div>
+            </div>
+          </div>
           <button className="button-summon-data" onClick={summonPlayer}>
             Summon a new warrior
           </button>
+          <label>Choose your class:</label>
           <select className="button-summon-data" onChange={selectClassType}>
             {Object.keys(CLASSES_TYPE).map((key) => {
               return (
@@ -141,23 +161,25 @@ const Home = (props) => {
               );
             })}
           </select>
-          <div className="button-summon-data">
-            <div>Last id summoned: {lastSummon}</div>
+          <label>Actions</label>
+          <div className="action-buttons">
+            <button className="button-summon-data" onClick={sendToAdventure}>
+              Go to an adventure
+            </button>
+            <button className="button-summon-data" onClick={getSummonerState}>
+              Information
+            </button>
+            <button className="button-summon-data" onClick={levelUpPlayer}>
+              Level up
+            </button>
           </div>
         </div>
-        <button className="button-summon-data" onClick={sendToAdventure}>
-          Go to an adventure
-        </button>
-        <button className="button-summon-data" onClick={getSummonerState}>
-          Information
-        </button>
-        <button className="button-summon-data" onClick={levelUpPlayer}>
-          Level up
-        </button>
+        {summonData != null && (
+          <div className="details-warrior">
+            <SummonStats summonId={summonId} {...summonData}></SummonStats>
+          </div>
+        )}
       </div>
-      {summonData != null && (
-        <SummonStats summonId={summonId} {...summonData}></SummonStats>
-      )}
     </div>
   );
 };
