@@ -6,12 +6,14 @@ import { CLASSES_TYPE } from "../utils/classes";
 const SummonStats = ({
   summonId,
   xp,
+  xpRequired,
   level,
   classType,
   attributes,
   levelPoints,
 }) => {
   const [context] = useContext(RarityContext);
+  const [amountXp, setAmountXp] = React.useState(0);
 
   const increase = async (attr) => {
     try {
@@ -29,12 +31,46 @@ const SummonStats = ({
     }
   };
 
+  const spendXp = async () => {
+    try {
+      if (summonId != null) {
+        await context.contract.methods
+          .spend_xp(summonId, amountXp)
+          .send({ from: context.accounts[0] });
+        NotificationManager.success(
+          `Summoner spent ${amountXp} xp`,
+          "Information"
+        );
+      }
+    } catch (ex) {
+      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    }
+  };
+
+  const updateAmount = (event) => {
+    setAmountXp(event.target.value);
+  };
+
   return (
     <div className="d-flex">
       <div className="summoner-stats">
         <h3>Stats:</h3>
         <hr />
-        <p className="stat-desc">XP: {xp}</p>
+        <div className="stat-desc">
+          <div className="stat-desc-single">XP: {xp} </div>
+          <div className="stat-desc-single">
+            <button className="stat-desc-button" onClick={spendXp}>
+              Spend XP
+            </button>
+            <input
+              className="stat-desc"
+              type="number"
+              onChange={updateAmount}
+              max="1000"
+            />
+          </div>
+        </div>
+        <p className="stat-desc">XP Required: {xpRequired}</p>
         <p className="stat-desc">Level: {level}</p>
         <p className="stat-desc">Class: {CLASSES_TYPE[classType]}</p>
         <p className="stat-desc">Points to spent: {levelPoints}</p>
@@ -42,7 +78,10 @@ const SummonStats = ({
       <div className="stat-desc-attribs-container">
         {Object.keys(attributes).map((attr) => {
           return (
-            <div className="stat-increase-container">
+            <div
+              className="stat-increase-container"
+              key={`class-${attributes}`}
+            >
               <button
                 className="stat-desc-attrbs-button"
                 onClick={() => increase(attr)}

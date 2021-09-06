@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RarityContext } from "../context/RarityProvider";
 import { SummonStats } from "./SummonStats";
 import { NotificationManager } from "react-notifications";
@@ -11,6 +11,22 @@ const Home = (props) => {
   const [summonId, setSummonId] = useState(112220);
   const [lastSummon, setLastSummon] = useState(null);
   const [classId, setClassId] = useState(1);
+  const [adventureTime, setAdventureTime] = useState(null);
+
+  useEffect(() => {
+    const isReadyForAdventure = async () => {
+      if (summonId != null && context.contract) {
+        const timestamp = await context.contract.methods
+          .adventurers_log(summonId)
+          .call();
+        const milliseconds = timestamp * 1000; // 1575909015000
+        const dateObject = new Date(milliseconds);
+        setAdventureTime(dateObject);
+      }
+    };
+
+    isReadyForAdventure();
+  }, [context.contract, summonId]);
 
   const getSummonerState = async () => {
     try {
@@ -18,7 +34,6 @@ const Home = (props) => {
         const summonData = await context.contract.methods
           .summoner(summonId)
           .call();
-        console.log(summonId);
 
         const attributesData = await context.contract_attributes.methods
           .ability_scores(summonId)
@@ -28,8 +43,13 @@ const Home = (props) => {
           .level_points_spent(summonId)
           .call();
 
+        const xpRequired = await context.contract.methods
+          .xp_required(summonId)
+          .call();
+
         setSummonData({
           xp: parseFloat(summonData[0]) / 1e18,
+          xpRequired: parseFloat(xpRequired) / 1e18,
           classType: summonData[2],
           level: summonData[3],
           levelPoints: levelPoints,
@@ -163,9 +183,22 @@ const Home = (props) => {
           </select>
           <label>Actions</label>
           <div className="action-buttons">
-            <button className="button-summon-data" onClick={sendToAdventure}>
-              Go to an adventure
-            </button>
+            <div className="container-summon-data">
+              {adventureTime && (
+                <>
+                  <p className="button-summon-data">
+                    (Start new adventure: {adventureTime.toUTCString() || ""})
+                  </p>
+                  <button
+                    disabled={adventureTime.getTime() >= new Date().getTime()}
+                    className="button-summon-data"
+                    onClick={sendToAdventure}
+                  >
+                    Go to an adventure
+                  </button>
+                </>
+              )}
+            </div>
             <button className="button-summon-data" onClick={getSummonerState}>
               Information
             </button>
