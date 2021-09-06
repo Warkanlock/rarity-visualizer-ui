@@ -1,6 +1,8 @@
 body {
   overflow-x: hidden; /* Hide horizontal scrollbar */
   background-color: #264653;
+  background: no-repeat center
+    url("https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8ZmFudGFzeXxlbnwwfHwwfHw%3D");
 }
 
 .App {
@@ -48,7 +50,7 @@ footer {
   bottom: 0;
   width: 100%;
   font-size: 14px;
-  background-color: #264653;
+  background-color: black;
   color: #ffe8d6;
 }
 
@@ -73,6 +75,7 @@ footer {
 
 .button-summon-data {
   display: flex;
+  justify-content: center;
   background-color: #2a9d8f;
   color: #ffe8d6;
   font-weight: bold;
@@ -81,13 +84,41 @@ footer {
   text-align: center;
 }
 
-.stat-desc {
+.stat-desc-single {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-desc-button {
   background-color: #2a9d8f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
   color: white;
   border-radius: 12px;
   padding: 10px;
   text-align: center;
-  margin: 25px 150px;
+  margin: 5px 100px;
+}
+
+.stat-desc-button:hover {
+  background-color: #ffe8d6;
+  cursor: pointer;
+}
+
+.stat-desc {
+  background-color: #2a9d8f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  color: white;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  margin: 5px 100px;
 }
 
 .stat-desc-attribs-container {
