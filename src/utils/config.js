@@ -566,8 +566,8 @@ const FANTOM_NETWORK = {
         symbol: "ftm",
         decimals: 18,
       },
-      rpcUrls: ["https://rpc.ftm.tools/"],
-      blockExplorerUrls: [`https://ftmscan.com/`],
+      rpcUrls: ["https://rpc.ftm.tools"],
+      blockExplorerUrls: [`https://ftmscan.com`],
     },
   ],
 };
