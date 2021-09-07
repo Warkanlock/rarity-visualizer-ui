@@ -26,8 +26,11 @@ const Home = (props) => {
         setAdventureTime(dateObject);
       }
     };
-
-    isReadyForAdventure();
+    try {
+      isReadyForAdventure();
+    } catch (ex) {
+      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    }
   }, [context.contract, summonId, switchAdventure]);
 
   const getSummonerState = async () => {
@@ -112,6 +115,7 @@ const Home = (props) => {
           .summon(classId)
           .send({ from: context.accounts[0] });
         setLastSummon(response.events.summoned.returnValues[2]);
+        setSummonId(response.events.summoned.returnValues[2]);
         setDefaultSummoned(response.events.summoned.returnValues[2]);
         NotificationManager.success(
           `You just summon your player! ${response.events.summoned.returnValues[2]}`,
@@ -132,77 +136,120 @@ const Home = (props) => {
     if (event.target.value === "" || event.target.value === 0) {
       setSummonId(null);
     } else {
-      setSummonId(event.target.value);
+      setSummonId(event.target.value.toString());
     }
   };
 
   return (
-    <div>
-      <div className="welcome-warrior">Welcome - {context.accounts[0]}</div>
-      <div className="button-warrior">
-        <p>
-          Your warrior{" "}
-          <p className="button-warrior-minor-text">- use your summoner id</p>
-          <p className="button-warrior-minor-text">
-            - if you don't have a summoner id, please summon one
-          </p>
-        </p>
-        <input
-          className="button-summon-data"
-          defaultValue={defaultSummoned}
-          name="summonId"
-          type="number"
-          onChange={changeSummonId}
-        />
+    <>
+      <div className="container-box welcome-warrior">
+        Welcome - <span className="golden-font">{context.accounts[0]}</span>
       </div>
-      <div className="summoner-container">
-        <div className="container-summon-data">
-          <button className="button-summon-data" onClick={summonPlayer}>
-            Summon a new warrior
-          </button>
-          <select className="button-summon-data" onChange={selectClassType}>
-            {Object.keys(CLASSES_TYPE).map((key) => {
-              return (
-                <option value={key} key={`${key}-class-type`}>
-                  {CLASSES_TYPE[key]}
-                </option>
-              );
-            })}
-          </select>
-          <div className="button-summon-data">
-            <div>Last id summoned: {lastSummon}</div>
+      <div className="d-flex">
+        <div className="container-box summoner-class">
+          <div className="summoner-class-title">
+            <label>Your warrior:</label>
+          </div>
+          <div className="summoner-img-container">
+            <img
+              src={process.env.PUBLIC_URL + "/img/sword-draw.png"}
+              alt="sword-draw"
+            />
+          </div>
+          <div className="summon-id">
+            <input
+              placeholder="Summoner ID"
+              className="summon-id-input"
+              defaultValue={defaultSummoned}
+              name="summonId"
+              onChange={changeSummonId}
+            />
+            <div className="new-summoner-button" onClick={getSummonerState}>
+              <img
+                src={process.env.PUBLIC_URL + "/img/dagger_new.png"}
+                alt="new-summoner"
+              />
+            </div>
           </div>
         </div>
-        <div className="container-summon-data">
-          {adventureTime && (
-            <>
-              <p className="button-summon-data">
-                (Start new adventure: {adventureTime.toUTCString() || ""})
-              </p>
-              <button
-                disabled={
-                  adventureTime.getTime() >= new Date().getTime() ||
-                  summonId === null
-                }
-                className="button-summon-data"
-                onClick={sendToAdventure}
-              >
-                Go to an adventure
+        <div className="summoner-info">
+          <div className="container-box">
+            <ul>
+              <li>Use your Summoner ID</li>
+              <li>
+                If you don't have a Summoner ID, please summon a new warrior
+              </li>
+              <li>
+                If gas fees are excessively high then that action is unavailable
+                at the moment
+              </li>
+            </ul>
+          </div>
+          <div className="container-box">
+            <div className="summoner-buttons">
+              <button className="summon-new" onClick={summonPlayer}>
+                Summon new warrior
               </button>
-            </>
-          )}
+              <select onChange={selectClassType}>
+                {Object.keys(CLASSES_TYPE).map((key) => {
+                  return (
+                    <option value={key} key={`${key}-class-type`}>
+                      {CLASSES_TYPE[key]}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            Last ID summoned:{" "}
+            <span className="golden-font">
+              {lastSummon ? lastSummon : " - "}
+            </span>
+          </div>
         </div>
+      </div>
+      <div className="container-box actions">
+        <button
+          disabled={
+            adventureTime?.getTime() >= new Date().getTime() ||
+            summonId === null
+          }
+          onClick={sendToAdventure}
+          style={{
+            backgroundColor: "rgb(186, 39, 21)",
+            border: "2px solid rgb(61, 29, 20)",
+          }}
+        >
+          {adventureTime?.getTime() >= new Date().getTime() ? (
+            <p>
+              Next adventure in{" "}
+              {Math.floor(
+                Math.abs(adventureTime?.getTime() - new Date().getTime()) /
+                  1000 /
+                  3600
+              ) % 24}{" "}
+              hours
+            </p>
+          ) : (
+            "Go on adventure"
+          )}
+        </button>
         <button
           disabled={summonId === null}
-          className="button-summon-data"
           onClick={getSummonerState}
+          style={{
+            backgroundColor: "rgb(0, 147, 107)",
+            border: "2px solid rgb(9, 62, 47)",
+          }}
         >
           Information
         </button>
         <button
           disabled={summonId === null}
-          className="button-summon-data"
           onClick={levelUpPlayer}
+          style={{
+            backgroundColor: "rgb(27, 98, 136)",
+            border: "2px solid rgb(24, 54, 74)",
+          }}
         >
           Level up
         </button>
@@ -210,7 +257,7 @@ const Home = (props) => {
       {summonData != null && (
         <SummonStats summonId={summonId} {...summonData}></SummonStats>
       )}
-    </div>
+    </>
   );
 };
 
