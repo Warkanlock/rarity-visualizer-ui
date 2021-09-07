@@ -7,6 +7,7 @@ function RarityProvider({ children }) {
     accounts: [],
     contract: null,
     contract_attributes: null,
+    contract_names: null,
   });
 
   return (

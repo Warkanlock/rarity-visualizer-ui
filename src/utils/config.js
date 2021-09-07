@@ -550,6 +550,55 @@ const RARITY_ABI_ATTRIBUTES = [
 ];
 const RARITY_ADDRESS_ATTRIBUTES = "0xb5f5af1087a8da62a23b08c00c6ec9af21f397a1";
 
+const RARITY_ABI_NAMES = [
+  {
+    inputs: [],
+    name: "cost",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "_summoner", type: "uint256" }],
+    name: "full_name",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    name: "n",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "_summoner", type: "uint256" },
+      { internalType: "string", name: "_name", type: "string" },
+    ],
+    name: "set_name",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "_summoner", type: "uint256" }],
+    name: "summoner_name",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "_lvl", type: "uint256" }],
+    name: "title",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "pure",
+    type: "function",
+  },
+];
+const RARITY_ADDRESS_NAMES = "0x4c40ce3fb33a6781c903bc830804de4195cc966f";
+
 const WEB3_LOCAL_INSTANCE = "http://localhost:7545";
 const WEB3_FANTOM_INSTANCE = "wss://wsapi.fantom.network";
 
@@ -580,6 +629,8 @@ export {
   RARITY_ADDRESS,
   RARITY_ABI_ATTRIBUTES,
   RARITY_ADDRESS_ATTRIBUTES,
+  RARITY_ADDRESS_NAMES,
+  RARITY_ABI_NAMES,
   WEB3_FANTOM_INSTANCE,
   WEB3_LOCAL_INSTANCE,
   FANTOM_NETWORK,

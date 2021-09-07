@@ -5,6 +5,7 @@ import { CLASSES_TYPE } from "../utils/classes";
 
 const SummonStats = ({
   summonId,
+  name,
   xp,
   xpRequired,
   xpToGo,
@@ -65,7 +66,9 @@ const SummonStats = ({
                   max="1000"
                   placeholder="XP to spend"
                 />
-                <button onClick={spendXp}>Spend XP</button>
+                <button disabled onClick={spendXp}>
+                  Spend XP
+                </button>
               </div>
             </li>
             <li>
@@ -75,7 +78,9 @@ const SummonStats = ({
               <p>XP Required: {xpRequired}</p>
             </li>
             <li>
-              <p>Level: {level}</p>
+              <p>
+                Level: {level} {name.title}{" "}
+              </p>
             </li>
             <li>
               <p>Class: {CLASSES_TYPE[classType]}</p>

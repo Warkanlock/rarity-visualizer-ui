@@ -17,6 +17,7 @@ const Home = (props) => {
   const [switchAdventure, setSwitchAdventure] = useState(false);
   const [defaultSummoned, setDefaultSummoned] = useState();
   const [loading, setLoading] = useState(false);
+  const [summonName, setSummonName] = useState(null);
 
   useEffect(() => {
     const getAllSummoners = async () => {
@@ -48,7 +49,7 @@ const Home = (props) => {
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
-  }, [context, context.contract, summonId, switchAdventure]);
+  }, [context, context.contract, summonId, switchAdventure, summonData]);
 
   const getSummonerState = async () => {
     try {
@@ -70,7 +71,22 @@ const Home = (props) => {
           .xp_required(summonData[3])
           .call();
 
+        const fullName = await context.contract_names.methods
+          .full_name(summonId)
+          .call();
+        const summonName = await context.contract_names.methods
+          .summoner_name(summonId)
+          .call();
+        const title = await context.contract_names.methods
+          .title(summonData[3])
+          .call();
+
         setSummonData({
+          name: {
+            fullName,
+            summonName,
+            title,
+          },
           xp: parseFloat(summonData[0]) / Math.pow(10, 18),
           xpRequired: parseFloat(xpRequired) / Math.pow(10, 18),
           xpToGo: (xpRequired - parseFloat(summonData[0])) / Math.pow(10, 18),
@@ -96,6 +112,7 @@ const Home = (props) => {
 
   const sendToAdventure = async () => {
     try {
+      setLoading(true);
       if (summonId != null) {
         await context.contract.methods
           .adventure(summonId)
@@ -106,6 +123,7 @@ const Home = (props) => {
           "Information"
         );
       }
+      setLoading(false);
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
@@ -113,6 +131,7 @@ const Home = (props) => {
 
   const levelUpPlayer = async () => {
     try {
+      setLoading(true);
       if (summonId != null) {
         await context.contract.methods
           .level_up(summonId)
@@ -122,6 +141,7 @@ const Home = (props) => {
           "Information"
         );
       }
+      setLoading(false);
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
@@ -130,6 +150,7 @@ const Home = (props) => {
   const summonPlayer = async () => {
     try {
       setSummonData(null);
+      setLoading(true);
       if (classId != null) {
         const response = await context.contract.methods
           .summon(classId)
@@ -142,6 +163,27 @@ const Home = (props) => {
           "Information",
           100000
         );
+      }
+      setLoading(false);
+    } catch (ex) {
+      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    }
+  };
+
+  const assignName = async () => {
+    try {
+      if (summonId != null && summonName != null) {
+        setLoading(true);
+        await context.contract_names.methods
+          .set_name(summonId, summonName)
+          .send({ from: context.accounts[0] });
+        NotificationManager.success(
+          `You just named your player!`,
+          "Information",
+          5000
+        );
+        setLoading(false);
+        setSummonData(null);
       }
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
@@ -167,6 +209,10 @@ const Home = (props) => {
     }
   };
 
+  const changeName = (event) => {
+    setSummonName(event.target.value);
+  };
+
   return (
     <>
       {loading && <div className="loading">Loading&#8230;</div>}
@@ -176,7 +222,7 @@ const Home = (props) => {
       <div className="d-flex">
         <div className="container-box summoner-class">
           <div className="summoner-class-title">
-            <label>Your warrior:</label>
+            <label>Your summoners</label>
           </div>
           <div className="summoner-img-container">
             <img
@@ -206,6 +252,29 @@ const Home = (props) => {
                 alt="new-summoner"
               />
             </div>
+          </div>
+          <div className="summoner-class-title">
+            {summonData != null && (
+              <>
+                {summonData.name.summonName === "" ? (
+                  <>
+                    <input
+                      className="new-summoner-button-assign"
+                      onChange={changeName}
+                      type="text"
+                    />
+                    <button
+                      className="new-summoner-button-assign"
+                      onClick={assignName}
+                    >
+                      Assign a name!
+                    </button>
+                  </>
+                ) : (
+                  <p>Named as {summonData.name.summonName}</p>
+                )}
+              </>
+            )}
           </div>
         </div>
         <div className="summoner-info">

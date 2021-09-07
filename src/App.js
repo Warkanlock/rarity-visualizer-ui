@@ -2,22 +2,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useState } from "react";
 import "./App.css";
-import Web3 from "web3";
-import {
-  WEB3_FANTOM_INSTANCE,
-  RARITY_ABI,
-  RARITY_ADDRESS,
-  RARITY_ABI_ATTRIBUTES,
-  RARITY_ADDRESS_ATTRIBUTES,
-  FANTOM_NETWORK,
-  FANTOM_ID,
-} from "./utils/config";
 import { RarityContext } from "./context/RarityProvider";
 import { Home } from "./components/Home";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
+import { setupContracts } from "./context/RarityContracts";
 
 function App() {
   const [error, setError] = useState({ isError: false, stack: null });
@@ -31,31 +22,12 @@ function App() {
   const loadRarityData = async () => {
     try {
       if (window.ethereum) {
-        await window.ethereum.send("eth_requestAccounts");
-        const web3 = new Web3(Web3.givenProvider || WEB3_FANTOM_INSTANCE);
-        web3.eth.handleRevert = true;
-        const webId = await web3.eth.net.getId();
-        if (webId !== FANTOM_ID) {
-          NotificationManager.error("Please, switch networks to use Fantom");
-          await window.ethereum.request(FANTOM_NETWORK);
-          refreshView(true);
-        } else {
-          const accounts = await web3.eth.getAccounts();
-          const rarityContract = new web3.eth.Contract(
-            RARITY_ABI,
-            RARITY_ADDRESS
-          );
-          const attributesContract = new web3.eth.Contract(
-            RARITY_ABI_ATTRIBUTES,
-            RARITY_ADDRESS_ATTRIBUTES
-          );
-
-          setContext({
-            accounts: accounts,
-            contract: rarityContract,
-            contract_attributes: attributesContract,
-          });
-        }
+        const contracts = await setupContracts({
+          onError: () =>
+            NotificationManager.error("Please, use Fantom network"),
+          onRefresh: () => refreshView(!refresh),
+        });
+        setContext(contracts);
       } else {
         NotificationManager.error(
           "Please, try to use Metamask or some client to connect your wallet"
