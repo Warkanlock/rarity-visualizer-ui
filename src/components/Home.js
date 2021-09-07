@@ -46,9 +46,21 @@ const Home = (props) => {
       }
     };
 
+    const haveNameSetted = async () => {
+      if (summonId != null && context.contract_names) {
+        setLoadingAdventure(true);
+        const summonName = await context.contract_names.methods
+          .summoner_name(summonId)
+          .call();
+        setSummonName(summonName);
+        setLoadingAdventure(false);
+      }
+    };
+
     try {
       isReadyForAdventure();
       getAllSummoners();
+      haveNameSetted();
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
@@ -222,6 +234,8 @@ const Home = (props) => {
     setSummonName(event.target.value);
   };
 
+  console.log(summonData);
+
   return (
     <>
       {loading && <div className="loading">Loading&#8230;</div>}
@@ -231,7 +245,15 @@ const Home = (props) => {
       <div className="d-flex">
         <div className="container-box summoner-class">
           <div className="summoner-class-title">
-            <label>Your summoners</label>
+            <label>Your warrior</label>
+            {summonName &&
+              (loadingAdventure ? (
+                <div>...</div>
+              ) : (
+                <div style={{ textAlign: "center" }}>
+                  &#9679;{summonName}&#9679;
+                </div>
+              ))}
           </div>
           <div className="summoner-img-container">
             <img
@@ -265,7 +287,7 @@ const Home = (props) => {
           <div className="summoner-class-title">
             {summonData != null && (
               <>
-                {summonData.name.summonName === "" ? (
+                {summonData.name.summonName === "" && (
                   <>
                     <input
                       className="new-summoner-button-assign"
@@ -279,8 +301,6 @@ const Home = (props) => {
                       Assign a name!
                     </button>
                   </>
-                ) : (
-                  <p>Named as {summonData.name.summonName}</p>
                 )}
               </>
             )}
