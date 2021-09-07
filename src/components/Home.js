@@ -35,7 +35,6 @@ const Home = (props) => {
 
   const getSummonerState = async () => {
     try {
-      console.log(summonId);
       if (summonId != null) {
         const summonData = await context.contract.methods
           .summoner(summonId)
