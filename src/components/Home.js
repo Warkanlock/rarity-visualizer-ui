@@ -15,9 +15,10 @@ const Home = (props) => {
   const [classId, setClassId] = useState(1);
   const [adventureTime, setAdventureTime] = useState(null);
   const [switchAdventure, setSwitchAdventure] = useState(false);
-  const [defaultSummoned, setDefaultSummoned] = useState();
   const [loading, setLoading] = useState(false);
   const [summonName, setSummonName] = useState(null);
+  const [summoning, setSummoning] = useState(false);
+  const [loadingAdventure, setLoadingAdventure] = useState(false);
 
   useEffect(() => {
     const getAllSummoners = async () => {
@@ -34,12 +35,14 @@ const Home = (props) => {
 
     const isReadyForAdventure = async () => {
       if (summonId != null && context.contract) {
+        setLoadingAdventure(true);
         const timestamp = await context.contract.methods
           .adventurers_log(summonId)
           .call();
         const milliseconds = timestamp * 1000; // 1575909015000
         const dateObject = new Date(milliseconds);
         setAdventureTime(dateObject);
+        setLoadingAdventure(false);
       }
     };
 
@@ -149,6 +152,7 @@ const Home = (props) => {
 
   const summonPlayer = async () => {
     try {
+      setSummoning(true);
       setSummonData(null);
       setLoading(true);
       if (classId != null) {
@@ -156,8 +160,11 @@ const Home = (props) => {
           .summon(classId)
           .send({ from: context.accounts[0] });
         setLastSummon(response.events.summoned.returnValues[2]);
+        setSummoners((prevState) => [
+          ...prevState,
+          { id: response.events.summoned.returnValues[2] },
+        ]);
         setSummonId(response.events.summoned.returnValues[2]);
-        setDefaultSummoned(response.events.summoned.returnValues[2]);
         NotificationManager.success(
           `You just summon your player! ${response.events.summoned.returnValues[2]}`,
           "Information",
@@ -187,6 +194,8 @@ const Home = (props) => {
       }
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    } finally {
+      setSummoning(false);
     }
   };
 
@@ -235,7 +244,7 @@ const Home = (props) => {
               placeholder="Summoner ID"
               className="summon-id-input"
               name="summonId"
-              defaultValue={defaultSummoned}
+              value={summonId}
               onChange={changeSummonId}
             >
               {summoners.map((summon) => {
@@ -292,8 +301,12 @@ const Home = (props) => {
           </div>
           <div className="container-box">
             <div className="summoner-buttons">
-              <button className="summon-new" onClick={summonPlayer}>
-                Summon new warrior
+              <button
+                className="summon-new"
+                onClick={summonPlayer}
+                disabled={summoning}
+              >
+                {summoning ? "Summoning warrior..." : "Summon new warrior"}
               </button>
               <select onChange={selectClassType}>
                 {Object.keys(CLASSES_TYPE).map((key) => {
@@ -324,7 +337,11 @@ const Home = (props) => {
             border: "2px solid rgb(61, 29, 20)",
           }}
         >
-          {adventureTime?.getTime() >= new Date().getTime() ? (
+          {loadingAdventure ? (
+            <div>
+              <div class="spinner"></div>
+            </div>
+          ) : adventureTime?.getTime() >= new Date().getTime() ? (
             <p>
               Next adventure in{" "}
               {Math.floor(
