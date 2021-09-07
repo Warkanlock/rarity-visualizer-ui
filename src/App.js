@@ -68,7 +68,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">Rarity Visualizer - WIP 0.1</header>
+      <header className="App-header">Rarity Visualizer - Beta</header>
       {error.isError && (
         <div className="App-error">There was an error with your operations</div>
       )}
