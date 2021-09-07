@@ -4,18 +4,33 @@ import { SummonStats } from "./SummonStats";
 import { NotificationManager } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { CLASSES_TYPE } from "../utils/classes";
+import { RARITY_SUMMONERS } from "../utils/config";
 
 const Home = (props) => {
   const [context] = useContext(RarityContext);
   const [summonData, setSummonData] = useState(null);
   const [summonId, setSummonId] = useState(null);
+  const [summoners, setSummoners] = useState([]);
   const [lastSummon, setLastSummon] = useState(null);
   const [classId, setClassId] = useState(1);
   const [adventureTime, setAdventureTime] = useState(null);
   const [switchAdventure, setSwitchAdventure] = useState(false);
   const [defaultSummoned, setDefaultSummoned] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const getAllSummoners = async () => {
+      if (context && context.accounts && context.accounts[0]) {
+        const response = await fetch(RARITY_SUMMONERS(context.accounts[0]));
+        const { result = [] } = await response.json();
+        const summonsId = result?.map((event) => {
+          const id = event.tokenID;
+          return { id: Number(id) };
+        });
+        setSummoners(summonsId);
+      }
+    };
+
     const isReadyForAdventure = async () => {
       if (summonId != null && context.contract) {
         const timestamp = await context.contract.methods
@@ -26,15 +41,18 @@ const Home = (props) => {
         setAdventureTime(dateObject);
       }
     };
+
     try {
       isReadyForAdventure();
+      getAllSummoners();
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
-  }, [context.contract, summonId, switchAdventure]);
+  }, [context, context.contract, summonId, switchAdventure]);
 
   const getSummonerState = async () => {
     try {
+      setLoading(true);
       if (summonId != null) {
         const summonData = await context.contract.methods
           .summoner(summonId)
@@ -49,12 +67,13 @@ const Home = (props) => {
           .call();
 
         const xpRequired = await context.contract.methods
-          .xp_required(summonId)
+          .xp_required(summonData[3])
           .call();
 
         setSummonData({
-          xp: parseFloat(summonData[0]) / 1e18,
-          xpRequired: parseFloat(xpRequired) / 1e18,
+          xp: parseFloat(summonData[0]) / Math.pow(10, 18),
+          xpRequired: parseFloat(xpRequired) / Math.pow(10, 18),
+          xpToGo: (xpRequired - parseFloat(summonData[0])) / Math.pow(10, 18),
           classType: summonData[2],
           level: summonData[3],
           levelPoints: levelPoints,
@@ -67,6 +86,7 @@ const Home = (props) => {
             charisma: attributesData.charisma,
           },
         });
+        setLoading(false);
         NotificationManager.success("Information retrieval successfully");
       }
     } catch (ex) {
@@ -132,16 +152,24 @@ const Home = (props) => {
     setClassId(event.target.value);
   };
 
+  useEffect(() => {
+    if (summoners[0] && !summonId) {
+      setSummonId(summoners[0].id);
+    }
+  }, [summonId, summoners]);
+
   const changeSummonId = (event) => {
     if (event.target.value === "" || event.target.value === 0) {
       setSummonId(null);
     } else {
-      setSummonId(event.target.value.toString());
+      setSummonId(event.target.value);
+      setSummonData(null);
     }
   };
 
   return (
     <>
+      {loading && <div className="loading">Loading&#8230;</div>}
       <div className="container-box welcome-warrior">
         Welcome - <span className="golden-font">{context.accounts[0]}</span>
       </div>
@@ -157,13 +185,21 @@ const Home = (props) => {
             />
           </div>
           <div className="summon-id">
-            <input
+            <select
               placeholder="Summoner ID"
               className="summon-id-input"
-              defaultValue={defaultSummoned}
               name="summonId"
+              defaultValue={defaultSummoned}
               onChange={changeSummonId}
-            />
+            >
+              {summoners.map((summon) => {
+                return (
+                  <option value={summon.id} key={`summoner-${summon.id}`}>
+                    {summon.id}
+                  </option>
+                );
+              })}
+            </select>
             <div className="new-summoner-button" onClick={getSummonerState}>
               <img
                 src={process.env.PUBLIC_URL + "/img/dagger_new.png"}

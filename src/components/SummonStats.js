@@ -7,6 +7,7 @@ const SummonStats = ({
   summonId,
   xp,
   xpRequired,
+  xpToGo,
   level,
   classType,
   attributes,
@@ -68,6 +69,9 @@ const SummonStats = ({
               </div>
             </li>
             <li>
+              <p>XP Left: {xpToGo}</p>
+            </li>
+            <li>
               <p>XP Required: {xpRequired}</p>
             </li>
             <li>
@@ -86,7 +90,7 @@ const SummonStats = ({
             return (
               <div
                 className="summoner-attribute-container"
-                key={`class-${attributes}`}
+                key={`class-${attr}`}
               >
                 <button
                   onClick={() =>

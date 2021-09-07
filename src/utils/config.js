@@ -572,6 +572,9 @@ const FANTOM_NETWORK = {
   ],
 };
 
+const RARITY_SUMMONERS = (accountId) =>
+  `https://api.ftmscan.com/api?module=account&action=tokennfttx&contractaddress=0xce761D788DF608BD21bdd59d6f4B54b2e27F25Bb&address=${accountId}&tag=latest&apikey=81CTWCS4N63GKQ4FUZ2YMC85M98YGUNTCN`;
+
 export {
   RARITY_ABI,
   RARITY_ADDRESS,
@@ -581,4 +584,5 @@ export {
   WEB3_LOCAL_INSTANCE,
   FANTOM_NETWORK,
   FANTOM_ID,
+  RARITY_SUMMONERS,
 };
