@@ -8,10 +8,12 @@ import { CLASSES_TYPE } from "../utils/classes";
 const Home = (props) => {
   const [context] = useContext(RarityContext);
   const [summonData, setSummonData] = useState(null);
-  const [summonId, setSummonId] = useState(112220);
+  const [summonId, setSummonId] = useState(null);
   const [lastSummon, setLastSummon] = useState(null);
   const [classId, setClassId] = useState(1);
   const [adventureTime, setAdventureTime] = useState(null);
+  const [switchAdventure, setSwitchAdventure] = useState(false);
+  const [defaultSummoned, setDefaultSummoned] = useState();
 
   useEffect(() => {
     const isReadyForAdventure = async () => {
@@ -26,7 +28,7 @@ const Home = (props) => {
     };
 
     isReadyForAdventure();
-  }, [context.contract, summonId]);
+  }, [context.contract, summonId, switchAdventure]);
 
   const getSummonerState = async () => {
     try {
@@ -75,6 +77,7 @@ const Home = (props) => {
         await context.contract.methods
           .adventure(summonId)
           .send({ from: context.accounts[0] });
+        setSwitchAdventure(!switchAdventure);
         NotificationManager.success(
           "Summoner went for an adventure!",
           "Information"
@@ -109,6 +112,7 @@ const Home = (props) => {
           .summon(classId)
           .send({ from: context.accounts[0] });
         setLastSummon(response.events.summoned.returnValues[2]);
+        setDefaultSummoned(response.events.summoned.returnValues[2]);
         NotificationManager.success(
           `You just summon your player! ${response.events.summoned.returnValues[2]}`,
           "Information",
@@ -125,7 +129,11 @@ const Home = (props) => {
   };
 
   const changeSummonId = (event) => {
-    setSummonId(event.target.value);
+    if (event.target.value === "" || event.target.value === 0) {
+      setSummonId(null);
+    } else {
+      setSummonId(event.target.value);
+    }
   };
 
   return (
@@ -157,7 +165,7 @@ const Home = (props) => {
               <input
                 className="button-summon-data"
                 placeholder="Summoner ID"
-                defaultValue={112220}
+                defaultValue={defaultSummoned}
                 name="summonId"
                 type="number"
                 onChange={changeSummonId}
@@ -200,12 +208,20 @@ const Home = (props) => {
               </div>
             )}
             <div>
-              <button className="button-summon-data" onClick={getSummonerState}>
+              <button
+                disabled={summonId === null}
+                className="button-summon-data"
+                onClick={getSummonerState}
+              >
                 Information
               </button>
             </div>
             <div>
-              <button className="button-summon-data" onClick={levelUpPlayer}>
+              <button
+                disabled={summonId === null}
+                className="button-summon-data"
+                onClick={levelUpPlayer}
+              >
                 Level up
               </button>
             </div>

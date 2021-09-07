@@ -9,6 +9,8 @@ import {
   RARITY_ADDRESS,
   RARITY_ABI_ATTRIBUTES,
   RARITY_ADDRESS_ATTRIBUTES,
+  FANTOM_NETWORK,
+  FANTOM_ID,
 } from "./utils/config";
 import { RarityContext } from "./context/RarityProvider";
 import { Home } from "./components/Home";
@@ -20,10 +22,11 @@ import {
 function App() {
   const [error, setError] = useState({ isError: false, stack: null });
   const [, setContext] = useContext(RarityContext);
+  const [refresh, refreshView] = useState(false);
 
   React.useEffect(() => {
     loadRarityData();
-  }, []);
+  }, [refresh]);
 
   const loadRarityData = async () => {
     try {
@@ -31,20 +34,28 @@ function App() {
         await window.ethereum.send("eth_requestAccounts");
         const web3 = new Web3(Web3.givenProvider || WEB3_FANTOM_INSTANCE);
         web3.eth.handleRevert = true;
-        const accounts = await web3.eth.getAccounts();
-        const rarityContract = new web3.eth.Contract(
-          RARITY_ABI,
-          RARITY_ADDRESS
-        );
-        const attributesContract = new web3.eth.Contract(
-          RARITY_ABI_ATTRIBUTES,
-          RARITY_ADDRESS_ATTRIBUTES
-        );
-        setContext({
-          accounts: accounts,
-          contract: rarityContract,
-          contract_attributes: attributesContract,
-        });
+        const webId = await web3.eth.net.getId();
+        if (webId !== FANTOM_ID) {
+          NotificationManager.error("Please, switch networks to use Fantom");
+          await window.ethereum.request(FANTOM_NETWORK);
+          refreshView(true);
+        } else {
+          const accounts = await web3.eth.getAccounts();
+          const rarityContract = new web3.eth.Contract(
+            RARITY_ABI,
+            RARITY_ADDRESS
+          );
+          const attributesContract = new web3.eth.Contract(
+            RARITY_ABI_ATTRIBUTES,
+            RARITY_ADDRESS_ATTRIBUTES
+          );
+
+          setContext({
+            accounts: accounts,
+            contract: rarityContract,
+            contract_attributes: attributesContract,
+          });
+        }
       } else {
         NotificationManager.error(
           "Please, try to use Metamask or some client to connect your wallet"
@@ -59,9 +70,7 @@ function App() {
     <div className="App">
       <header className="App-header">Rarity Visualizer - WIP 0.1</header>
       {error.isError && (
-        <>
-          There was an error with your operations {JSON.stringify(error.stack)}
-        </>
+        <div className="App-error">There was an error with your operations</div>
       )}
       <div>
         <Home />
