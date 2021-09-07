@@ -13,6 +13,7 @@ const Home = (props) => {
   const [classId, setClassId] = useState(1);
   const [adventureTime, setAdventureTime] = useState(null);
   const [switchAdventure, setSwitchAdventure] = useState(false);
+  const [defaultSummoned, setDefaultSummoned] = useState();
 
   useEffect(() => {
     const isReadyForAdventure = async () => {
@@ -111,6 +112,7 @@ const Home = (props) => {
           .summon(classId)
           .send({ from: context.accounts[0] });
         setLastSummon(response.events.summoned.returnValues[2]);
+        setDefaultSummoned(response.events.summoned.returnValues[2]);
         NotificationManager.success(
           `You just summon your player! ${response.events.summoned.returnValues[2]}`,
           "Information",
@@ -143,7 +145,7 @@ const Home = (props) => {
         </p>
         <input
           className="button-summon-data"
-          defaultValue={""}
+          defaultValue={defaultSummoned}
           name="summonId"
           type="number"
           onChange={changeSummonId}

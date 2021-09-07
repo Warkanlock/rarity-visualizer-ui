@@ -553,6 +553,25 @@ const RARITY_ADDRESS_ATTRIBUTES = "0xb5f5af1087a8da62a23b08c00c6ec9af21f397a1";
 const WEB3_LOCAL_INSTANCE = "http://localhost:7545";
 const WEB3_FANTOM_INSTANCE = "wss://wsapi.fantom.network";
 
+const FANTOM_ID = 250;
+
+const FANTOM_NETWORK = {
+  method: "wallet_addEthereumChain",
+  params: [
+    {
+      chainId: `0x${FANTOM_ID.toString(16)}`,
+      chainName: "Fantom Opera",
+      nativeCurrency: {
+        name: "FTM",
+        symbol: "ftm",
+        decimals: 18,
+      },
+      rpcUrls: ["https://rpc.ftm.tools/"],
+      blockExplorerUrls: [`https://ftmscan.com/`],
+    },
+  ],
+};
+
 export {
   RARITY_ABI,
   RARITY_ADDRESS,
@@ -560,4 +579,6 @@ export {
   RARITY_ADDRESS_ATTRIBUTES,
   WEB3_FANTOM_INSTANCE,
   WEB3_LOCAL_INSTANCE,
+  FANTOM_NETWORK,
+  FANTOM_ID,
 };
