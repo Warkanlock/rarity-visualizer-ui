@@ -18,7 +18,6 @@ const Home = (props) => {
   useEffect(() => {
     const isReadyForAdventure = async () => {
       if (summonId != null && context.contract) {
-        console.log(summonId);
         const timestamp = await context.contract.methods
           .adventurers_log(summonId)
           .call();
