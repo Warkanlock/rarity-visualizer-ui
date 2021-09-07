@@ -53,54 +53,61 @@ const SummonStats = ({
 
   return (
     <>
-      <div>
-        <div className="stat-desc">
-          <div className="stat-desc-single">XP: {xp} </div>
-          <div className="stat-desc-single">
-            <button className="stat-desc-button" onClick={spendXp}>
-              Spend XP
-            </button>
-            <input
-              className="stat-desc"
-              type="number"
-              onChange={updateAmount}
-              max="1000"
-            />
-          </div>
+      <div className="summoner-stats">
+        <div className="container-box summoner-information">
+          <ul>
+            <li>
+              <div className="xp-spend">
+                <p>XP: {xp} </p>
+                <input
+                  onChange={updateAmount}
+                  max="1000"
+                  placeholder="XP to spend"
+                />
+                <button onClick={spendXp}>Spend XP</button>
+              </div>
+            </li>
+            <li>
+              <p>XP Required: {xpRequired}</p>
+            </li>
+            <li>
+              <p>Level: {level}</p>
+            </li>
+            <li>
+              <p>Class: {CLASSES_TYPE[classType]}</p>
+            </li>
+            <li>
+              <p>Points to spent: {levelPoints}</p>
+            </li>
+          </ul>
         </div>
-        <p className="stat-desc">XP Required: {xpRequired}</p>
-        <p className="stat-desc">Level: {level}</p>
-        <p className="stat-desc">Class: {CLASSES_TYPE[classType]}</p>
-        <p className="stat-desc">Points to spent: {levelPoints}</p>
-      </div>
-      <div className="stat-desc-attribs-container">
-        {Object.keys(attributes).map((attr) => {
-          return (
-            <div
-              className="stat-increase-container"
-              key={`class-${attributes}`}
-            >
-              <button
-                className="stat-desc-attrbs-button"
-                onClick={() => increase(attr)}
-                type="button"
+        <div className="container-box summoner-attributes">
+          {Object.keys(attributes).map((attr) => {
+            return (
+              <div
+                className="summoner-attribute-container"
+                key={`class-${attributes}`}
               >
-                +
-              </button>
-              <p className="stat-desc-attrbs">
-                {attr[0].toUpperCase() + attr.slice(1)} {attributes[attr]}
-              </p>
-              <button
-                className="stat-desc-attrbs-button"
-                onClick={() => console.log("No mechanism yet in the contract")}
-                type="button"
-                disabled
-              >
-                -
-              </button>
-            </div>
-          );
-        })}
+                <button
+                  onClick={() =>
+                    console.log("No mechanism yet in the contract")
+                  }
+                  type="button"
+                  disabled
+                >
+                  -
+                </button>
+                <div className="summoner-attribute">
+                  {attr[0].toUpperCase() + attr.slice(1)}:{" "}
+                  <span className="golden-font">{attributes[attr]}</span>
+                </div>
+                <button onClick={() => increase(attr)} type="button">
+                  +
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </>
   );

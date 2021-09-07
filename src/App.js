@@ -72,7 +72,7 @@ function App() {
       {error.isError && (
         <div className="App-error">There was an error with your operations</div>
       )}
-      <div>
+      <div className="container">
         <Home />
       </div>
       <NotificationContainer />
