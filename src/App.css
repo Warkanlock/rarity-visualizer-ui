@@ -49,6 +49,11 @@ select {
   cursor: pointer;
 }
 
+button:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
 .container {
   color: white;
   display: flex;

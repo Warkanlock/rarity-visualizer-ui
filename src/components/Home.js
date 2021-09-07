@@ -219,7 +219,19 @@ const Home = (props) => {
             border: "2px solid rgb(61, 29, 20)",
           }}
         >
-          Go on adventure
+          {adventureTime?.getTime() >= new Date().getTime() ? (
+            <p>
+              Next adventure in{" "}
+              {Math.floor(
+                Math.abs(adventureTime?.getTime() - new Date().getTime()) /
+                  1000 /
+                  3600
+              ) % 24}{" "}
+              hours
+            </p>
+          ) : (
+            "Go on adventure"
+          )}
         </button>
         <button
           disabled={summonId === null}
