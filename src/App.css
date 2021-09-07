@@ -85,10 +85,16 @@ footer {
   border-radius: 10px;
 }
 
+button.button-summon-data {
+  white-space: nowrap;
+}
+
 .stat-desc-single {
   padding: 10px;
-  display: flex;
-  flex-direction: column;
+}
+
+.nowrap {
+  white-space: nowrap;
 }
 
 .stat-desc-button {
@@ -101,7 +107,7 @@ footer {
   border-radius: 12px;
   padding: 10px;
   text-align: center;
-  margin: 5px 100px;
+  margin: 0px 10px;
 }
 
 .stat-desc-button:hover {
@@ -112,14 +118,12 @@ footer {
 .stat-desc {
   background-color: #2a9d8f;
   display: flex;
-  justify-content: center;
   align-items: center;
   align-content: center;
   color: white;
   border-radius: 12px;
   padding: 10px;
-  text-align: center;
-  margin: 5px 100px;
+  text-align: left;
 }
 
 .stat-desc-attribs-container {
@@ -128,6 +132,8 @@ footer {
   justify-content: center;
   align-items: center;
   align-content: center;
+  width: 100%;
+  margin: auto;
 }
 
 .stat-increase-container {
@@ -283,4 +289,8 @@ footer {
 .summoner-stats {
   padding-right: 2rem;
   border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.stat-desc-xp {
+  display: flex;
 }

@@ -57,17 +57,19 @@ const SummonStats = ({
         <h3>Stats:</h3>
         <hr />
         <div className="stat-desc">
-          <div className="stat-desc-single">XP: {xp} </div>
+          <div className="nowrap">XP: {xp}</div>
           <div className="stat-desc-single">
-            <button className="stat-desc-button" onClick={spendXp}>
-              Spend XP
-            </button>
-            <input
-              className="stat-desc"
-              type="number"
-              onChange={updateAmount}
-              max="1000"
-            />
+            <div className="stat-desc-xp">
+              <input
+                className="stat-desc"
+                type="number"
+                onChange={updateAmount}
+                max="1000"
+              />
+              <button className="stat-desc-button" onClick={spendXp}>
+                Spend XP
+              </button>
+            </div>
           </div>
         </div>
         <p className="stat-desc">XP Required: {xpRequired}</p>

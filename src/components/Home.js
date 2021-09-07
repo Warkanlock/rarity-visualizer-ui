@@ -183,12 +183,9 @@ const Home = (props) => {
           </select>
           <label>Actions</label>
           <div className="action-buttons">
-            <div className="container-summon-data">
-              {adventureTime && (
+            {adventureTime && (
+              <div className="container-summon-data">
                 <>
-                  <p className="button-summon-data">
-                    (Start new adventure: {adventureTime.toUTCString() || ""})
-                  </p>
                   <button
                     disabled={adventureTime.getTime() >= new Date().getTime()}
                     className="button-summon-data"
@@ -196,15 +193,22 @@ const Home = (props) => {
                   >
                     Go to an adventure
                   </button>
+                  <p className="button-summon-data">
+                    (Start new adventure: {adventureTime.toUTCString() || ""})
+                  </p>
                 </>
-              )}
+              </div>
+            )}
+            <div>
+              <button className="button-summon-data" onClick={getSummonerState}>
+                Information
+              </button>
             </div>
-            <button className="button-summon-data" onClick={getSummonerState}>
-              Information
-            </button>
-            <button className="button-summon-data" onClick={levelUpPlayer}>
-              Level up
-            </button>
+            <div>
+              <button className="button-summon-data" onClick={levelUpPlayer}>
+                Level up
+              </button>
+            </div>
           </div>
         </div>
         {summonData != null && (
