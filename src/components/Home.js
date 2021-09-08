@@ -231,8 +231,6 @@ const Home = (props) => {
     }
   };
 
-  console.log(summonData);
-
   return (
     <>
       {loading && <div className="loading">Loading&#8230;</div>}
@@ -335,7 +333,7 @@ const Home = (props) => {
         >
           {loadingAdventure ? (
             <div>
-              <div class="spinner"></div>
+              <div className="spinner"></div>
             </div>
           ) : adventureTime?.getTime() >= new Date().getTime() ? (
             <p>

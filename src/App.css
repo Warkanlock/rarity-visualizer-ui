@@ -158,6 +158,24 @@ select:disabled {
   background-color: #be6314;
 }
 
+.assign-points-summoner {
+  color: white;
+  font-size: 14px !important;
+  background-color: #be6314 !important;
+}
+
+.confirm-points-summoner {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  margin-top: 20px;
+  height: 50px;
+  width: 100%;
+  background-color: #be6314 !important;
+}
+
 .summon-id {
   display: flex;
   justify-content: center;
@@ -167,6 +185,7 @@ select:disabled {
 
 .summon-id-input {
   text-align: center;
+  margin: auto;
   color: #bf9b30;
   font-family: "MedievalSharp", cursive;
   width: 70%;
@@ -203,6 +222,7 @@ select:disabled {
   cursor: pointer;
   margin: 10px;
   height: 50px;
+
   width: 50%;
   color: white;
   font-family: "MedievalSharp", cursive;
@@ -304,6 +324,8 @@ select:disabled {
 .summoner-attribute-container button {
   flex: 1;
   height: 100%;
+  margin: auto;
+
   margin: 0px 10px;
   cursor: pointer;
   border: 1px solid rgba(37, 37, 37, 1);
