@@ -10,6 +10,7 @@ import {
 } from "react-notifications";
 import { setupContracts } from "./context/RarityContracts";
 import { useAuth } from "./hooks/useAuth";
+import { FANTOM_ID, FANTOM_NETWORK } from "./utils/config";
 
 function App() {
   const [error, setError] = useState({ isError: false, stack: null });
@@ -24,13 +25,23 @@ function App() {
   const loadRarityData = async () => {
     try {
       if (window.ethereum && provider) {
-        const contracts = await setupContracts({
-          provider,
-          onError: () =>
-            NotificationManager.error("Please, use Fantom network"),
-          onRefresh: () => refreshView(!refresh),
-        });
-        setContext(contracts);
+        const webId = await provider.eth.net.getId();
+        if (webId !== FANTOM_ID) {
+          NotificationManager.error("Please, use Fantom network");
+          await window.ethereum.request(FANTOM_NETWORK);
+          refreshView(!refresh);
+        } else {
+          const contracts = await setupContracts({
+            provider,
+          });
+          if (contracts) {
+            setContext(contracts);
+          } else {
+            NotificationManager.error(
+              "Something bad happen. Please refresh the page."
+            );
+          }
+        }
       } else {
         if (update) {
           NotificationManager.info("Wallet Disconnected");
