@@ -121,6 +121,7 @@ const Home = (props) => {
         NotificationManager.success("Information retrieval successfully");
       }
     } catch (ex) {
+      setLoading(false);
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
   };
@@ -230,10 +231,6 @@ const Home = (props) => {
     }
   };
 
-  const changeName = (event) => {
-    setSummonName(event.target.value);
-  };
-
   console.log(summonData);
 
   return (
@@ -283,27 +280,6 @@ const Home = (props) => {
                 alt="new-summoner"
               />
             </div>
-          </div>
-          <div className="summoner-class-title">
-            {summonData != null && (
-              <>
-                {summonData.name.summonName === "" && (
-                  <>
-                    <input
-                      className="new-summoner-button-assign"
-                      onChange={changeName}
-                      type="text"
-                    />
-                    <button
-                      className="new-summoner-button-assign"
-                      onClick={assignName}
-                    >
-                      Assign a name!
-                    </button>
-                  </>
-                )}
-              </>
-            )}
           </div>
         </div>
         <div className="summoner-info">
@@ -397,7 +373,13 @@ const Home = (props) => {
         </button>
       </div>
       {summonData != null && (
-        <SummonStats summonId={summonId} {...summonData}></SummonStats>
+        <SummonStats
+          summonId={summonId}
+          summonName={summonName}
+          setSummonName={setSummonName}
+          assignName={assignName}
+          {...summonData}
+        ></SummonStats>
       )}
     </>
   );
