@@ -93,12 +93,9 @@ const SummonStats = ({
     setAmountXp(event.target.value);
   };
 
-  console.log(mapAttributes);
-
   const confirmPoints = async () => {
     try {
       if (summonId != null) {
-        console.log(context.contract_attributes.methods.point_buy);
         await context.contract_attributes.methods
           .point_buy(
             summonId,

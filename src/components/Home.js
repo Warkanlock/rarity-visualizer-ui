@@ -121,8 +121,9 @@ const Home = (props) => {
         NotificationManager.success("Information retrieval successfully");
       }
     } catch (ex) {
-      setLoading(false);
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -139,9 +140,11 @@ const Home = (props) => {
           "Information"
         );
       }
-      setLoading(false);
+      window.location.reload();
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -157,9 +160,10 @@ const Home = (props) => {
           "Information"
         );
       }
-      setLoading(false);
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -184,9 +188,10 @@ const Home = (props) => {
           100000
         );
       }
-      setLoading(false);
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    } finally {
+      setLoading(false);
     }
   };
 
