@@ -13,9 +13,13 @@ const SummonStats = ({
   classType,
   attributes,
   levelPoints,
+  summonName,
+  setSummonName,
+  assignName,
 }) => {
   const [context] = useContext(RarityContext);
   const [amountXp, setAmountXp] = React.useState(0);
+  const [editingName, setEditingName] = React.useState(false);
 
   const increase = async (attr) => {
     try {
@@ -57,7 +61,33 @@ const SummonStats = ({
     <>
       <div className="summoner-stats">
         <div className="container-box summoner-information">
-          <ul>
+          <ul className="stats-list">
+            <li>
+              <div className="summon-name">
+                <p>
+                  Name: {summonName ? summonName : "Unknown"}
+                  {summonName && !editingName && (
+                    <img
+                      src={process.env.PUBLIC_URL + "/img/edit-feather.png"}
+                      onClick={() => setEditingName(true)}
+                      alt="edit-name"
+                    />
+                  )}
+                </p>
+                {(!summonName || editingName) && (
+                  <>
+                    <input
+                      onChange={(e) => setSummonName(e.target.value)}
+                      max="1000"
+                      placeholder="Warrior name"
+                    />
+                    <button onClick={assignName}>
+                      {summonName ? "Rename" : "Assign"}
+                    </button>
+                  </>
+                )}
+              </div>
+            </li>
             <li>
               <div className="xp-spend">
                 <p>XP: {xp} </p>
