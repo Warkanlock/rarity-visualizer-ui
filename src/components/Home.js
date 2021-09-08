@@ -140,7 +140,9 @@ const Home = (props) => {
           "Information"
         );
       }
-      window.location.reload();
+      setSummonData(null);
+      setSummonId(summonId);
+      await getSummonerState();
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
     } finally {
