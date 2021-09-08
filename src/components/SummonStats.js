@@ -108,7 +108,9 @@ const SummonStats = ({
                 </button>
                 <div className="summoner-attribute">
                   {attr[0].toUpperCase() + attr.slice(1)}:{" "}
-                  <span className="golden-font">{attributes[attr]}</span>
+                  <span className="golden-font">
+                    {Number(attributes[attr]) + 8}
+                  </span>
                 </div>
                 <button onClick={() => increase(attr)} type="button">
                   +

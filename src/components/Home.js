@@ -386,6 +386,16 @@ const Home = (props) => {
           Information
         </button>
         <button
+          disabled={true}
+          onClick={getSummonerState}
+          style={{
+            backgroundColor: "rgb(0, 122, 107)",
+            border: "2px solid rgb(9, 62, 47)",
+          }}
+        >
+          Dungeons
+        </button>
+        <button
           disabled={summonId === null}
           onClick={levelUpPlayer}
           style={{
