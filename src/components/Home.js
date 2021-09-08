@@ -30,7 +30,7 @@ const Home = (props) => {
         if (!result) {
           NotificationManager.error("Something bad happened");
         } else {
-          const summonsId = result?.map((event) => {
+          const summonsId = result.map((event) => {
             const id = event.tokenID;
             return { id: Number(id) };
           });
@@ -254,7 +254,7 @@ const Home = (props) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       {loading && <div className="loading">Loading&#8230;</div>}
       <div className="container-box welcome-warrior">
         Welcome - <span className="golden-font">{context.accounts[0]}</span>
@@ -411,7 +411,7 @@ const Home = (props) => {
           {...summonData}
         ></SummonStats>
       )}
-    </>
+    </React.Fragment>
   );
 };
 
