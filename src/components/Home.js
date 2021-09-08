@@ -5,9 +5,11 @@ import { NotificationManager } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { CLASSES_TYPE } from "../utils/classes";
 import { RARITY_SUMMONERS } from "../utils/config";
+import { useAuth } from "../hooks/useAuth";
 
 const Home = (props) => {
   const [context] = useContext(RarityContext);
+  const [, , , update] = useAuth();
   const [summonData, setSummonData] = useState(null);
   const [summonId, setSummonId] = useState(null);
   const [summoners, setSummoners] = useState([]);
@@ -25,11 +27,15 @@ const Home = (props) => {
       if (context && context.accounts && context.accounts[0]) {
         const response = await fetch(RARITY_SUMMONERS(context.accounts[0]));
         const { result = [] } = await response.json();
-        const summonsId = result?.map((event) => {
-          const id = event.tokenID;
-          return { id: Number(id) };
-        });
-        setSummoners(summonsId);
+        if (!result) {
+          NotificationManager.error("Something bad happened");
+        } else {
+          const summonsId = result?.map((event) => {
+            const id = event.tokenID;
+            return { id: Number(id) };
+          });
+          setSummoners(summonsId);
+        }
       }
     };
 
@@ -64,7 +70,14 @@ const Home = (props) => {
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
-  }, [context, context.contract, summonId, switchAdventure, summonData]);
+  }, [
+    context,
+    context.contract,
+    summonId,
+    switchAdventure,
+    summonData,
+    update,
+  ]);
 
   const getSummonerState = async () => {
     try {
@@ -89,9 +102,11 @@ const Home = (props) => {
         const fullName = await context.contract_names.methods
           .full_name(summonId)
           .call();
+
         const summonName = await context.contract_names.methods
           .summoner_name(summonId)
           .call();
+
         const title = await context.contract_names.methods
           .title(summonData[3])
           .call();
@@ -304,8 +319,8 @@ const Home = (props) => {
             <div className="summoner-buttons">
               <button
                 className="summon-new"
+                disabled={summonId === null && summoning}
                 onClick={summonPlayer}
-                disabled={summoning}
               >
                 {summoning ? "Summoning warrior..." : "Summon new warrior"}
               </button>
