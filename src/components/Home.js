@@ -137,6 +137,7 @@ const Home = (props) => {
             charisma: attributesData.charisma,
           },
         });
+
         setLoading(false);
         NotificationManager.success("Information retrieval successfully");
       }
@@ -263,6 +264,7 @@ const Home = (props) => {
       {loading && <div className="loading">Loading&#8230;</div>}
       {showDungeonModal && (
         <DungeonModal
+          summonId={summonId}
           classId={classId}
           setShowDungeonModal={setShowDungeonModal}
         />
@@ -393,7 +395,7 @@ const Home = (props) => {
           Information
         </button>
         <button
-          disabled={true}
+          disabled={summonId === null}
           onClick={() => setShowDungeonModal(true)}
           style={{
             backgroundColor: "rgb(0, 122, 107)",
