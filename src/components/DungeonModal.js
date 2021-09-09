@@ -111,68 +111,64 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
         >
           <>
             <div className="dungeon-modal-header">{"Dungeon World"}</div>
-            {loading ? (
+            {loading || !dungeonInfo ? (
               <div className="spinner"></div>
             ) : (
-              dungeonInfo && (
-                <>
-                  <div className="dungeon-modal-body">
-                    <div className="dungeon-description">
-                      <div className="dungeon-container-left">
-                        {Object.keys(dungeonInfo).map((key) => (
-                          <div key={`dungeon-key-${key}`}>
-                            {key[0].toUpperCase() + key.slice(1)}
-                            <span className="dungeon-golden-font">
-                              {dungeonInfo[key]}
-                            </span>
+              <>
+                <div className="dungeon-modal-body">
+                  <div className="dungeon-description">
+                    <div className="dungeon-container-left">
+                      {Object.keys(dungeonInfo).map((key) => (
+                        <React.Fragment key={`dungeon-key-${key}`}>
+                          {key[0].toUpperCase() + key.slice(1)}
+                          <span className="dungeon-golden-font">
+                            {dungeonInfo[key]}
+                          </span>
+                        </React.Fragment>
+                      ))}
+                    </div>
+                    <div className="dungeon-container-right">
+                      <img
+                        src={process.env.PUBLIC_URL + "/img/dungeon.png"}
+                        alt="dungeon-draw"
+                        className="dungeon-image"
+                      />
+                      <button
+                        disabled={
+                          adventureTime?.getTime() >= new Date().getTime() ||
+                          summonId === null
+                        }
+                        className="dungeon-button-adventure"
+                        onClick={exploreDungeon}
+                        type="button"
+                      >
+                        {loading ? (
+                          <div>
+                            <div className="spinner"></div>
                           </div>
-                        ))}
-                      </div>
-                      <div className="dungeon-container-right">
-                        <img
-                          src={process.env.PUBLIC_URL + "/img/dungeon.png"}
-                          alt="dungeon-draw"
-                          className="dungeon-image"
-                        />
-                        <button
-                          disabled={
-                            adventureTime?.getTime() >= new Date().getTime() ||
-                            summonId === null
-                          }
-                          className="dungeon-button-adventure"
-                          onClick={exploreDungeon}
-                          type="button"
-                        >
-                          {loading ? (
-                            <div>
-                              <div className="spinner"></div>
-                            </div>
-                          ) : adventureTime?.getTime() >=
-                            new Date().getTime() ? (
-                            <p>
-                              Next adventure in{" "}
-                              {Math.floor(
-                                Math.abs(
-                                  adventureTime?.getTime() -
-                                    new Date().getTime()
-                                ) /
-                                  1000 /
-                                  3600
-                              ) % 24}{" "}
-                              hours
-                            </p>
-                          ) : (
-                            "Explore the dungeon"
-                          )}
-                        </button>
-                      </div>
+                        ) : adventureTime?.getTime() >= new Date().getTime() ? (
+                          <p>
+                            Next adventure in{" "}
+                            {Math.floor(
+                              Math.abs(
+                                adventureTime?.getTime() - new Date().getTime()
+                              ) /
+                                1000 /
+                                3600
+                            ) % 24}{" "}
+                            hours
+                          </p>
+                        ) : (
+                          "Explore the dungeon"
+                        )}
+                      </button>
                     </div>
                   </div>
-                  <div className="dungeon-modal-footer">
-                    Be careful...you don't know how much pain you can find
-                  </div>
-                </>
-              )
+                </div>
+                <div className="dungeon-modal-footer">
+                  Be careful...you don't know how much pain you can find
+                </div>
+              </>
             )}
           </>
         </div>
