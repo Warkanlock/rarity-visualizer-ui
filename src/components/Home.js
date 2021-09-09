@@ -265,7 +265,6 @@ const Home = (props) => {
       {showDungeonModal && (
         <DungeonModal
           summonId={summonId}
-          classId={classId}
           setShowDungeonModal={setShowDungeonModal}
         />
       )}

@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import NotificationManager from "react-notifications/lib/NotificationManager";
 import { RarityContext } from "../context/RarityProvider";
 import "../Modal.css";
+import { CLASSES_TYPE } from "../utils/classes";
 
-const DungeonModal = ({ setShowDungeonModal, summonId, classId }) => {
+const DungeonModal = ({ setShowDungeonModal, summonId }) => {
   const [context] = useContext(RarityContext);
   const [loading, setLoading] = useState(false);
   const [dungeonInfo, setDungeonInfo] = useState(null);
@@ -20,12 +21,17 @@ const DungeonModal = ({ setShowDungeonModal, summonId, classId }) => {
   useEffect(() => {
     const loadDungeon = async () => {
       setLoading(true);
+
+      const summonData = await context.contract.methods
+        .summoner(summonId)
+        .call();
+
       const dungeonDamage = await context.contract_dungeons.methods
         .dungeon_damage()
         .call();
 
       const bonusByClass = await context.contract_dungeons.methods
-        .base_attack_bonus_by_class(classId)
+        .base_attack_bonus_by_class(summonData[2])
         .call();
 
       const dungeonHealth = await context.contract_dungeons.methods
@@ -34,6 +40,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId, classId }) => {
       const dungeonToHit = await context.contract_dungeons.methods
         .dungeon_health()
         .call();
+
       const dungeonArmorClass = await context.contract_dungeons.methods
         .dungeon_armor_class()
         .call();
@@ -41,10 +48,10 @@ const DungeonModal = ({ setShowDungeonModal, summonId, classId }) => {
       setDungeonInfo({
         dungeon: "The Cellar",
         damange: dungeonDamage,
-        healt: dungeonHealth,
+        health: dungeonHealth,
         hit: dungeonToHit,
         armor: dungeonArmorClass,
-        bonus: bonusByClass,
+        bonus: CLASSES_TYPE[summonData[2]] + " +" + bonusByClass.toString(),
       });
       setLoading(false);
     };
@@ -68,7 +75,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId, classId }) => {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setShowDungeonModal]);
 
   const closeOnEscapeKeyDown = (e) => {
     if ((e.charCode || e.keyCode) === 27) {
@@ -95,8 +102,6 @@ const DungeonModal = ({ setShowDungeonModal, summonId, classId }) => {
     }
   };
 
-  console.log(loading);
-
   return (
     <>
       <div className="dungeon-modal" onClick={() => setShowDungeonModal(false)}>
@@ -115,12 +120,12 @@ const DungeonModal = ({ setShowDungeonModal, summonId, classId }) => {
                     <div className="dungeon-description">
                       <div className="dungeon-container-left">
                         {Object.keys(dungeonInfo).map((key) => (
-                          <>
+                          <div key={`dungeon-key-${key}`}>
                             {key[0].toUpperCase() + key.slice(1)}
                             <span className="dungeon-golden-font">
                               {dungeonInfo[key]}
                             </span>
-                          </>
+                          </div>
                         ))}
                       </div>
                       <div className="dungeon-container-right">
