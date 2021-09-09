@@ -262,7 +262,10 @@ const Home = (props) => {
     <React.Fragment>
       {loading && <div className="loading">Loading&#8230;</div>}
       {showDungeonModal && (
-        <DungeonModal setShowDungeonModal={setShowDungeonModal} />
+        <DungeonModal
+          classId={classId}
+          setShowDungeonModal={setShowDungeonModal}
+        />
       )}
       <div className="container-box welcome-warrior">
         Welcome - <span className="golden-font">{context.accounts[0]}</span>
@@ -390,7 +393,7 @@ const Home = (props) => {
           Information
         </button>
         <button
-          disabled={summonId === null}
+          disabled={true}
           onClick={() => setShowDungeonModal(true)}
           style={{
             backgroundColor: "rgb(0, 122, 107)",
