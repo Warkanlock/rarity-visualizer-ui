@@ -6,6 +6,7 @@ import "react-notifications/lib/notifications.css";
 import { CLASSES_TYPE } from "../utils/classes";
 import { RARITY_SUMMONERS } from "../utils/config";
 import { useAuth } from "../hooks/useAuth";
+import DungeonModal from "./DungeonModal";
 
 const Home = (props) => {
   const [context] = useContext(RarityContext);
@@ -21,6 +22,7 @@ const Home = (props) => {
   const [summonName, setSummonName] = useState(null);
   const [summoning, setSummoning] = useState(false);
   const [loadingAdventure, setLoadingAdventure] = useState(false);
+  const [showDungeonModal, setShowDungeonModal] = useState(false);
 
   useEffect(() => {
     const getAllSummoners = async () => {
@@ -80,6 +82,9 @@ const Home = (props) => {
   ]);
 
   const getSummonerState = async () => {
+    if (summonId == null) {
+      return;
+    }
     try {
       setLoading(true);
       if (summonId != null) {
@@ -132,6 +137,7 @@ const Home = (props) => {
             charisma: attributesData.charisma,
           },
         });
+
         setLoading(false);
         NotificationManager.success("Information retrieval successfully");
       }
@@ -256,6 +262,12 @@ const Home = (props) => {
   return (
     <React.Fragment>
       {loading && <div className="loading">Loading&#8230;</div>}
+      {showDungeonModal && (
+        <DungeonModal
+          summonId={summonId}
+          setShowDungeonModal={setShowDungeonModal}
+        />
+      )}
       <div className="container-box welcome-warrior">
         Welcome - <span className="golden-font">{context.accounts[0]}</span>
       </div>
@@ -382,8 +394,8 @@ const Home = (props) => {
           Information
         </button>
         <button
-          disabled={true}
-          onClick={getSummonerState}
+          disabled={summonId === null}
+          onClick={() => setShowDungeonModal(true)}
           style={{
             backgroundColor: "rgb(0, 122, 107)",
             border: "2px solid rgb(9, 62, 47)",
