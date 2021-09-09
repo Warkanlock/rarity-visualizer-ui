@@ -65,6 +65,18 @@ select:disabled {
   flex-direction: column;
 }
 
+@media (max-width: 1600px) and (min-width: 1200px) {
+  .container {
+    width: 70vw;
+  }
+}
+
+@media (max-width: 1199px) {
+  .container {
+    width: 90vw;
+  }
+}
+
 .container-box {
   background: radial-gradient(
     circle,
