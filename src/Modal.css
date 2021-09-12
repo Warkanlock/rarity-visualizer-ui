@@ -49,9 +49,13 @@
 
 .dungeon-stat {
   display: flex;
-  height: 25px;
+  padding-right: 10px;
+  align-content: center;
+  align-items: center;
+  justify-content: left;
+  height: 50px;
 }
 .dungeon-stat-icon {
-  height: auto;
+  height: 100%;
   margin-right: 5px;
 }
