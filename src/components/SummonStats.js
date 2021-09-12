@@ -51,12 +51,16 @@ const SummonStats = ({
       }
     };
 
-    const totalComputeCost = Object.keys(mapAttributes).reduce(
-      (acc, item) => acc + computeLevelingScore(mapAttributes[item]),
-      0
-    );
+    if (mapAttributes) {
+      const totalComputeCost = Object.keys(mapAttributes).reduce(
+        (acc, item) => acc + computeLevelingScore(mapAttributes[item]),
+        0
+      );
 
-    setTotalPointsToSpend(Math.ceil(RARITY_BASE_MAX_SCORE - totalComputeCost));
+      setTotalPointsToSpend(
+        Math.ceil(RARITY_BASE_MAX_SCORE - totalComputeCost)
+      );
+    }
   }, [mapAttributes]);
 
   const increase_by_skill = async (attr) => {
