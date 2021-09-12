@@ -499,6 +499,24 @@ select:disabled {
   color: gray;
 }
 
+.dungeon-buttons-thecellar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 50%;
+}
+
+.dungeon-buttons-thecellar button:disabled {
+  cursor: not-allowed;
+  background: radial-gradient(
+    circle,
+    rgba(99, 84, 75, 1) 0%,
+    rgba(72, 72, 67, 1) 30%,
+    rgba(43, 44, 38, 1) 91%
+  );
+  color: gray;
+}
+
 .summoner-attribute-container button:disabled {
   cursor: not-allowed;
   background: radial-gradient(

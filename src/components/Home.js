@@ -32,7 +32,6 @@ const Home = (props) => {
         if (!result) {
           NotificationManager.error("Something bad happened");
         } else {
-          console.log(result);
           const summonsId = result?.map((event) => {
             const id = event.tokenID;
             return { id: Number(id) };
