@@ -1,3 +1,28 @@
+const WEB3_LOCAL_INSTANCE = "http://localhost:7545";
+const WEB3_FANTOM_INSTANCE = "wss://wsapi.fantom.network";
+
+const FANTOM_ID = 250;
+
+const FANTOM_NETWORK = {
+  method: "wallet_addEthereumChain",
+  params: [
+    {
+      chainId: `0x${FANTOM_ID.toString(16)}`,
+      chainName: "Fantom Opera",
+      nativeCurrency: {
+        name: "FTM",
+        symbol: "ftm",
+        decimals: 18,
+      },
+      rpcUrls: ["https://rpc.ftm.tools"],
+      blockExplorerUrls: [`https://ftmscan.com`],
+    },
+  ],
+};
+
+const RARITY_SUMMONERS = (accountId) =>
+  `https://api.ftmscan.com/api?module=account&action=tokennfttx&contractaddress=0xce761D788DF608BD21bdd59d6f4B54b2e27F25Bb&address=${accountId}&tag=latest&apikey=81CTWCS4N63GKQ4FUZ2YMC85M98YGUNTCN`;
+
 const RARITY_ABI = [
   {
     anonymous: false,
@@ -598,32 +623,6 @@ const RARITY_ABI_NAMES = [
   },
 ];
 const RARITY_ADDRESS_NAMES = "0x4c40ce3fb33a6781c903bc830804de4195cc966f";
-
-const WEB3_LOCAL_INSTANCE = "http://localhost:7545";
-const WEB3_FANTOM_INSTANCE = "wss://wsapi.fantom.network";
-
-const FANTOM_ID = 250;
-
-const FANTOM_NETWORK = {
-  method: "wallet_addEthereumChain",
-  params: [
-    {
-      chainId: `0x${FANTOM_ID.toString(16)}`,
-      chainName: "Fantom Opera",
-      nativeCurrency: {
-        name: "FTM",
-        symbol: "ftm",
-        decimals: 18,
-      },
-      rpcUrls: ["https://rpc.ftm.tools"],
-      blockExplorerUrls: [`https://ftmscan.com`],
-    },
-  ],
-};
-
-const RARITY_SUMMONERS = (accountId) =>
-  `https://api.ftmscan.com/api?module=account&action=tokennfttx&contractaddress=0xce761D788DF608BD21bdd59d6f4B54b2e27F25Bb&address=${accountId}&tag=latest&apikey=81CTWCS4N63GKQ4FUZ2YMC85M98YGUNTCN`;
-
 const RARITY_ABI_DUNGEONS = [
   {
     anonymous: false,
@@ -859,6 +858,146 @@ const RARITY_ABI_DUNGEONS = [
   },
 ];
 
+const RARITY_ABI_GOLD = [
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "uint256", name: "from", type: "uint256" },
+      { indexed: true, internalType: "uint256", name: "to", type: "uint256" },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "Approval",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "uint256", name: "from", type: "uint256" },
+      { indexed: true, internalType: "uint256", name: "to", type: "uint256" },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "Transfer",
+    type: "event",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "", type: "uint256" },
+      { internalType: "uint256", name: "", type: "uint256" },
+    ],
+    name: "allowance",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "from", type: "uint256" },
+      { internalType: "uint256", name: "spender", type: "uint256" },
+      { internalType: "uint256", name: "amount", type: "uint256" },
+    ],
+    name: "approve",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    name: "balanceOf",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "summoner", type: "uint256" }],
+    name: "claim",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "summoner", type: "uint256" }],
+    name: "claimable",
+    outputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    name: "claimed",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "decimals",
+    outputs: [{ internalType: "uint8", name: "", type: "uint8" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "name",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "symbol",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "totalSupply",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "from", type: "uint256" },
+      { internalType: "uint256", name: "to", type: "uint256" },
+      { internalType: "uint256", name: "amount", type: "uint256" },
+    ],
+    name: "transfer",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "executor", type: "uint256" },
+      { internalType: "uint256", name: "from", type: "uint256" },
+      { internalType: "uint256", name: "to", type: "uint256" },
+      { internalType: "uint256", name: "amount", type: "uint256" },
+    ],
+    name: "transferFrom",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "level", type: "uint256" }],
+    name: "wealth_by_level",
+    outputs: [{ internalType: "uint256", name: "wealth", type: "uint256" }],
+    stateMutability: "pure",
+    type: "function",
+  },
+];
+const RARITY_ADDRESS_GOLD = "0x2069B76Afe6b734Fb65D1d099E7ec64ee9CC76B2";
 const RARITY_ADDRESS_DUNGEONS = "0x2A0F1cB17680161cF255348dDFDeE94ea8Ca196A";
 
 export {
@@ -869,6 +1008,8 @@ export {
   RARITY_ADDRESS_NAMES,
   RARITY_ABI_NAMES,
   RARITY_ABI_DUNGEONS,
+  RARITY_ADDRESS_GOLD,
+  RARITY_ABI_GOLD,
   RARITY_ADDRESS_DUNGEONS,
   WEB3_FANTOM_INSTANCE,
   WEB3_LOCAL_INSTANCE,

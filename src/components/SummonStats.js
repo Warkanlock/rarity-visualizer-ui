@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { NotificationManager } from "react-notifications";
 import { RarityContext } from "../context/RarityProvider";
 import { CLASSES_TYPE } from "../utils/classes";
+import { ProgressBar } from "../components/ProgressBar";
 
 const SummonStats = ({
   summonId,
@@ -14,6 +15,7 @@ const SummonStats = ({
   attributes,
   levelPoints,
   summonName,
+  gold,
   setSummonName,
   assignName,
 }) => {
@@ -117,6 +119,19 @@ const SummonStats = ({
     }
   };
 
+  const claimGold = async () => {
+    try {
+      if (summonId != null) {
+        await context.contract_gold.methods
+          .claim(summonId)
+          .send({ from: context.accounts[0] });
+        NotificationManager.success(`Summoner claimed gold!`, "Information");
+      }
+    } catch (ex) {
+      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    }
+  };
+
   return (
     <>
       <div className="summoner-stats">
@@ -124,8 +139,8 @@ const SummonStats = ({
           <ul className="stats-list">
             <li>
               <div className="summon-name">
-                <p>
-                  Name: {summonName ? summonName : "Unknown"}
+                <p className="summon-name-indicator">
+                  {summonName ? summonName : "Unknown"}
                   {summonName && !editingName && (
                     <img
                       src={process.env.PUBLIC_URL + "/img/edit-feather.png"}
@@ -149,23 +164,40 @@ const SummonStats = ({
               </div>
             </li>
             <li>
+              <div className="claim-gold">
+                <div className="claim-gold-container">
+                  <img
+                    alt="coin"
+                    src={process.env.PUBLIC_URL + "/img/coin.png"}
+                  />
+                  <div className="gold-indicator">{gold.playerGold}</div>
+                </div>
+                <div className="claim-gold-container">
+                  <button
+                    onClick={claimGold}
+                    disabled={Number(gold.pendingGold) === 0}
+                  >
+                    {Number(gold.pendingGold) > 0
+                      ? `Claim ${gold.pendingGold} gold!`
+                      : "No gold to claim"}
+                  </button>
+                </div>{" "}
+              </div>
+            </li>
+            <li>
               <div className="xp-spend">
-                <p>XP: {xp} </p>
+                <ProgressBar done={(xp / xpRequired) * 100}></ProgressBar>
                 <input
                   onChange={updateAmount}
                   max="1000"
                   placeholder="XP to spend"
                 />
-                <button disabled onClick={spendXp}>
-                  Spend XP
-                </button>
+                <button onClick={spendXp}>Spend XP</button>
               </div>
-            </li>
-            <li>
-              <p>XP Left: {xpToGo}</p>
-            </li>
-            <li>
-              <p>XP Required: {xpRequired}</p>
+              {/* <div className="xp-spend-required">
+                <p>Left: {xpToGo}</p>
+                <p>Required: {xpRequired}</p>
+              </div> */}
             </li>
             <li>
               <p>

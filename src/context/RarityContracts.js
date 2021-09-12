@@ -7,6 +7,8 @@ import {
   RARITY_ADDRESS_NAMES,
   RARITY_ABI_DUNGEONS,
   RARITY_ADDRESS_DUNGEONS,
+  RARITY_ABI_GOLD,
+  RARITY_ADDRESS_GOLD,
 } from "../utils/config";
 
 export const setupContracts = async ({ provider }) => {
@@ -27,11 +29,17 @@ export const setupContracts = async ({ provider }) => {
     RARITY_ADDRESS_DUNGEONS
   );
 
+  const goldContract = new provider.eth.Contract(
+    RARITY_ABI_GOLD,
+    RARITY_ADDRESS_GOLD
+  );
+
   return {
     accounts: accounts,
     contract: rarityContract,
     contract_attributes: attributesContract,
     contract_names: namesContract,
     contract_dungeons: dungeonsContract,
+    contract_gold: goldContract,
   };
 };

@@ -32,7 +32,8 @@ const Home = (props) => {
         if (!result) {
           NotificationManager.error("Something bad happened");
         } else {
-          const summonsId = result.map((event) => {
+          console.log(result);
+          const summonsId = result?.map((event) => {
             const id = event.tokenID;
             return { id: Number(id) };
           });
@@ -116,11 +117,23 @@ const Home = (props) => {
           .title(summonData[3])
           .call();
 
+        const playerGold = await context.contract_gold.methods
+          .claimed(summonId)
+          .call();
+
+        const pendingGold = await context.contract_gold.methods
+          .claimable(summonId)
+          .call();
+
         setSummonData({
           name: {
             fullName,
             summonName,
             title,
+          },
+          gold: {
+            playerGold,
+            pendingGold,
           },
           xp: parseFloat(summonData[0]) / Math.pow(10, 18),
           xpRequired: parseFloat(xpRequired) / Math.pow(10, 18),
@@ -384,7 +397,7 @@ const Home = (props) => {
           )}
         </button>
         <button
-          disabled={summonId === null}
+          disabled={summonId === null || summonData}
           onClick={getSummonerState}
           style={{
             backgroundColor: "rgb(0, 147, 107)",

@@ -10,6 +10,10 @@ body {
   width: auto;
 }
 
+ul {
+  list-style-type: none;
+}
+
 .App-header {
   background-color: #600101;
   padding: 10px;
@@ -319,6 +323,69 @@ select:disabled {
   box-shadow: 0 0 10px #bf9b30;
 }
 
+.progress {
+  background-color: rgb(27, 98, 136);
+  position: relative;
+  margin: 15px 0;
+  height: 30px;
+  width: 300px;
+}
+
+.progress-done {
+  background: linear-gradient(to left, #bf9b30, #ff9472);
+  box-shadow: 0 3px 3px -5px #bf9b30, 0 2px 5px #bf9b30;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 0;
+  opacity: 0;
+  margin: auto;
+  transition: 1s ease 0.3s;
+}
+
+.xp-spend-required {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+}
+
+.summon-name-indicator {
+  font-size: 24px;
+}
+
+.claim-gold {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: space-between;
+}
+
+.claim-gold div {
+  width: 50%;
+}
+
+.claim-gold-container {
+  width: 250px;
+  display: flex;
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+.gold-indicator {
+  margin: 10px;
+  font-size: 24px;
+}
+
+.claim-gold img {
+  display: block;
+  height: 30px;
+  width: 30px;
+}
+
 .dungeon-modal-body {
   display: flex;
   justify-content: left;
@@ -379,12 +446,17 @@ select:disabled {
 }
 
 .xp-spend button,
-.summon-name button {
+.summon-name button,
+.claim-gold button {
   font-family: "MedievalSharp", cursive;
   color: white;
   width: 5rem;
   background-color: rgb(27, 98, 136);
   border: 2px solid rgb(24, 54, 74);
+}
+
+.claim-gold button {
+  width: 100%;
 }
 
 .summoner-attribute-container {
@@ -414,6 +486,17 @@ select:disabled {
   color: rgb(224, 61, 42);
   font-weight: bold;
   font-size: x-large;
+}
+
+.claim-gold-container button:disabled {
+  cursor: not-allowed;
+  background: radial-gradient(
+    circle,
+    rgba(99, 84, 75, 1) 0%,
+    rgba(72, 72, 67, 1) 30%,
+    rgba(43, 44, 38, 1) 91%
+  );
+  color: gray;
 }
 
 .summoner-attribute-container button:disabled {
