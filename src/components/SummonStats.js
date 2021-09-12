@@ -3,6 +3,8 @@ import { NotificationManager } from "react-notifications";
 import { RarityContext } from "../context/RarityProvider";
 import { CLASSES_TYPE } from "../utils/classes";
 import { ProgressBar } from "../components/ProgressBar";
+import { useEffect } from "react/cjs/react.development";
+import { RARITY_BASE_MAX_SCORE } from "../utils/config";
 
 const SummonStats = ({
   summonId,
@@ -35,9 +37,27 @@ const SummonStats = ({
       (acc, item) => acc + mapAttributes[item],
       0
     ) === 48
-      ? 32
+      ? RARITY_BASE_MAX_SCORE
       : levelPoints
   );
+
+  useEffect(() => {
+    const computeLevelingScore = (value) => {
+      const base = value - 8;
+      if (value <= 14) {
+        return base;
+      } else {
+        return Math.floor(base ** 2 / 6);
+      }
+    };
+
+    const totalComputeCost = Object.keys(mapAttributes).reduce(
+      (acc, item) => acc + computeLevelingScore(mapAttributes[item]),
+      0
+    );
+
+    setTotalPointsToSpend(Math.ceil(RARITY_BASE_MAX_SCORE - totalComputeCost));
+  }, [mapAttributes]);
 
   const increase_by_skill = async (attr) => {
     try {
@@ -55,23 +75,34 @@ const SummonStats = ({
     }
   };
 
+  const computeAssingAttributes = (attr) => {
+    if (attr <= 14) {
+      return 1;
+    }
+    if (attr > 14 && attr <= 16) {
+      return 2;
+    } else if (attr >= 17) {
+      return 3;
+    } else {
+      return 1;
+    }
+  };
+
   const increase = async (attr) => {
     if (!(totalPointsToSpend <= 0)) {
       setMapAttributes({
         ...mapAttributes,
         [attr]: mapAttributes[attr] + 1,
       });
-      setTotalPointsToSpend(totalPointsToSpend - 1);
     }
   };
 
   const decrease = async (attr) => {
-    if (totalPointsToSpend > 0) {
+    if (totalPointsToSpend >= 0) {
       setMapAttributes({
         ...mapAttributes,
         [attr]: mapAttributes[attr] - 1,
       });
-      setTotalPointsToSpend(totalPointsToSpend + 1);
     }
   };
 
@@ -208,26 +239,26 @@ const SummonStats = ({
               <p>Class: {CLASSES_TYPE[classType]}</p>
             </li>
             <li>
-              <p>Points to spent: {levelPoints}</p>
+              <p>
+                Attributes point: <i>({totalPointsToSpend})</i> + {levelPoints}
+              </p>
             </li>
           </ul>
         </div>
         <div className="container-box summoner-attributes">
           {Object.keys(attributes).map((attr) => {
             return (
-              <>
-                <div
-                  className="summoner-attribute-container"
-                  key={`class-${attr}`}
-                >
+              <React.Fragment key={`class-${attr}`}>
+                <div className="summoner-attribute-container">
                   <button
                     onClick={() => decrease(attr)}
                     type="button"
                     disabled={
-                      Object.keys(mapAttributes).reduce(
-                        (acc, item) => acc + mapAttributes[item],
-                        0
-                      ) === 48 || mapAttributes[attr] === 8
+                      // Object.keys(mapAttributes).reduce(
+                      //   (acc, item) => acc + mapAttributes[item],
+                      //   0
+                      // ) === 48 ||
+                      mapAttributes[attr] === 8
                     }
                   >
                     -
@@ -236,7 +267,14 @@ const SummonStats = ({
                     {attr[0].toUpperCase() + attr.slice(1)}:{" "}
                     <span className="golden-font">{mapAttributes[attr]}</span>
                   </div>
-                  <button onClick={() => increase(attr)} type="button">
+                  <button
+                    disabled={
+                      totalPointsToSpend <
+                      computeAssingAttributes(mapAttributes[attr])
+                    }
+                    onClick={() => increase(attr)}
+                    type="button"
+                  >
                     +
                   </button>
                   <button
@@ -248,7 +286,7 @@ const SummonStats = ({
                     Assign
                   </button>
                 </div>
-              </>
+              </React.Fragment>
             );
           })}
           <div className="summoner-buttons">
@@ -256,7 +294,7 @@ const SummonStats = ({
               className="confirm-points-summoner"
               onClick={() => confirmPoints()}
             >
-              Confirm points
+              Confirm points ({totalPointsToSpend})
             </button>
           </div>
         </div>

@@ -167,6 +167,7 @@ select:disabled {
 
 .dungeon-golden-font {
   color: #bf9b30;
+  width: 130px;
 }
 
 .d-flex {
@@ -385,7 +386,6 @@ select:disabled {
 
 .progress {
   background-color: rgb(27, 98, 136);
-  position: relative;
   margin: 15px 0;
   height: 30px;
   width: 300px;
@@ -465,8 +465,9 @@ select:disabled {
   display: flex;
   flex-direction: column;
   text-align: left;
-  font-size: 20px;
+  font-size: 25px;
   padding: 20px;
+  width: 50%;
   margin: 10px;
 }
 
@@ -549,6 +550,24 @@ select:disabled {
 }
 
 .claim-gold-container button:disabled {
+  cursor: not-allowed;
+  background: radial-gradient(
+    circle,
+    rgba(99, 84, 75, 1) 0%,
+    rgba(72, 72, 67, 1) 30%,
+    rgba(43, 44, 38, 1) 91%
+  );
+  color: gray;
+}
+
+.dungeon-buttons-thecellar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 50%;
+}
+
+.dungeon-buttons-thecellar button:disabled {
   cursor: not-allowed;
   background: radial-gradient(
     circle,

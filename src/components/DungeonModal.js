@@ -37,9 +37,6 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
       const dungeonHealth = await context.contract_dungeons.methods
         .dungeon_health()
         .call();
-      const dungeonToHit = await context.contract_dungeons.methods
-        .dungeon_health()
-        .call();
 
       const dungeonArmorClass = await context.contract_dungeons.methods
         .dungeon_armor_class()
@@ -47,9 +44,8 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
 
       setDungeonInfo({
         dungeon: "The Cellar",
-        damange: dungeonDamage,
+        damage: dungeonDamage,
         health: dungeonHealth,
-        hit: dungeonToHit,
         armor: dungeonArmorClass,
         bonus: CLASSES_TYPE[summonData[2]] + " +" + bonusByClass.toString(),
       });
@@ -59,10 +55,10 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
     const isReadyForAdventure = async () => {
       if (summonId != null && context.contract) {
         setLoading(true);
-        const timestamp = await context.contract.methods
+        const timestamp = await context.contract_dungeons.methods
           .adventurers_log(summonId)
           .call();
-        const milliseconds = timestamp * 1000; // 1575909015000
+        const milliseconds = timestamp * 1000;
         const dateObject = new Date(milliseconds);
         setAdventureTime(dateObject);
         setLoading(false);
@@ -102,6 +98,25 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
     }
   };
 
+  const scoutDungeon = async () => {
+    try {
+      setLoading(true);
+      if (summonId != null) {
+        const response = await context.contract_dungeons.methods
+          .scout(summonId)
+          .call();
+        NotificationManager.success(
+          `After scouting the dungeon ${Number(response)} rewards found`,
+          "Information"
+        );
+      }
+    } catch (ex) {
+      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="dungeon-modal" onClick={() => setShowDungeonModal(false)}>
@@ -121,9 +136,16 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
                       {Object.keys(dungeonInfo).map((key) => (
                         <React.Fragment key={`dungeon-key-${key}`}>
                           {key[0].toUpperCase() + key.slice(1)}
-                          <span className="dungeon-golden-font">
-                            {dungeonInfo[key]}
-                          </span>
+                          <div className="dungeon-stat">
+                            <img
+                              className="dungeon-stat-icon"
+                              src={`${process.env.PUBLIC_URL}/icons/${key}.png`}
+                              alt={"dungeon-stat-icon"}
+                            />
+                            <span className="dungeon-golden-font">
+                              {dungeonInfo[key]}
+                            </span>
+                          </div>
                         </React.Fragment>
                       ))}
                     </div>
@@ -133,35 +155,47 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
                         alt="dungeon-draw"
                         className="dungeon-image"
                       />
-                      <button
-                        disabled={
-                          adventureTime?.getTime() >= new Date().getTime() ||
-                          summonId === null
-                        }
-                        className="dungeon-button-adventure"
-                        onClick={exploreDungeon}
-                        type="button"
-                      >
-                        {loading ? (
-                          <div>
-                            <div className="spinner"></div>
-                          </div>
-                        ) : adventureTime?.getTime() >= new Date().getTime() ? (
-                          <p>
-                            Next adventure in{" "}
-                            {Math.floor(
-                              Math.abs(
-                                adventureTime?.getTime() - new Date().getTime()
-                              ) /
-                                1000 /
-                                3600
-                            ) % 24}{" "}
-                            hours
-                          </p>
-                        ) : (
-                          "Explore the dungeon"
-                        )}
-                      </button>
+                      <div className="dungeon-buttons-thecellar">
+                        <button
+                          disabled={
+                            adventureTime?.getTime() >= new Date().getTime() ||
+                            summonId === null
+                          }
+                          className="dungeon-button-adventure"
+                          onClick={exploreDungeon}
+                          type="button"
+                        >
+                          {loading ? (
+                            <div>
+                              <div className="spinner"></div>
+                            </div>
+                          ) : adventureTime?.getTime() >=
+                            new Date().getTime() ? (
+                            <p>
+                              You need to rest, try again in{" "}
+                              {Math.floor(
+                                Math.abs(
+                                  adventureTime?.getTime() -
+                                    new Date().getTime()
+                                ) /
+                                  1000 /
+                                  3600
+                              ) % 24}{" "}
+                              hours
+                            </p>
+                          ) : (
+                            "Attack"
+                          )}
+                        </button>
+                        <button
+                          disabled={summonId === null}
+                          className="dungeon-button-adventure"
+                          onClick={scoutDungeon}
+                          type="button"
+                        >
+                          Scout
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
