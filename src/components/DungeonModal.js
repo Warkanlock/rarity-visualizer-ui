@@ -169,7 +169,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
                           ) : adventureTime?.getTime() >=
                             new Date().getTime() ? (
                             <p>
-                              You can attack again in{" "}
+                              You need to rest, try again in{" "}
                               {Math.floor(
                                 Math.abs(
                                   adventureTime?.getTime() -

@@ -325,7 +325,6 @@ select:disabled {
 
 .progress {
   background-color: rgb(27, 98, 136);
-  position: relative;
   margin: 15px 0;
   height: 30px;
   width: 300px;
