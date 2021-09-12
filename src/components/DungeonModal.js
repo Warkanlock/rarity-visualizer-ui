@@ -37,9 +37,6 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
       const dungeonHealth = await context.contract_dungeons.methods
         .dungeon_health()
         .call();
-      const dungeonToHit = await context.contract_dungeons.methods
-        .dungeon_health()
-        .call();
 
       const dungeonArmorClass = await context.contract_dungeons.methods
         .dungeon_armor_class()
@@ -47,9 +44,8 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
 
       setDungeonInfo({
         dungeon: "The Cellar",
-        damange: dungeonDamage,
+        damage: dungeonDamage,
         health: dungeonHealth,
-        hit: dungeonToHit,
         armor: dungeonArmorClass,
         bonus: CLASSES_TYPE[summonData[2]] + " +" + bonusByClass.toString(),
       });
@@ -140,9 +136,16 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
                       {Object.keys(dungeonInfo).map((key) => (
                         <React.Fragment key={`dungeon-key-${key}`}>
                           {key[0].toUpperCase() + key.slice(1)}
-                          <span className="dungeon-golden-font">
-                            {dungeonInfo[key]}
-                          </span>
+                          <div className="dungeon-stat">
+                            <img
+                              className="dungeon-stat-icon"
+                              src={`${process.env.PUBLIC_URL}/icons/${key}.png`}
+                              alt={"dungeon-stat-icon"}
+                            />
+                            <span className="dungeon-golden-font">
+                              {dungeonInfo[key]}
+                            </span>
+                          </div>
                         </React.Fragment>
                       ))}
                     </div>

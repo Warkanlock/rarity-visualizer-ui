@@ -111,6 +111,7 @@ select:disabled {
 
 .dungeon-golden-font {
   color: #bf9b30;
+  width: 130px;
 }
 
 .d-flex {
@@ -404,8 +405,9 @@ select:disabled {
   display: flex;
   flex-direction: column;
   text-align: left;
-  font-size: 20px;
+  font-size: 25px;
   padding: 20px;
+  width: 50%;
   margin: 10px;
 }
 
