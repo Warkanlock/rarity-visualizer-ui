@@ -18,11 +18,43 @@ ul {
   background-color: #600101;
   padding: 10px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: #ffe8d6;
+}
+
+.wallet {
+  font-size: 15px;
+  display: flex;
+  margin-left: auto;
+}
+
+.wallet-button {
+  height: calc(10px + 2vmin);
+  text-align: center;
+  font-family: "MedievalSharp", cursive;
+  border: 1px solid rgba(80, 80, 80, 0.5);
+  border-radius: 5px;
+  color: white;
+  background-color: #be6314;
+}
+
+.wallet-address {
+  height: calc(10px + 2vmin);
+  width: 7rem;
+  display: flex;
+  vertical-align: middle;
+  margin-right: 10px;
+  background: radial-gradient(
+    circle,
+    rgba(80, 80, 80, 1) 0%,
+    rgba(55, 55, 55, 1) 40%,
+    rgba(20, 20, 20, 1) 91%
+  );
+  border-radius: 5px;
+}
+
+.wallet-address p {
+  margin: auto;
 }
 
 .App-error {
@@ -121,6 +153,9 @@ select:disabled {
 .summoner-class {
   width: 35%;
   margin-right: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .summoner-class-title {
@@ -138,9 +173,8 @@ select:disabled {
   text-align: center;
 }
 
-.summoner-class img {
+.summoner-class .summon-id img {
   max-width: 50%;
-  height: auto;
 }
 
 .summoner-buttons {
@@ -199,8 +233,9 @@ select:disabled {
 .summon-id {
   display: flex;
   justify-content: center;
-  margin: auto;
+  margin-top: auto;
   text-align: center;
+  width: 100%;
 }
 
 .summon-id-input {

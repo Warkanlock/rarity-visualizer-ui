@@ -8,6 +8,7 @@ function RarityProvider({ children }) {
     contract: null,
     contract_attributes: null,
     contract_names: null,
+    walletAddress: "",
   });
 
   return (

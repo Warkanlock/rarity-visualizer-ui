@@ -7,6 +7,7 @@ import { CLASSES_TYPE } from "../utils/classes";
 import { RARITY_SUMMONERS } from "../utils/config";
 import { useAuth } from "../hooks/useAuth";
 import DungeonModal from "./DungeonModal";
+import fetchRetry from "../utils/fetchRetry";
 
 const Home = (props) => {
   const [context] = useContext(RarityContext);
@@ -24,24 +25,36 @@ const Home = (props) => {
   const [loadingAdventure, setLoadingAdventure] = useState(false);
   const [showDungeonModal, setShowDungeonModal] = useState(false);
 
+  const walletAddress = context.walletAddress;
+
   useEffect(() => {
     const getAllSummoners = async () => {
-      if (context && context.accounts && context.accounts[0]) {
-        const response = await fetch(RARITY_SUMMONERS(context.accounts[0]));
-        const { result = [] } = await response.json();
-        if (!result) {
-          NotificationManager.error("Something bad happened");
-        } else {
-          console.log(result);
-          const summonsId = result?.map((event) => {
+      try {
+        if (walletAddress) {
+          const response = await fetchRetry(
+            RARITY_SUMMONERS(walletAddress),
+            500,
+            3
+          );
+          const summonsId = response?.map((event) => {
             const id = event.tokenID;
             return { id: Number(id) };
           });
-          setSummoners(summonsId);
+          if (summonsId) setSummoners(summonsId);
         }
+      } catch {
+        NotificationManager.error("Something bad happened");
       }
     };
 
+    try {
+      getAllSummoners();
+    } catch (ex) {
+      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    }
+  }, [walletAddress]);
+
+  useEffect(() => {
     const isReadyForAdventure = async () => {
       if (summonId != null && context.contract) {
         setLoadingAdventure(true);
@@ -68,7 +81,6 @@ const Home = (props) => {
 
     try {
       isReadyForAdventure();
-      getAllSummoners();
       haveNameSetted();
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
@@ -81,6 +93,11 @@ const Home = (props) => {
     summonData,
     update,
   ]);
+
+  useEffect(() => {
+    if (summonId) getSummonerState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [summonId]);
 
   const getSummonerState = async () => {
     if (summonId == null) {
@@ -152,7 +169,6 @@ const Home = (props) => {
         });
 
         setLoading(false);
-        NotificationManager.success("Information retrieval successfully");
       }
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
@@ -268,6 +284,7 @@ const Home = (props) => {
       setSummonId(null);
     } else {
       setSummonId(event.target.value);
+      getSummonerState();
       setSummonData(null);
     }
   };
@@ -281,9 +298,6 @@ const Home = (props) => {
           setShowDungeonModal={setShowDungeonModal}
         />
       )}
-      <div className="container-box welcome-warrior">
-        Welcome - <span className="golden-font">{context.accounts[0]}</span>
-      </div>
       <div className="d-flex">
         <div className="container-box summoner-class">
           <div className="summoner-class-title">
@@ -299,7 +313,11 @@ const Home = (props) => {
           </div>
           <div className="summoner-img-container">
             <img
-              src={process.env.PUBLIC_URL + "/img/sword-draw.png"}
+              src={`${process.env.PUBLIC_URL}/classes/${
+                summonData
+                  ? CLASSES_TYPE[summonData.classType]
+                  : CLASSES_TYPE[1]
+              }.png`}
               alt="sword-draw"
             />
           </div>

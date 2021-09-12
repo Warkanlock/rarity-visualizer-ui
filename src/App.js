@@ -14,7 +14,7 @@ import { FANTOM_ID, FANTOM_NETWORK } from "./utils/config";
 
 function App() {
   const [error, setError] = useState({ isError: false, stack: null });
-  const [, setContext] = useContext(RarityContext);
+  const [context, setContext] = useContext(RarityContext);
   const [refresh, refreshView] = useState(false);
   const [provider, login, logout, update] = useAuth();
 
@@ -52,13 +52,25 @@ function App() {
     }
   };
 
+  const getWalletAddressSummary = () => {
+    if (!context.accounts[0]) return "";
+    return `${context.accounts[0].slice(0, 6)}...${context.accounts[0].slice(
+      context.accounts[0].length - 4
+    )}`;
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         Rarity Visualizer - Beta
-        <button className="summon-new" onClick={provider ? logout : login}>
-          {provider ? "Disconnect Wallet" : "Connect Wallet"}
-        </button>
+        <div className="wallet">
+          <div className="wallet-address">
+            <p>{getWalletAddressSummary(context.accounts[0])}</p>
+          </div>
+          <button className="wallet-button" onClick={provider ? logout : login}>
+            {provider ? "Disconnect" : "Connect"}
+          </button>
+        </div>
       </header>
       {error.isError && (
         <div className="App-error">There was an error with your operations</div>
