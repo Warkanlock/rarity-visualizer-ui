@@ -31,6 +31,7 @@
 .dungeon-modal-header {
   text-align: center;
   margin: 0;
+  font-size: 30px;
 }
 
 .dungeon-modal-footer {
@@ -44,4 +45,13 @@
 
 .dungeon-modal-body {
   padding: 10px;
+}
+
+.dungeon-stat {
+  display: flex;
+  height: 25px;
+}
+.dungeon-stat-icon {
+  height: auto;
+  margin-right: 5px;
 }
