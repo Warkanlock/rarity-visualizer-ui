@@ -1,8 +1,7 @@
 body {
   overflow-x: hidden; /* Hide horizontal scrollbar */
   background-color: #264653;
-  background: no-repeat center
-    url("https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8ZmFudGFzeXxlbnwwfHwwfHw%3D");
+  /* background: no-repeat center url("../public/img/background.png"); */
   font-family: "MedievalSharp", cursive;
 }
 
@@ -10,19 +9,75 @@ body {
   width: auto;
 }
 
+.bg {
+  /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
+
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+
+  /* Set up positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+@media screen and (max-width: 1024px) {
+  /* Specific to this particular image */
+  .bg {
+    left: 50%;
+    margin-left: -512px; /* 50% */
+  }
+}
+
 ul {
   list-style-type: none;
 }
 
 .App-header {
-  background-color: #600101;
+  /* background-color: #600101; */
   padding: 10px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: #ffe8d6;
+  position: relative;
+}
+
+.wallet {
+  font-size: 15px;
+  display: flex;
+  margin-left: auto;
+}
+
+.wallet-button {
+  height: calc(10px + 2vmin);
+  text-align: center;
+  font-family: "MedievalSharp", cursive;
+  border: 1px solid rgba(80, 80, 80, 0.5);
+  border-radius: 5px;
+  color: white;
+  background-color: #be6314;
+}
+
+.wallet-address {
+  height: calc(10px + 2vmin);
+  width: 7rem;
+  display: flex;
+  vertical-align: middle;
+  margin-right: 10px;
+  background: radial-gradient(
+    circle,
+    rgba(80, 80, 80, 1) 0%,
+    rgba(55, 55, 55, 1) 40%,
+    rgba(20, 20, 20, 1) 91%
+  );
+  border-radius: 5px;
+}
+
+.wallet-address p {
+  margin: auto;
 }
 
 .App-error {
@@ -67,6 +122,7 @@ select:disabled {
   margin-right: auto;
   margin-left: auto;
   flex-direction: column;
+  position: relative;
 }
 
 @media (max-width: 1600px) and (min-width: 1200px) {
@@ -122,6 +178,9 @@ select:disabled {
 .summoner-class {
   width: 35%;
   margin-right: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .summoner-class-title {
@@ -136,12 +195,12 @@ select:disabled {
 }
 
 .summoner-img-container {
+  margin: auto;
   text-align: center;
 }
 
-.summoner-class img {
+.summoner-class .summon-id img {
   max-width: 50%;
-  height: auto;
 }
 
 .summoner-buttons {
@@ -200,8 +259,9 @@ select:disabled {
 .summon-id {
   display: flex;
   justify-content: center;
-  margin: auto;
+  margin-top: auto;
   text-align: center;
+  width: 100%;
 }
 
 .summon-id-input {

@@ -23,7 +23,7 @@ const FANTOM_NETWORK = {
 const RARITY_BASE_MAX_SCORE = 32;
 
 const RARITY_SUMMONERS = (accountId) =>
-  `https://api.ftmscan.com/api?module=account&action=tokennfttx&contractaddress=0xce761D788DF608BD21bdd59d6f4B54b2e27F25Bb&address=${accountId}&tag=latest&apikey=81CTWCS4N63GKQ4FUZ2YMC85M98YGUNTCN`;
+  `https://api.ftmscan.com/api?module=account&action=tokennfttx&contractaddress=0xce761D788DF608BD21bdd59d6f4B54b2e27F25Bb&address=${accountId}&apikey=81CTWCS4N63GKQ4FUZ2YMC85M98YGUNTCN`;
 
 const RARITY_ABI = [
   {

@@ -41,5 +41,6 @@ export const setupContracts = async ({ provider }) => {
     contract_names: namesContract,
     contract_dungeons: dungeonsContract,
     contract_gold: goldContract,
+    walletAddress: accounts[0],
   };
 };
