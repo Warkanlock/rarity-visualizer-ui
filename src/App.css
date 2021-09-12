@@ -404,7 +404,7 @@ select:disabled {
   display: flex;
   flex-direction: column;
   text-align: left;
-  font-size: 20px;
+  font-size: 25px;
   padding: 20px;
   margin: 10px;
 }
