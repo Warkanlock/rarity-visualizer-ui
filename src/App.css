@@ -1,8 +1,7 @@
 body {
   overflow-x: hidden; /* Hide horizontal scrollbar */
   background-color: #264653;
-  background: no-repeat center
-    url("https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8ZmFudGFzeXxlbnwwfHwwfHw%3D");
+  /* background: no-repeat center url("../public/img/background.png"); */
   font-family: "MedievalSharp", cursive;
 }
 
@@ -10,16 +9,40 @@ body {
   width: auto;
 }
 
+.bg {
+  /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
+
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+
+  /* Set up positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+@media screen and (max-width: 1024px) {
+  /* Specific to this particular image */
+  .bg {
+    left: 50%;
+    margin-left: -512px; /* 50% */
+  }
+}
+
 ul {
   list-style-type: none;
 }
 
 .App-header {
-  background-color: #600101;
+  /* background-color: #600101; */
   padding: 10px;
   display: flex;
   font-size: calc(10px + 2vmin);
   color: #ffe8d6;
+  position: relative;
 }
 
 .wallet {
@@ -99,6 +122,7 @@ select:disabled {
   margin-right: auto;
   margin-left: auto;
   flex-direction: column;
+  position: relative;
 }
 
 @media (max-width: 1600px) and (min-width: 1200px) {

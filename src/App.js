@@ -61,6 +61,11 @@ function App() {
 
   return (
     <div className="App">
+      <img
+        className="bg"
+        src={`${process.env.PUBLIC_URL}/img/background.png`}
+        alt="background"
+      />
       <header className="App-header">
         Rarity Visualizer - Beta
         <div className="wallet">
