@@ -3,7 +3,6 @@ import { NotificationManager } from "react-notifications";
 import { RarityContext } from "../context/RarityProvider";
 import { CLASSES_TYPE } from "../utils/classes";
 import { ProgressBar } from "../components/ProgressBar";
-import { useEffect } from "react/cjs/react.development";
 import { RARITY_BASE_MAX_SCORE } from "../utils/config";
 
 const SummonStats = ({
@@ -54,7 +53,7 @@ const SummonStats = ({
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (mapAttributes) {
       const totalComputeCost = Object.keys(mapAttributes).reduce(
         (acc, item) => {
