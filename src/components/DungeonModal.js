@@ -130,18 +130,18 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
 
   return (
     <>
-      <div className="dungeon-modal" onClick={() => setShowDungeonModal(false)}>
+      <div className="modal" onClick={() => setShowDungeonModal(false)}>
         <div
-          className="dungeon-modal-content"
+          className="modal-content"
           onClick={(e) => e.stopPropagation()}
         >
           <>
-            <div className="dungeon-modal-header">{"Dungeon World"}</div>
+            <div className="modal-header">{"Dungeon World"}</div>
             {loading || !dungeonInfo ? (
               <div className="spinner"></div>
             ) : (
               <>
-                <div className="dungeon-modal-body">
+                <div className="modal-body">
                   <div className="dungeon-description">
                     <div className="dungeon-container-left">
                       {Object.keys(dungeonInfo).map((key) => (
@@ -210,7 +210,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
                     </div>
                   </div>
                 </div>
-                <div className="dungeon-modal-footer">
+                <div className="modal-footer">
                   Be careful...you don't know how much pain you can find
                 </div>
               </>

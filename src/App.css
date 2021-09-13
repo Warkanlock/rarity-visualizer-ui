@@ -2,7 +2,7 @@ body {
   overflow-x: hidden; /* Hide horizontal scrollbar */
   background-color: #264653;
   /* background: no-repeat center url("../public/img/background.png"); */
-  font-family: "MedievalSharp", cursive;
+  font-family: "DM Serif Display", serif;
 }
 
 .App {
@@ -54,7 +54,7 @@ ul {
 .wallet-button {
   height: calc(10px + 2vmin);
   text-align: center;
-  font-family: "MedievalSharp", cursive;
+  font-family: "DM Serif Display", serif;
   border: 1px solid rgba(80, 80, 80, 0.5);
   border-radius: 5px;
   color: white;
@@ -195,7 +195,7 @@ select:disabled {
 }
 
 .summoner-img-container {
-  margin: auto;
+  margin: 10px auto;
   text-align: center;
 }
 
@@ -207,12 +207,11 @@ select:disabled {
   display: flex;
   justify-content: space-between;
   margin: auto;
-  margin-bottom: 15px;
 }
 
 .summoner-buttons button {
   text-align: center;
-  font-family: "MedievalSharp", cursive;
+  font-family: "DM Serif Display", serif;
   width: 49%;
   border: 1px solid black;
   border-radius: 5px;
@@ -221,7 +220,7 @@ select:disabled {
 .summoner-buttons select {
   text-align: center;
   color: #bf9b30;
-  font-family: "MedievalSharp", cursive;
+  font-family: "DM Serif Display", serif;
   width: 49%;
   border: 2px solid rgba(53, 26, 20, 1);
   border-radius: 5px;
@@ -234,6 +233,7 @@ select:disabled {
 }
 
 .summon-new {
+  margin: auto;
   color: white;
   background-color: #be6314;
 }
@@ -268,7 +268,7 @@ select:disabled {
   text-align: center;
   margin: auto;
   color: #bf9b30;
-  font-family: "MedievalSharp", cursive;
+  font-family: "DM Serif Display", serif;
   width: 70%;
   border: 2px solid rgba(53, 26, 20, 1);
   border-radius: 5px;
@@ -306,7 +306,7 @@ select:disabled {
 
   width: 50%;
   color: white;
-  font-family: "MedievalSharp", cursive;
+  font-family: "DM Serif Display", serif;
   border: 1px solid rgba(37, 37, 37, 1);
   border-radius: 5px;
   background: radial-gradient(
@@ -328,7 +328,7 @@ select:disabled {
 }
 
 .actions button {
-  font-family: "MedievalSharp", cursive;
+  font-family: "DM Serif Display", serif;
   width: 33%;
   height: 4rem;
   color: white;
@@ -352,7 +352,7 @@ select:disabled {
 .summon-name input {
   text-align: center;
   color: #bf9b30;
-  font-family: "MedievalSharp", cursive;
+  font-family: "DM Serif Display", serif;
   border: 2px solid rgba(53, 26, 20, 1);
   border-radius: 5px;
   background: radial-gradient(
@@ -475,7 +475,7 @@ select:disabled {
 
 .dungeon-button-adventure {
   text-align: center;
-  font-family: "MedievalSharp", cursive;
+  font-family: "DM Serif Display", serif;
   border: 1px solid black;
   border-radius: 5px;
   color: white;
@@ -486,7 +486,7 @@ select:disabled {
 
 .dungeon-button-adventure:hover {
   text-align: center;
-  font-family: "MedievalSharp", cursive;
+  font-family: "DM Serif Display", serif;
   border: 1px solid black;
   border-radius: 5px;
   color: #be6314;
@@ -497,7 +497,7 @@ select:disabled {
 
 .summon-name button,
 .claim-gold button {
-  font-family: "MedievalSharp", cursive;
+  font-family: "DM Serif Display", serif;
   color: white;
   width: 5rem;
   background-color: rgb(27, 98, 136);
@@ -583,7 +583,7 @@ select:disabled {
   justify-content: center;
   align-items: center;
   height: 90%;
-  font-family: "MedievalSharp", cursive;
+  font-family: "DM Serif Display", serif;
   width: 70%;
   border: 2px solid rgba(53, 26, 20, 1);
   border-radius: 5px;
@@ -765,7 +765,7 @@ select:disabled {
   align-content: center;
 }
 
-.summon-name p{
+.summon-name p {
   overflow: hidden;
   text-overflow: ellipsis;
 }

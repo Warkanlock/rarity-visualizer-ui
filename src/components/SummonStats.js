@@ -165,16 +165,16 @@ const SummonStats = ({
                 <div className="summon-name">
                   <p>
                     <span>Summoner Name:</span>
-                    {editedName ? editedName : "Unknown"}
+                    {summonName ? summonName : "Unknown"}
                   </p>
-                  {editedName && !editingName && (
+                  {summonName && !editingName && (
                     <img
                       src={process.env.PUBLIC_URL + "/img/edit-feather.png"}
                       onClick={() => setEditingName(true)}
                       alt="edit-name"
                     />
                   )}
-                  {(!editedName || editingName) && (
+                  {(!summonName || editingName) && (
                     <>
                       <input
                         onChange={(e) => setEditedName(e.target.value)}
@@ -187,23 +187,25 @@ const SummonStats = ({
                           assignName();
                         }}
                       >
-                        {editedName ? "Rename" : "Assign"}
+                        {summonName ? "Rename" : "Assign"}
                       </button>
-                      <p
-                        style={{
-                          color: "red",
-                          cursor: "pointer",
-                          margin: "0 5px",
-                          padding: "0px",
-                          overflow: "unset",
-                        }}
-                        onClick={() => {
-                          setEditingName(false);
-                          setEditedName(summonName);
-                        }}
-                      >
-                        X
-                      </p>
+                      {summonName && (
+                        <p
+                          style={{
+                            color: "red",
+                            cursor: "pointer",
+                            margin: "0 5px",
+                            padding: "0px",
+                            overflow: "unset",
+                          }}
+                          onClick={() => {
+                            setEditingName(false);
+                            setEditedName(summonName);
+                          }}
+                        >
+                          X
+                        </p>
+                      )}
                     </>
                   )}
                 </div>

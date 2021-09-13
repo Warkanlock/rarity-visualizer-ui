@@ -8,6 +8,8 @@ import { RARITY_SUMMONERS } from "../utils/config";
 import { useAuth } from "../hooks/useAuth";
 import DungeonModal from "./DungeonModal";
 import fetchRetry, { RetryContractCall } from "../utils/fetchRetry";
+import SummonNewWarriorModal from "./SummonNewWarriorModal";
+import { toast } from "react-toastify";
 
 const Home = (props) => {
   const [context] = useContext(RarityContext);
@@ -15,15 +17,14 @@ const Home = (props) => {
   const [summonData, setSummonData] = useState(null);
   const [summonId, setSummonId] = useState(null);
   const [summoners, setSummoners] = useState([]);
-  const [lastSummon, setLastSummon] = useState(null);
-  const [classId, setClassId] = useState(1);
   const [adventureTime, setAdventureTime] = useState(null);
-  const [switchAdventure, setSwitchAdventure] = useState(false);
   const [loading, setLoading] = useState(false);
   const [summonName, setSummonName] = useState(null);
   const [summoning, setSummoning] = useState(false);
   const [loadingAdventure, setLoadingAdventure] = useState(false);
   const [showDungeonModal, setShowDungeonModal] = useState(false);
+  const [showSummonNewWarriorModal, setShowSummonNewWarriorModal] =
+    useState(false);
 
   const walletAddress = context.walletAddress;
 
@@ -55,49 +56,33 @@ const Home = (props) => {
   }, [walletAddress]);
 
   useEffect(() => {
-    const isReadyForAdventure = async () => {
-      if (summonId != null && context.contract) {
-        setLoadingAdventure(true);
-        const timestamp = await RetryContractCall(
-          context.contract.methods.adventurers_log(summonId)
-        );
-        const milliseconds = timestamp * 1000; // 1575909015000
-        const dateObject = new Date(milliseconds);
-        setAdventureTime(dateObject);
-        setLoadingAdventure(false);
-      }
-    };
-
-    const haveNameSetted = async () => {
-      if (summonId != null && context.contract_names) {
-        setLoadingAdventure(true);
-        const summonName = await RetryContractCall(
-          context.contract_names.methods.summoner_name(summonId)
-        );
-        setSummonName(summonName);
-        setLoadingAdventure(false);
-      }
-    };
-
-    try {
-      isReadyForAdventure();
-      haveNameSetted();
-    } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+    if (summonId) {
+      getSummonerState();
     }
-  }, [
-    context,
-    context.contract,
-    summonId,
-    switchAdventure,
-    summonData,
-    update,
-  ]);
-
-  useEffect(() => {
-    if (summonId) getSummonerState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [summonId]);
+  }, [summonId, update]);
+
+  const isReadyForAdventure = async () => {
+    if (summonId != null && context.contract) {
+      setLoadingAdventure(true);
+      const timestamp = await RetryContractCall(
+        context.contract.methods.adventurers_log(summonId)
+      );
+      const milliseconds = timestamp * 1000; // 1575909015000
+      const dateObject = new Date(milliseconds);
+      setAdventureTime(dateObject);
+      setLoadingAdventure(false);
+    }
+  };
+
+  const haveNameSetted = async () => {
+    if (summonId != null && context.contract_names) {
+      const summonName = await RetryContractCall(
+        context.contract_names.methods.summoner_name(summonId)
+      );
+      setSummonName(summonName);
+    }
+  };
 
   const getSummonerState = async () => {
     if (summonId == null) {
@@ -205,36 +190,45 @@ const Home = (props) => {
                 : Number(attributesData.charisma),
           },
         });
-
-        setLoading(false);
       }
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
-    } finally {
-      setLoading(false);
     }
+
+    try {
+      const readyForAdventurePromise = isReadyForAdventure();
+      const nameSettedPromise = haveNameSetted();
+      await Promise.all([readyForAdventurePromise, nameSettedPromise]);
+    } catch (ex) {
+      NotificationManager.error(`Something went wrong!`);
+    }
+
+    setLoading(false);
   };
 
   const sendToAdventure = async () => {
+    if (summonId == null) return;
+    const id = toast.loading("Going on adventure...");
     try {
-      setLoading(true);
-      if (summonId != null) {
-        await context.contract.methods
-          .adventure(summonId)
-          .send({ from: context.accounts[0] });
-        setSwitchAdventure(!switchAdventure);
-        NotificationManager.success(
-          "Summoner went for an adventure!",
-          "Information"
-        );
-      }
+      await context.contract.methods
+        .adventure(summonId)
+        .send({ from: context.accounts[0] });
       setSummonData(null);
       setSummonId(summonId);
+      toast.update(id, {
+        render: `Summoner went for an adventure!`,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
       await getSummonerState();
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
-    } finally {
-      setLoading(false);
+      toast.update(id, {
+        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
@@ -257,31 +251,36 @@ const Home = (props) => {
     }
   };
 
-  const summonPlayer = async () => {
-    try {
-      setSummoning(true);
-      setSummonData(null);
-      setLoading(true);
-      if (classId != null) {
-        const response = await context.contract.methods
+  const summonPlayer = async (classId) => {
+    if (classId != null) {
+      const id = toast.loading("Summoning warrior...");
+      try {
+        const promise = context.contract.methods
           .summon(classId)
           .send({ from: context.accounts[0] });
-        setLastSummon(response.events.summoned.returnValues[2]);
+        const response = await promise;
         setSummoners((prevState) => [
           ...prevState,
           { id: response.events.summoned.returnValues[2] },
         ]);
         setSummonId(response.events.summoned.returnValues[2]);
-        NotificationManager.success(
-          `You just summon your player! ${response.events.summoned.returnValues[2]}`,
-          "Information",
-          100000
-        );
+        setShowSummonNewWarriorModal(false);
+        toast.update(id, {
+          render: `You just summon your player! ${response.events.summoned.returnValues[2]}`,
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      } catch (ex) {
+        toast.update(id, {
+          render: `Something went wrong! ${JSON.stringify(ex)}`,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      } finally {
+        setLoading(false);
       }
-    } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -307,10 +306,6 @@ const Home = (props) => {
     }
   };
 
-  const selectClassType = (event) => {
-    setClassId(event.target.value);
-  };
-
   useEffect(() => {
     if (summoners[0] && !summonId) {
       setSummonId(summoners[0].id);
@@ -321,9 +316,8 @@ const Home = (props) => {
     if (event.target.value === "" || event.target.value === 0) {
       setSummonId(null);
     } else {
-      setSummonId(event.target.value);
-      getSummonerState();
       setSummonData(null);
+      setSummonId(event.target.value);
     }
   };
 
@@ -336,24 +330,17 @@ const Home = (props) => {
           setShowDungeonModal={setShowDungeonModal}
         />
       )}
+      {showSummonNewWarriorModal && (
+        <SummonNewWarriorModal
+          summonId={summonId}
+          setShowSummonNewWarriorModal={setShowSummonNewWarriorModal}
+          summonPlayer={summonPlayer}
+        />
+      )}
       <div className="d-flex">
         <div className="container-box summoner-class">
           <div className="summoner-class-title">
             <label>Your warrior</label>
-            {summonName &&
-              (loadingAdventure ? (
-                <div>...</div>
-              ) : (
-                <div
-                  style={{
-                    textAlign: "center",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  &#9679;{summonName}&#9679;
-                </div>
-              ))}
           </div>
           <div className="summoner-img-container">
             <img
@@ -362,7 +349,7 @@ const Home = (props) => {
                   ? CLASSES_TYPE[summonData.classType]
                   : CLASSES_TYPE[1]
               }.png`}
-              alt="sword-draw"
+              alt="summon-img"
             />
           </div>
           <div className="summon-id">
@@ -407,24 +394,11 @@ const Home = (props) => {
               <button
                 className="summon-new"
                 disabled={summonId === null && summoning}
-                onClick={summonPlayer}
+                onClick={() => setShowSummonNewWarriorModal(true)}
               >
-                {summoning ? "Summoning warrior..." : "Summon new warrior"}
+                Summon new warrior
               </button>
-              <select onChange={selectClassType}>
-                {Object.keys(CLASSES_TYPE).map((key) => {
-                  return (
-                    <option value={key} key={`${key}-class-type`}>
-                      {CLASSES_TYPE[key]}
-                    </option>
-                  );
-                })}
-              </select>
             </div>
-            Last ID summoned:{" "}
-            <span className="golden-font">
-              {lastSummon ? lastSummon : " - "}
-            </span>
           </div>
         </div>
       </div>
