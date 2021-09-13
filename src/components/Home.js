@@ -468,6 +468,11 @@ const Home = (props) => {
           setSummonName={setSummonName}
           assignName={assignName}
           levelUpPlayer={levelUpPlayer}
+          refreshView={async () => {
+            setSummonData(null);
+            setSummonId(summonId);
+            await getSummonerState();
+          }}
           {...summonData}
         ></SummonStats>
       )}

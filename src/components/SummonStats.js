@@ -6,6 +6,7 @@ import { ProgressBar } from "../components/ProgressBar";
 import { RARITY_BASE_MAX_SCORE } from "../utils/config";
 
 const SummonStats = ({
+  refreshView,
   summonId,
   name,
   xp,
@@ -87,6 +88,7 @@ const SummonStats = ({
           "Summoner went for an adventure!",
           "Information"
         );
+        refreshView();
       }
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
@@ -149,6 +151,7 @@ const SummonStats = ({
           "Summoner bought some points!",
           "Information"
         );
+        refreshView();
       }
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
@@ -162,6 +165,7 @@ const SummonStats = ({
           .claim(summonId)
           .send({ from: context.accounts[0] });
         NotificationManager.success(`Summoner claimed gold!`, "Information");
+        refreshView();
       }
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
