@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import NotificationManager from "react-notifications/lib/NotificationManager";
+import { toast } from "react-toastify";
 import { RarityContext } from "../context/RarityProvider";
 import "../Modal.css";
 import { CLASSES_TYPE } from "../utils/classes";
@@ -79,7 +79,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
       loadDungeon();
       isReadyForAdventure();
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setShowDungeonModal]);
@@ -91,50 +91,55 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
   };
 
   const exploreDungeon = async () => {
+    if (!summonId) return;
+    const id = toast.loading("Exploring dungeon...");
     try {
-      setLoading(true);
-      if (summonId != null) {
-        await context.contract_dungeons.methods
-          .adventure(summonId)
-          .send({ from: context.accounts[0] });
-        NotificationManager.success(
-          "Summoner started exploring the dungeon!",
-          "Information"
-        );
-      }
+      await context.contract_dungeons.methods
+        .adventure(summonId)
+        .send({ from: context.accounts[0] });
+      toast.update(id, {
+        render: `Summoner started exploring the dungeon!`,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
-    } finally {
-      setLoading(false);
+      toast.update(id, {
+        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
   const scoutDungeon = async () => {
+    if (!summonId) return;
+    const id = toast.loading("Scouting...");
     try {
-      setLoading(true);
-      if (summonId != null) {
-        const response = await RetryContractCall(
-          context.contract_dungeons.methods.scout(summonId)
-        );
-        NotificationManager.success(
-          `After scouting the dungeon ${Number(response)} rewards found`,
-          "Information"
-        );
-      }
+      const response = await RetryContractCall(
+        context.contract_dungeons.methods.scout(summonId)
+      );
+      toast.update(id, {
+        render: `After scouting the dungeon ${Number(response)} rewards found`,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
-    } finally {
-      setLoading(false);
+      toast.update(id, {
+        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
   return (
     <>
       <div className="modal" onClick={() => setShowDungeonModal(false)}>
-        <div
-          className="modal-content"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <>
             <div className="modal-header">{"Dungeon World"}</div>
             {loading || !dungeonInfo ? (

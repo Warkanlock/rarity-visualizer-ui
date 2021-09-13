@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RarityContext } from "../context/RarityProvider";
 import { SummonStats } from "./SummonStats";
-import { NotificationManager } from "react-notifications";
-import "react-notifications/lib/notifications.css";
 import { CLASSES_TYPE } from "../utils/classes";
 import { RARITY_SUMMONERS } from "../utils/config";
 import { useAuth } from "../hooks/useAuth";
@@ -11,7 +9,7 @@ import fetchRetry, { RetryContractCall } from "../utils/fetchRetry";
 import SummonNewWarriorModal from "./SummonNewWarriorModal";
 import { toast } from "react-toastify";
 
-const Home = (props) => {
+const Home = () => {
   const [context] = useContext(RarityContext);
   const [, , , update] = useAuth();
   const [summonData, setSummonData] = useState(null);
@@ -20,7 +18,6 @@ const Home = (props) => {
   const [adventureTime, setAdventureTime] = useState(null);
   const [loading, setLoading] = useState(false);
   const [summonName, setSummonName] = useState(null);
-  const [summoning, setSummoning] = useState(false);
   const [loadingAdventure, setLoadingAdventure] = useState(false);
   const [showDungeonModal, setShowDungeonModal] = useState(false);
   const [showSummonNewWarriorModal, setShowSummonNewWarriorModal] =
@@ -44,23 +41,34 @@ const Home = (props) => {
           if (summonsId) setSummoners(summonsId);
         }
       } catch {
-        NotificationManager.error("Something bad happened");
+        toast.error("Something bad happened");
       }
     };
 
     try {
       getAllSummoners();
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
   }, [walletAddress]);
 
   useEffect(() => {
     if (summonId) {
+      localStorage.setItem("summonId", summonId);
       getSummonerState();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [summonId, update]);
+
+  useEffect(() => {
+    if (summoners[0] && !summonId) {
+      if (localStorage.getItem("summonId")) {
+        setSummonId(localStorage.getItem("summonId"));
+      } else {
+        setSummonId(summoners[0].id);
+      }
+    }
+  }, [summonId, summoners]);
 
   const isReadyForAdventure = async () => {
     if (summonId != null && context.contract) {
@@ -192,7 +200,7 @@ const Home = (props) => {
         });
       }
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
 
     try {
@@ -200,7 +208,7 @@ const Home = (props) => {
       const nameSettedPromise = haveNameSetted();
       await Promise.all([readyForAdventurePromise, nameSettedPromise]);
     } catch (ex) {
-      NotificationManager.error(`Something went wrong!`);
+      toast.error(`Something went wrong!`);
     }
 
     setLoading(false);
@@ -208,13 +216,11 @@ const Home = (props) => {
 
   const sendToAdventure = async () => {
     if (summonId == null) return;
-    const id = toast.loading("Going on adventure...");
+    const id = toast.loading("I'm going on an adventure!");
     try {
       await context.contract.methods
         .adventure(summonId)
         .send({ from: context.accounts[0] });
-      setSummonData(null);
-      setSummonId(summonId);
       toast.update(id, {
         render: `Summoner went for an adventure!`,
         type: "success",
@@ -289,33 +295,38 @@ const Home = (props) => {
     }
   };
 
-  const assignName = async () => {
+  const assignName = async (summonName) => {
+    const id = toast.loading("Assigning name...");
+    if (!summonId) return;
+    if (!summonName) {
+      toast.update(id, {
+        render: `Can't assign an empty name!`,
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      return;
+    }
     try {
-      if (summonId != null && summonName != null) {
-        setLoading(true);
-        await context.contract_names.methods
-          .set_name(summonId, summonName)
-          .send({ from: context.accounts[0] });
-        NotificationManager.success(
-          `You just named your player!`,
-          "Information",
-          5000
-        );
-        setLoading(false);
-        setSummonData(null);
-      }
+      await context.contract_names.methods
+        .set_name(summonId, summonName)
+        .send({ from: context.accounts[0] });
+      setSummonName(summonName);
+      toast.update(id, {
+        render: `Name assigned!`,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
-    } finally {
-      setSummoning(false);
+      toast.update(id, {
+        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
-
-  useEffect(() => {
-    if (summoners[0] && !summonId) {
-      setSummonId(summoners[0].id);
-    }
-  }, [summonId, summoners]);
 
   const changeSummonId = (event) => {
     if (event.target.value === "" || event.target.value === 0) {
@@ -398,7 +409,7 @@ const Home = (props) => {
             <div className="summoner-buttons">
               <button
                 className="summon-new"
-                disabled={summonId === null && summoning}
+                disabled={summonId === null}
                 onClick={() => setShowSummonNewWarriorModal(true)}
               >
                 Summon new warrior

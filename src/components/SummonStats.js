@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import { NotificationManager } from "react-notifications";
 import { RarityContext } from "../context/RarityProvider";
 import { CLASSES_TYPE } from "../utils/classes";
 import { ProgressBar } from "../components/ProgressBar";
 import { RARITY_BASE_MAX_SCORE } from "../utils/config";
+import { toast } from "react-toastify";
 
 const SummonStats = ({
   refreshView,
@@ -86,14 +86,11 @@ const SummonStats = ({
         await context.contract_attributes.methods[`increase_${attr}`](
           summonId
         ).send({ from: context.accounts[0] });
-        NotificationManager.success(
-          "Summoner went for an adventure!",
-          "Information"
-        );
+        toast.success("Summoner went for an adventure!");
         refreshView();
       }
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
   };
 
@@ -130,14 +127,11 @@ const SummonStats = ({
             tempAttributes?.charisma || 8
           )
           .send({ from: context.accounts[0] });
-        NotificationManager.success(
-          "Summoner bought some points!",
-          "Information"
-        );
+        toast.success("Summoner bought some points!");
         refreshView();
       }
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
   };
 
@@ -147,11 +141,11 @@ const SummonStats = ({
         await context.contract_gold.methods
           .claim(summonId)
           .send({ from: context.accounts[0] });
-        NotificationManager.success(`Summoner claimed gold!`, "Information");
+        toast.success(`Summoner claimed gold!`);
         refreshView();
       }
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
   };
 
@@ -183,8 +177,7 @@ const SummonStats = ({
                       />
                       <button
                         onClick={() => {
-                          setSummonName(editedName);
-                          assignName();
+                          assignName(editedName);
                         }}
                       >
                         {summonName ? "Rename" : "Assign"}
