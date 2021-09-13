@@ -233,21 +233,26 @@ const Home = (props) => {
   };
 
   const levelUpPlayer = async () => {
+    if (!summonId) return;
+    const id = toast.loading("Levelling up...");
     try {
-      setLoading(true);
-      if (summonId != null) {
-        await context.contract.methods
-          .level_up(summonId)
-          .send({ from: context.accounts[0] });
-        NotificationManager.success(
-          "You just level up your player!",
-          "Information"
-        );
-      }
+      await context.contract.methods
+        .level_up(summonId)
+        .send({ from: context.accounts[0] });
+      toast.update(id, {
+        render: `You just level up your player!`,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
+      await getSummonerState();
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
-    } finally {
-      setLoading(false);
+      toast.update(id, {
+        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
