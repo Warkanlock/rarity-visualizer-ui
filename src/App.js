@@ -11,6 +11,8 @@ import {
 import { setupContracts } from "./context/RarityContracts";
 import { useAuth } from "./hooks/useAuth";
 import { FANTOM_ID, FANTOM_NETWORK } from "./utils/config";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [error, setError] = useState({ isError: false, stack: null });
@@ -83,6 +85,16 @@ function App() {
       <div className="container">
         <Home />
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnHover
+        theme={"dark"}
+      />
       <NotificationContainer />
       <footer>
         Made with 💙 by <a href="https://twitter.com/@txxnano">@txxnano</a>{" "}

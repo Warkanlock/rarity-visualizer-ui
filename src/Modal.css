@@ -1,4 +1,4 @@
-.dungeon-modal {
+.modal {
   position: fixed;
   background-color: rgba(0, 0, 0, 0.7);
   left: 0;
@@ -11,7 +11,9 @@
   z-index: 9999;
 }
 
-.dungeon-modal-content {
+.modal-content {
+  display: flex;
+  flex-direction: column;
   border: 2px solid #bf9b30;
   border-radius: 5px;
   background: radial-gradient(
@@ -27,24 +29,27 @@
   -moz-box-shadow: 1px -1px 25px -1px rgba(0, 0, 0, 1) inset;
   border-radius: 10px;
   width: 50%;
+  max-height: 80vh;
 }
 
-.dungeon-modal-header {
+.modal-header {
   text-align: center;
   margin: 0;
   font-size: 30px;
 }
 
-.dungeon-modal-footer {
+.modal-footer {
+  margin-top: auto;
   text-align: right;
 }
 
-.dungeon-modal-header,
-.dungeon-modal-footer {
+.modal-header,
+.modal-footer {
   padding: 10px;
 }
 
-.dungeon-modal-body {
+.modal-body {
+  overflow: auto;
   padding: 10px;
 }
 
@@ -59,4 +64,39 @@
 .dungeon-stat-icon {
   height: 100%;
   margin-right: 5px;
+}
+
+.classes-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.class-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 30%;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+}
+
+.class-container:hover {
+  border: 2px solid #bf9b30;
+  border-radius: 5px;
+  background: radial-gradient(
+    circle,
+    rgba(50, 50, 50, 1) 0%,
+    rgba(40, 40, 40, 1) 30%,
+    rgba(20, 20, 20, 1) 91%
+  );
+  cursor: pointer;
+}
+
+.class-container img {
+  height: 100px;
+  width: 100px;
+  margin: auto;
+  padding: 5px;
 }
