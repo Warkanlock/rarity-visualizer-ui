@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import { CLASSES_TYPE } from "../utils/classes";
 
-const SummonNewWarriorModal = ({ summonId, setShowSummonNewWarriorModal }) => {
+const SummonNewWarriorModal = ({
+  summonId,
+  setShowSummonNewWarriorModal,
+  summonPlayer,
+}) => {
   useEffect(() => {
     document.body.addEventListener("keydown", closeOnEscapeKeyDown);
     return () => {
@@ -15,6 +19,7 @@ const SummonNewWarriorModal = ({ summonId, setShowSummonNewWarriorModal }) => {
       setShowSummonNewWarriorModal(false);
     }
   };
+
   return (
     <>
       <div
@@ -27,17 +32,20 @@ const SummonNewWarriorModal = ({ summonId, setShowSummonNewWarriorModal }) => {
             <div className="classes-container">
               {Object.keys(CLASSES_TYPE).map((key) => {
                 return (
-                  <div className="class-container">
+                  <div
+                    className="class-container"
+                    onClick={() => summonPlayer(key)}
+                  >
                     <img
                       src={`${process.env.PUBLIC_URL}/classes/${CLASSES_TYPE[key]}.png`}
                       alt={`class-img-${CLASSES_TYPE[key]}`}
                     />
+                    <p>{CLASSES_TYPE[key]}</p>
                   </div>
                 );
               })}
             </div>
           </div>
-          <div className="modal-footer"></div>
         </div>
       </div>
     </>
