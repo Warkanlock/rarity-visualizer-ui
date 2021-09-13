@@ -3,6 +3,7 @@ import NotificationManager from "react-notifications/lib/NotificationManager";
 import { RarityContext } from "../context/RarityProvider";
 import "../Modal.css";
 import { CLASSES_TYPE } from "../utils/classes";
+import { RetryContractCall } from "../utils/fetchRetry";
 
 const DungeonModal = ({ setShowDungeonModal, summonId }) => {
   const [context] = useContext(RarityContext);
@@ -22,25 +23,35 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
     const loadDungeon = async () => {
       setLoading(true);
 
-      const summonData = await context.contract.methods
-        .summoner(summonId)
-        .call();
+      const summonData = await RetryContractCall(
+        context.contract.methods.summoner(summonId)
+      );
 
-      const dungeonDamage = await context.contract_dungeons.methods
-        .dungeon_damage()
-        .call();
+      const dungeonDamagePromise = RetryContractCall(
+        context.contract_dungeons.methods.dungeon_damage()
+      );
 
-      const bonusByClass = await context.contract_dungeons.methods
-        .base_attack_bonus_by_class(summonData[2])
-        .call();
+      const bonusByClassPromise = RetryContractCall(
+        context.contract_dungeons.methods.base_attack_bonus_by_class(
+          summonData[2]
+        )
+      );
 
-      const dungeonHealth = await context.contract_dungeons.methods
-        .dungeon_health()
-        .call();
+      const dungeonHealthPromise = RetryContractCall(
+        context.contract_dungeons.methods.dungeon_health()
+      );
 
-      const dungeonArmorClass = await context.contract_dungeons.methods
-        .dungeon_armor_class()
-        .call();
+      const dungeonArmorClassPromise = RetryContractCall(
+        context.contract_dungeons.methods.dungeon_armor_class()
+      );
+
+      const [dungeonDamage, bonusByClass, dungeonHealth, dungeonArmorClass] =
+        await Promise.all([
+          dungeonDamagePromise,
+          bonusByClassPromise,
+          dungeonHealthPromise,
+          dungeonArmorClassPromise,
+        ]);
 
       setDungeonInfo({
         dungeon: "The Cellar",
@@ -55,9 +66,9 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
     const isReadyForAdventure = async () => {
       if (summonId != null && context.contract) {
         setLoading(true);
-        const timestamp = await context.contract_dungeons.methods
-          .adventurers_log(summonId)
-          .call();
+        const timestamp = await RetryContractCall(
+          context.contract_dungeons.methods.adventurers_log(summonId)
+        );
         const milliseconds = timestamp * 1000;
         const dateObject = new Date(milliseconds);
         setAdventureTime(dateObject);
@@ -102,9 +113,9 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
     try {
       setLoading(true);
       if (summonId != null) {
-        const response = await context.contract_dungeons.methods
-          .scout(summonId)
-          .call();
+        const response = await RetryContractCall(
+          context.contract_dungeons.methods.scout(summonId)
+        );
         NotificationManager.success(
           `After scouting the dungeon ${Number(response)} rewards found`,
           "Information"

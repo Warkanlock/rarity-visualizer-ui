@@ -21,7 +21,7 @@ async function fetchRetry(url, delay, tries, fetchOptions = {}) {
   return result;
 }
 
-export async function RetryContractCall(method, delay = 500, tries = 3) {
+export async function RetryContractCall(method, delay = 500, tries = 5) {
   function onError(err) {
     var triesLeft = tries - 1;
     if (!triesLeft) {
