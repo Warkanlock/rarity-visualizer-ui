@@ -22,7 +22,6 @@ const SummonStats = ({
   levelUpPlayer,
 }) => {
   const [context] = useContext(RarityContext);
-  const [amountXp, setAmountXp] = React.useState(0);
   const [editedName, setEditedName] = React.useState(summonName);
   const [editingName, setEditingName] = React.useState(false);
 
