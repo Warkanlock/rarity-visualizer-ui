@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { CLASSES_TYPE } from "../utils/classes";
 
 const SummonNewWarriorModal = ({
-  summonId,
   setShowSummonNewWarriorModal,
   summonPlayer,
 }) => {

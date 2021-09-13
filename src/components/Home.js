@@ -477,8 +477,6 @@ const Home = () => {
           assignName={assignName}
           levelUpPlayer={levelUpPlayer}
           refreshView={async () => {
-            setSummonData(null);
-            setSummonId(summonId);
             await getSummonerState();
           }}
           {...summonData}
