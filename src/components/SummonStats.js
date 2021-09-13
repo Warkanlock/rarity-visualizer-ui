@@ -41,19 +41,33 @@ const SummonStats = ({
       : levelPoints
   );
 
-  useEffect(() => {
-    const computeLevelingScore = (value) => {
-      const base = value - 8;
-      if (value <= 14) {
-        return base;
-      } else {
-        return Math.floor(base ** 2 / 6);
-      }
-    };
+  const computeAssingAttributes = (attr) => {
+    if (attr <= 14) {
+      return 1;
+    }
+    if (attr > 14 && attr <= 16) {
+      return 2;
+    } else if (attr >= 17) {
+      return 3;
+    } else {
+      return 1;
+    }
+  };
 
+  useEffect(() => {
     if (mapAttributes) {
       const totalComputeCost = Object.keys(mapAttributes).reduce(
-        (acc, item) => acc + computeLevelingScore(mapAttributes[item]),
+        (acc, item) => {
+          const computeLevelingScore = (value) => {
+            const base = value - 8;
+            if (value <= 14) {
+              return base;
+            } else {
+              return Math.floor(base ** 2 / 6);
+            }
+          };
+          return acc + computeLevelingScore(mapAttributes[item]);
+        },
         0
       );
 
@@ -76,19 +90,6 @@ const SummonStats = ({
       }
     } catch (ex) {
       NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
-    }
-  };
-
-  const computeAssingAttributes = (attr) => {
-    if (attr <= 14) {
-      return 1;
-    }
-    if (attr > 14 && attr <= 16) {
-      return 2;
-    } else if (attr >= 17) {
-      return 3;
-    } else {
-      return 1;
     }
   };
 
@@ -168,142 +169,139 @@ const SummonStats = ({
   };
 
   return (
-    <>
-      <div className="summoner-stats">
-        <div className="container-box summoner-information">
-          <ul className="stats-list">
-            <li>
-              <div className="summon-name">
-                <p className="summon-name-indicator">
-                  {summonName ? summonName : "Unknown"}
-                  {summonName && !editingName && (
-                    <img
-                      src={process.env.PUBLIC_URL + "/img/edit-feather.png"}
-                      onClick={() => setEditingName(true)}
-                      alt="edit-name"
-                    />
+    mapAttributes && (
+      <>
+        <div className="summoner-stats">
+          <div className="container-box summoner-information">
+            <ul className="stats-list">
+              <li>
+                <div className="summon-name">
+                  <p className="summon-name-indicator">
+                    {summonName ? summonName : "Unknown"}
+                    {summonName && !editingName && (
+                      <img
+                        src={process.env.PUBLIC_URL + "/img/edit-feather.png"}
+                        onClick={() => setEditingName(true)}
+                        alt="edit-name"
+                      />
+                    )}
+                  </p>
+                  {(!summonName || editingName) && (
+                    <>
+                      <input
+                        onChange={(e) => setSummonName(e.target.value)}
+                        max="1000"
+                        placeholder="Warrior name"
+                      />
+                      <button onClick={assignName}>
+                        {summonName ? "Rename" : "Assign"}
+                      </button>
+                    </>
                   )}
-                </p>
-                {(!summonName || editingName) && (
-                  <>
-                    <input
-                      onChange={(e) => setSummonName(e.target.value)}
-                      max="1000"
-                      placeholder="Warrior name"
-                    />
-                    <button onClick={assignName}>
-                      {summonName ? "Rename" : "Assign"}
-                    </button>
-                  </>
-                )}
-              </div>
-            </li>
-            <li>
-              <div className="claim-gold">
-                <div className="claim-gold-container">
-                  <img
-                    alt="coin"
-                    src={process.env.PUBLIC_URL + "/img/coin.png"}
-                  />
-                  <div className="gold-indicator">{gold.playerGold}</div>
                 </div>
-                <div className="claim-gold-container">
-                  <button
-                    onClick={claimGold}
-                    disabled={Number(gold.pendingGold) === 0}
-                  >
-                    {Number(gold.pendingGold) > 0
-                      ? `Claim ${gold.pendingGold} gold!`
-                      : "No gold to claim"}
-                  </button>
-                </div>{" "}
-              </div>
-            </li>
-            <li>
-              <div className="xp-spend">
-                <ProgressBar done={(xp / xpRequired) * 100}></ProgressBar>
-                <input
-                  onChange={updateAmount}
-                  max="1000"
-                  placeholder="XP to spend"
-                />
-                <button onClick={spendXp}>Spend XP</button>
-              </div>
-              {/* <div className="xp-spend-required">
+              </li>
+              <li>
+                <div className="claim-gold">
+                  <div className="claim-gold-container">
+                    <img
+                      alt="coin"
+                      src={process.env.PUBLIC_URL + "/img/coin.png"}
+                    />
+                    <div className="gold-indicator">{gold.playerGold}</div>
+                  </div>
+                  <div className="claim-gold-container">
+                    <button
+                      onClick={claimGold}
+                      disabled={Number(gold.pendingGold) === 0}
+                    >
+                      {Number(gold.pendingGold) > 0
+                        ? `Claim ${gold.pendingGold} gold!`
+                        : "No gold to claim"}
+                    </button>
+                  </div>{" "}
+                </div>
+              </li>
+              <li>
+                <div className="xp-spend">
+                  <ProgressBar done={(xp / xpRequired) * 100}></ProgressBar>
+                  <input
+                    onChange={updateAmount}
+                    max="1000"
+                    placeholder="XP to spend"
+                  />
+                  <button onClick={spendXp}>Spend XP</button>
+                </div>
+                {/* <div className="xp-spend-required">
                 <p>Left: {xpToGo}</p>
                 <p>Required: {xpRequired}</p>
               </div> */}
-            </li>
-            <li>
-              <p>
-                Level: {level} {name.title}{" "}
-              </p>
-            </li>
-            <li>
-              <p>Class: {CLASSES_TYPE[classType]}</p>
-            </li>
-            <li>
-              <p>
-                Attributes point: <i>({totalPointsToSpend})</i> + {levelPoints}
-              </p>
-            </li>
-          </ul>
-        </div>
-        <div className="container-box summoner-attributes">
-          {Object.keys(attributes).map((attr) => {
-            return (
-              <React.Fragment key={`class-${attr}`}>
-                <div className="summoner-attribute-container">
-                  <button
-                    onClick={() => decrease(attr)}
-                    type="button"
-                    disabled={
-                      // Object.keys(mapAttributes).reduce(
-                      //   (acc, item) => acc + mapAttributes[item],
-                      //   0
-                      // ) === 48 ||
-                      mapAttributes[attr] === 8
-                    }
-                  >
-                    -
-                  </button>
-                  <div className="summoner-attribute">
-                    {attr[0].toUpperCase() + attr.slice(1)}:{" "}
-                    <span className="golden-font">{mapAttributes[attr]}</span>
+              </li>
+              <li>
+                <p>
+                  Level: {level} {name.title}{" "}
+                </p>
+              </li>
+              <li>
+                <p>Class: {CLASSES_TYPE[classType]}</p>
+              </li>
+              <li>
+                <p>
+                  Attributes point: <i>({totalPointsToSpend})</i> +{" "}
+                  {levelPoints}
+                </p>
+              </li>
+            </ul>
+          </div>
+          <div className="container-box summoner-attributes">
+            {Object.keys(attributes).map((attr) => {
+              return (
+                <React.Fragment key={`class-${attr}`}>
+                  <div className="summoner-attribute-container">
+                    <button
+                      onClick={() => decrease(attr)}
+                      type="button"
+                      disabled={mapAttributes[attr] === 8}
+                    >
+                      -
+                    </button>
+                    <div className="summoner-attribute">
+                      {attr[0].toUpperCase() + attr.slice(1)}:{" "}
+                      <span className="golden-font">{mapAttributes[attr]}</span>
+                    </div>
+                    <button
+                      disabled={
+                        totalPointsToSpend <
+                        computeAssingAttributes(mapAttributes[attr])
+                      }
+                      onClick={() => increase(attr)}
+                      type="button"
+                    >
+                      +
+                    </button>
+                    <button
+                      className="assign-points-summoner"
+                      type="button"
+                      onClick={() => increase_by_skill(attr)}
+                      disabled={!(levelPoints > 0)}
+                    >
+                      Assign
+                    </button>
                   </div>
-                  <button
-                    disabled={
-                      totalPointsToSpend <
-                      computeAssingAttributes(mapAttributes[attr])
-                    }
-                    onClick={() => increase(attr)}
-                    type="button"
-                  >
-                    +
-                  </button>
-                  <button
-                    className="assign-points-summoner"
-                    type="button"
-                    onClick={() => increase_by_skill(attr)}
-                    disabled={!(levelPoints > 0)}
-                  >
-                    Assign
-                  </button>
-                </div>
-              </React.Fragment>
-            );
-          })}
-          <div className="summoner-buttons">
-            <button
-              className="confirm-points-summoner"
-              onClick={() => confirmPoints()}
-            >
-              Confirm points ({totalPointsToSpend})
-            </button>
+                </React.Fragment>
+              );
+            })}
+            <div className="summoner-buttons">
+              <button
+                className="confirm-points-summoner"
+                onClick={() => confirmPoints()}
+              >
+                Confirm points ({totalPointsToSpend})
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </>
+      </>
+    )
   );
 };
 
