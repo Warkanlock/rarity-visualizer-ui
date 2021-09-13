@@ -173,7 +173,7 @@ const Home = (props) => {
           },
           gold: {
             playerGold,
-            pendingGold,
+            pendingGold: parseFloat(pendingGold) / Math.pow(10, 18),
           },
           xp: parseFloat(summonData[0]) / Math.pow(10, 18),
           xpRequired: parseFloat(xpRequired) / Math.pow(10, 18),
@@ -182,12 +182,30 @@ const Home = (props) => {
           level: summonData[3],
           levelPoints: levelPoints,
           attributes: {
-            strength: attributesData.strength,
-            dexterity: attributesData.dexterity,
-            constitution: attributesData.constitution,
-            intelligence: attributesData.intelligence,
-            wisdom: attributesData.wisdom,
-            charisma: attributesData.charisma,
+            strength:
+              Number(attributesData.strength) === 0
+                ? 8
+                : Number(attributesData.strength),
+            dexterity:
+              Number(attributesData.dexterity) === 0
+                ? 8
+                : Number(attributesData.dexterity),
+            constitution:
+              Number(attributesData.constitution) === 0
+                ? 8
+                : Number(attributesData.constitution),
+            intelligence:
+              Number(attributesData.intelligence) === 0
+                ? 8
+                : Number(attributesData.intelligence),
+            wisdom:
+              Number(attributesData.wisdom) === 0
+                ? 8
+                : Number(attributesData.wisdom),
+            charisma:
+              Number(attributesData.charisma) === 0
+                ? 8
+                : Number(attributesData.charisma),
           },
         });
 
@@ -477,6 +495,11 @@ const Home = (props) => {
           setSummonName={setSummonName}
           assignName={assignName}
           levelUpPlayer={levelUpPlayer}
+          refreshView={async () => {
+            setSummonData(null);
+            setSummonId(summonId);
+            await getSummonerState();
+          }}
           {...summonData}
         ></SummonStats>
       )}
