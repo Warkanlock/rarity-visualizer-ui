@@ -8,6 +8,7 @@ import { RARITY_SUMMONERS } from "../utils/config";
 import { useAuth } from "../hooks/useAuth";
 import DungeonModal from "./DungeonModal";
 import fetchRetry, { RetryContractCall } from "../utils/fetchRetry";
+import ForestModal from "./ForestModal";
 
 const Home = (props) => {
   const [context] = useContext(RarityContext);
@@ -24,6 +25,7 @@ const Home = (props) => {
   const [summoning, setSummoning] = useState(false);
   const [loadingAdventure, setLoadingAdventure] = useState(false);
   const [showDungeonModal, setShowDungeonModal] = useState(false);
+  const [showForestModal, setShowForestModal] = useState(false);
 
   const walletAddress = context.walletAddress;
 
@@ -170,7 +172,7 @@ const Home = (props) => {
           },
           gold: {
             playerGold,
-            pendingGold: parseFloat(pendingGold) / Math.pow(10, 18),
+            pendingGold: parseFloat(pendingGold) / Math.pow(10, 21),
           },
           xp: parseFloat(summonData[0]) / Math.pow(10, 18),
           xpRequired: parseFloat(xpRequired) / Math.pow(10, 18),
@@ -336,6 +338,13 @@ const Home = (props) => {
           setShowDungeonModal={setShowDungeonModal}
         />
       )}
+      {showForestModal && summonData && (
+        <ForestModal
+          currentLevel={summonData.level}
+          summonId={summonId}
+          setShowForestModal={setShowForestModal}
+        />
+      )}
       <div className="d-flex">
         <div className="container-box summoner-class">
           <div className="summoner-class-title">
@@ -477,6 +486,16 @@ const Home = (props) => {
           }}
         >
           Dungeons
+        </button>
+        <button
+          disabled={summonId === null}
+          onClick={() => setShowForestModal(true)}
+          style={{
+            backgroundColor: "rgb(0, 43, 107)",
+            border: "2px solid rgb(9, 23, 47)",
+          }}
+        >
+          Forests
         </button>
       </div>
       {summonData != null && (
