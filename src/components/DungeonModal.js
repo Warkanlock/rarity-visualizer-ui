@@ -113,7 +113,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
     try {
       setLoading(true);
       if (summonId != null) {
-        const response = RetryContractCall(
+        const response = await RetryContractCall(
           context.contract_dungeons.methods.scout(summonId)
         );
         NotificationManager.success(
