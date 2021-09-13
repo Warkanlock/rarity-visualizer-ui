@@ -8,6 +8,7 @@ import { RARITY_SUMMONERS } from "../utils/config";
 import { useAuth } from "../hooks/useAuth";
 import DungeonModal from "./DungeonModal";
 import fetchRetry, { RetryContractCall } from "../utils/fetchRetry";
+import SummonNewWarriorModal from "./SummonNewWarriorModal";
 
 const Home = (props) => {
   const [context] = useContext(RarityContext);
@@ -24,6 +25,8 @@ const Home = (props) => {
   const [summoning, setSummoning] = useState(false);
   const [loadingAdventure, setLoadingAdventure] = useState(false);
   const [showDungeonModal, setShowDungeonModal] = useState(false);
+  const [showSummonNewWarriorModal, setShowSummonNewWarriorModal] =
+    useState(false);
 
   const walletAddress = context.walletAddress;
 
@@ -318,6 +321,12 @@ const Home = (props) => {
           setShowDungeonModal={setShowDungeonModal}
         />
       )}
+      {showSummonNewWarriorModal && (
+        <SummonNewWarriorModal
+          summonId={summonId}
+          setShowSummonNewWarriorModal={setShowSummonNewWarriorModal}
+        />
+      )}
       <div className="d-flex">
         <div className="container-box summoner-class">
           <div className="summoner-class-title">
@@ -344,7 +353,7 @@ const Home = (props) => {
                   ? CLASSES_TYPE[summonData.classType]
                   : CLASSES_TYPE[1]
               }.png`}
-              alt="sword-draw"
+              alt="summon-img"
             />
           </div>
           <div className="summon-id">
@@ -389,9 +398,9 @@ const Home = (props) => {
               <button
                 className="summon-new"
                 disabled={summonId === null && summoning}
-                onClick={summonPlayer}
+                onClick={() => setShowSummonNewWarriorModal(true)}
               >
-                {summoning ? "Summoning warrior..." : "Summon new warrior"}
+                Summon new warrior
               </button>
               <select onChange={selectClassType}>
                 {Object.keys(CLASSES_TYPE).map((key) => {
