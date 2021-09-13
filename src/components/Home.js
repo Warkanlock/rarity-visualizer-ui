@@ -170,7 +170,7 @@ const Home = (props) => {
           },
           gold: {
             playerGold,
-            pendingGold,
+            pendingGold: parseFloat(pendingGold) / Math.pow(10, 18),
           },
           xp: parseFloat(summonData[0]) / Math.pow(10, 18),
           xpRequired: parseFloat(xpRequired) / Math.pow(10, 18),

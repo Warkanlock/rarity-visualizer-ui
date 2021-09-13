@@ -258,7 +258,7 @@ const SummonStats = ({
                       disabled={Number(gold.pendingGold) === 0}
                     >
                       {Number(gold.pendingGold) > 0
-                        ? `Claim ${gold.pendingGold / Math.pow(10, 18)} gold!`
+                        ? `Claim ${gold.pendingGold} gold!`
                         : "No gold to claim"}
                     </button>
                   </div>{" "}
