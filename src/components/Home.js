@@ -368,12 +368,6 @@ const Home = (props) => {
                 );
               })}
             </select>
-            <div className="new-summoner-button" onClick={getSummonerState}>
-              <img
-                src={process.env.PUBLIC_URL + "/img/dagger_new.png"}
-                alt="new-summoner"
-              />
-            </div>
           </div>
         </div>
         <div className="summoner-info">

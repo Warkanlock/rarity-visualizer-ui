@@ -269,14 +269,15 @@ select:disabled {
   margin: auto;
   color: #bf9b30;
   font-family: "DM Serif Display", serif;
-  width: 70%;
+  width: 100%;
+  height: 50px;
   border: 2px solid rgba(53, 26, 20, 1);
   border-radius: 5px;
   background: radial-gradient(
     circle,
     rgba(71, 35, 18, 1) 0%,
     rgba(52, 27, 24, 1) 30%,
-    rgba(42, 25, 23, 1) 91%
+    rgba(20, 100, 23, 1) 91%
   );
 }
 
