@@ -19,6 +19,7 @@ const SummonStats = ({
   gold,
   setSummonName,
   assignName,
+  levelUpPlayer,
 }) => {
   const [context] = useContext(RarityContext);
   const [amountXp, setAmountXp] = React.useState(0);
@@ -221,25 +222,18 @@ const SummonStats = ({
                 </div>
               </li>
               <li>
-                <div className="xp-spend">
-                  <ProgressBar done={(xp / xpRequired) * 100}></ProgressBar>
-                  <input
-                    onChange={updateAmount}
-                    max="1000"
-                    placeholder="XP to spend"
-                  />
-                  <button onClick={spendXp}>Spend XP</button>
+                <div className="d-flex">
+                  <p>
+                    Level: {level} {name.title}{" "}
+                  </p>
+                  <ProgressBar
+                    xp={xp}
+                    xpRequired={xpRequired}
+                    levelUpPlayer={levelUpPlayer}
+                  ></ProgressBar>
                 </div>
-                {/* <div className="xp-spend-required">
-                <p>Left: {xpToGo}</p>
-                <p>Required: {xpRequired}</p>
-              </div> */}
               </li>
-              <li>
-                <p>
-                  Level: {level} {name.title}{" "}
-                </p>
-              </li>
+              <li></li>
               <li>
                 <p>Class: {CLASSES_TYPE[classType]}</p>
               </li>

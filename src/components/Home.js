@@ -7,7 +7,7 @@ import { CLASSES_TYPE } from "../utils/classes";
 import { RARITY_SUMMONERS } from "../utils/config";
 import { useAuth } from "../hooks/useAuth";
 import DungeonModal from "./DungeonModal";
-import fetchRetry from "../utils/fetchRetry";
+import fetchRetry, { RetryContractCall } from "../utils/fetchRetry";
 
 const Home = (props) => {
   const [context] = useContext(RarityContext);
@@ -58,9 +58,9 @@ const Home = (props) => {
     const isReadyForAdventure = async () => {
       if (summonId != null && context.contract) {
         setLoadingAdventure(true);
-        const timestamp = await context.contract.methods
-          .adventurers_log(summonId)
-          .call();
+        const timestamp = await RetryContractCall(
+          context.contract.methods.adventurers_log(summonId)
+        );
         const milliseconds = timestamp * 1000; // 1575909015000
         const dateObject = new Date(milliseconds);
         setAdventureTime(dateObject);
@@ -71,9 +71,9 @@ const Home = (props) => {
     const haveNameSetted = async () => {
       if (summonId != null && context.contract_names) {
         setLoadingAdventure(true);
-        const summonName = await context.contract_names.methods
-          .summoner_name(summonId)
-          .call();
+        const summonName = await RetryContractCall(
+          context.contract_names.methods.summoner_name(summonId)
+        );
         setSummonName(summonName);
         setLoadingAdventure(false);
       }
@@ -106,41 +106,61 @@ const Home = (props) => {
     try {
       setLoading(true);
       if (summonId != null) {
-        const summonData = await context.contract.methods
-          .summoner(summonId)
-          .call();
+        const summonData = await RetryContractCall(
+          context.contract.methods.summoner(summonId)
+        );
 
-        const attributesData = await context.contract_attributes.methods
-          .ability_scores(summonId)
-          .call();
+        const attributesDataPromise = RetryContractCall(
+          context.contract_attributes.methods.ability_scores(summonId)
+        );
 
-        const levelPoints = await context.contract_attributes.methods
-          .level_points_spent(summonId)
-          .call();
+        const levelPointsPromise = RetryContractCall(
+          context.contract_attributes.methods.level_points_spent(summonId)
+        );
 
-        const xpRequired = await context.contract.methods
-          .xp_required(summonData[3])
-          .call();
+        const xpRequiredPromise = RetryContractCall(
+          context.contract.methods.xp_required(summonData[3])
+        );
 
-        const fullName = await context.contract_names.methods
-          .full_name(summonId)
-          .call();
+        const fullNamePromise = RetryContractCall(
+          context.contract_names.methods.full_name(summonId)
+        );
 
-        const summonName = await context.contract_names.methods
-          .summoner_name(summonId)
-          .call();
+        const summonNamePromise = RetryContractCall(
+          context.contract_names.methods.summoner_name(summonId)
+        );
 
-        const title = await context.contract_names.methods
-          .title(summonData[3])
-          .call();
+        const titlePromise = RetryContractCall(
+          context.contract_names.methods.title(summonData[3])
+        );
 
-        const playerGold = await context.contract_gold.methods
-          .claimed(summonId)
-          .call();
+        const playerGoldPromise = RetryContractCall(
+          context.contract_gold.methods.claimed(summonId)
+        );
 
-        const pendingGold = await context.contract_gold.methods
-          .claimable(summonId)
-          .call();
+        const pendingGoldPromise = RetryContractCall(
+          context.contract_gold.methods.claimable(summonId)
+        );
+
+        const [
+          attributesData,
+          levelPoints,
+          xpRequired,
+          fullName,
+          summonName,
+          title,
+          playerGold,
+          pendingGold,
+        ] = await Promise.all([
+          attributesDataPromise,
+          levelPointsPromise,
+          xpRequiredPromise,
+          fullNamePromise,
+          summonNamePromise,
+          titlePromise,
+          playerGoldPromise,
+          pendingGoldPromise,
+        ]);
 
         setSummonData({
           name: {
@@ -326,7 +346,7 @@ const Home = (props) => {
               placeholder="Summoner ID"
               className="summon-id-input"
               name="summonId"
-              value={summonId}
+              value={summonId || 0}
               onChange={changeSummonId}
             >
               {summoners.map((summon) => {
@@ -434,16 +454,6 @@ const Home = (props) => {
         >
           Dungeons
         </button>
-        <button
-          disabled={summonId === null}
-          onClick={levelUpPlayer}
-          style={{
-            backgroundColor: "rgb(27, 98, 136)",
-            border: "2px solid rgb(24, 54, 74)",
-          }}
-        >
-          Level up
-        </button>
       </div>
       {summonData != null && (
         <SummonStats
@@ -451,6 +461,7 @@ const Home = (props) => {
           summonName={summonName}
           setSummonName={setSummonName}
           assignName={assignName}
+          levelUpPlayer={levelUpPlayer}
           {...summonData}
         ></SummonStats>
       )}

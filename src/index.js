@@ -5,10 +5,8 @@ import { RarityProvider } from "./context/RarityProvider";
 import App from "./App";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <RarityProvider>
-      <App />
-    </RarityProvider>
-  </React.StrictMode>,
+  <RarityProvider>
+    <App />
+  </RarityProvider>,
   document.getElementById("root")
 );

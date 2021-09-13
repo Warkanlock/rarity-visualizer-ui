@@ -385,24 +385,40 @@ select:disabled {
 }
 
 .progress {
-  background-color: rgb(27, 98, 136);
-  margin: 15px 0;
-  height: 30px;
-  width: 300px;
+  color: #bf9b30;
+  border: 2px solid rgba(53, 26, 20, 1);
+  border-radius: 5px;
+  background: radial-gradient(
+    circle,
+    rgba(71, 35, 18, 1) 0%,
+    rgba(52, 27, 24, 1) 30%,
+    rgba(42, 25, 23, 1) 91%
+  );
+  margin: auto 0 auto auto;
+  height: 25px;
+  width: 60%;
+  border-radius: 5px;
+  position: relative;
 }
 
 .progress-done {
-  background: linear-gradient(to left, #bf9b30, #ff9472);
-  box-shadow: 0 3px 3px -5px #bf9b30, 0 2px 5px #bf9b30;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: linear-gradient(to left, #be6314, #6e2b16);
+  height: inherit;
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.progress .total {
+  position: relative;
+  margin: auto !important;
+  text-align: center;
+  color: white;
   height: 100%;
-  width: 0;
-  opacity: 0;
-  margin: auto;
-  transition: 1s ease 0.3s;
+  line-height: 25px;
 }
 
 .xp-spend-required {
