@@ -112,25 +112,25 @@ const SummonStats = ({
     }
   };
 
-  const spendXp = async () => {
-    try {
-      if (summonId != null) {
-        await context.contract.methods
-          .spend_xp(summonId, amountXp)
-          .send({ from: context.accounts[0] });
-        NotificationManager.success(
-          `Summoner spent ${amountXp} xp`,
-          "Information"
-        );
-      }
-    } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
-    }
-  };
+  // const spendXp = async () => {
+  //   try {
+  //     if (summonId != null) {
+  //       await context.contract.methods
+  //         .spend_xp(summonId, amountXp)
+  //         .send({ from: context.accounts[0] });
+  //       NotificationManager.success(
+  //         `Summoner spent ${amountXp} xp`,
+  //         "Information"
+  //       );
+  //     }
+  //   } catch (ex) {
+  //     NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+  //   }
+  // };
 
-  const updateAmount = (event) => {
-    setAmountXp(event.target.value);
-  };
+  // const updateAmount = (event) => {
+  //   setAmountXp(event.target.value);
+  // };
 
   const confirmPoints = async () => {
     try {
