@@ -128,7 +128,7 @@ const Home = () => {
         );
 
         const playerGoldPromise = RetryContractCall(
-          context.contract_gold.methods.claimed(summonId)
+          context.contract_gold.methods.balanceOf(summonId)
         );
 
         const pendingGoldPromise = RetryContractCall(
@@ -162,7 +162,7 @@ const Home = () => {
             title,
           },
           gold: {
-            playerGold,
+            playerGold: parseFloat(playerGold) / Math.pow(10, 18),
             pendingGold: parseFloat(pendingGold) / Math.pow(10, 18),
           },
           xp: parseFloat(summonData[0]) / Math.pow(10, 18),
