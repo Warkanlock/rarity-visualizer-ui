@@ -23,6 +23,7 @@ const SummonStats = ({
 }) => {
   const [context] = useContext(RarityContext);
   const [amountXp, setAmountXp] = React.useState(0);
+  const [editedName, setEditedName] = React.useState(summonName);
   const [editingName, setEditingName] = React.useState(false);
 
   const [mapAttributes, setMapAttributes] = React.useState(
@@ -176,38 +177,77 @@ const SummonStats = ({
             <ul className="stats-list">
               <li>
                 <div className="summon-name">
-                  <p className="summon-name-indicator">
-                    {summonName ? summonName : "Unknown"}
-                    {summonName && !editingName && (
-                      <img
-                        src={process.env.PUBLIC_URL + "/img/edit-feather.png"}
-                        onClick={() => setEditingName(true)}
-                        alt="edit-name"
-                      />
-                    )}
+                  <p>
+                    <span>Summoner Name:</span>
+                    {editedName ? editedName : "Unknown"}
                   </p>
-                  {(!summonName || editingName) && (
+                  {editedName && !editingName && (
+                    <img
+                      src={process.env.PUBLIC_URL + "/img/edit-feather.png"}
+                      onClick={() => setEditingName(true)}
+                      alt="edit-name"
+                    />
+                  )}
+                  {(!editedName || editingName) && (
                     <>
                       <input
-                        onChange={(e) => setSummonName(e.target.value)}
+                        onChange={(e) => setEditedName(e.target.value)}
                         max="1000"
                         placeholder="Warrior name"
                       />
-                      <button onClick={assignName}>
-                        {summonName ? "Rename" : "Assign"}
+                      <button
+                        onClick={() => {
+                          setSummonName(editedName);
+                          assignName();
+                        }}
+                      >
+                        {editedName ? "Rename" : "Assign"}
                       </button>
+                      <p
+                        style={{
+                          color: "red",
+                          cursor: "pointer",
+                          margin: "0 5px",
+                          padding: "0px",
+                          overflow: "unset",
+                        }}
+                        onClick={() => {
+                          setEditingName(false);
+                          setEditedName(summonName);
+                        }}
+                      >
+                        X
+                      </p>
                     </>
                   )}
                 </div>
               </li>
               <li>
+                <div className="d-flex">
+                  <p>
+                    <span>Level:</span> {level} {name.title}{" "}
+                  </p>
+                  <ProgressBar
+                    xp={xp}
+                    xpRequired={xpRequired}
+                    levelUpPlayer={levelUpPlayer}
+                  ></ProgressBar>
+                </div>
+              </li>
+              <li>
+                <p>
+                  <span>Class:</span> {CLASSES_TYPE[classType]}
+                </p>
+              </li>
+              <li>
                 <div className="claim-gold">
                   <div className="claim-gold-container">
+                    <span>Gold:</span>
+                    <p className="gold-indicator">{gold.playerGold}</p>
                     <img
                       alt="coin"
                       src={process.env.PUBLIC_URL + "/img/coin.png"}
                     />
-                    <div className="gold-indicator">{gold.playerGold}</div>
                   </div>
                   <div className="claim-gold-container">
                     <button
@@ -222,24 +262,8 @@ const SummonStats = ({
                 </div>
               </li>
               <li>
-                <div className="d-flex">
-                  <p>
-                    Level: {level} {name.title}{" "}
-                  </p>
-                  <ProgressBar
-                    xp={xp}
-                    xpRequired={xpRequired}
-                    levelUpPlayer={levelUpPlayer}
-                  ></ProgressBar>
-                </div>
-              </li>
-              <li></li>
-              <li>
-                <p>Class: {CLASSES_TYPE[classType]}</p>
-              </li>
-              <li>
                 <p>
-                  Attributes point: <i>({totalPointsToSpend})</i> +{" "}
+                  <span>Attributes point:</span> <i>({totalPointsToSpend})</i> +{" "}
                   {levelPoints}
                 </p>
               </li>

@@ -349,19 +349,6 @@ select:disabled {
   width: 49.5%;
 }
 
-.xp-spend,
-.summon-name {
-  display: flex;
-  justify-content: space-between;
-  margin: -10px 0;
-}
-
-.xp-spend p,
-.summon-name p {
-  flex: 2;
-}
-
-.xp-spend input,
 .summon-name input {
   text-align: center;
   color: #bf9b30;
@@ -377,7 +364,6 @@ select:disabled {
   margin-right: 10px;
 }
 
-.xp-spend input:focus,
 .summon-name input:focus {
   outline: none !important;
   border: 1px solid #bf9b30;
@@ -421,17 +407,6 @@ select:disabled {
   line-height: 25px;
 }
 
-.xp-spend-required {
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
-  align-items: center;
-}
-
-.summon-name-indicator {
-  font-size: 24px;
-}
-
 .claim-gold {
   display: flex;
   align-items: center;
@@ -444,22 +419,19 @@ select:disabled {
 }
 
 .claim-gold-container {
-  width: 250px;
-  display: flex;
   display: flex;
   align-items: center;
   align-content: center;
 }
 
 .gold-indicator {
-  margin: 10px;
-  font-size: 24px;
+  margin: 0 10px !important;
 }
 
 .claim-gold img {
   display: block;
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
 }
 
 .dungeon-modal-body {
@@ -522,7 +494,6 @@ select:disabled {
   background-color: white;
 }
 
-.xp-spend button,
 .summon-name button,
 .claim-gold button {
   font-family: "MedievalSharp", cursive;
@@ -789,12 +760,26 @@ select:disabled {
 
 .summon-name {
   display: flex;
-  justify-content: space-between;
-  margin: -10px 0;
+  align-items: center;
+  align-content: center;
+}
+
+.summon-name p{
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.summon-name span {
+  margin-right: 5px;
 }
 
 .stats-list p {
-  margin: 10px 0;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.stats-list span {
+  font-weight: bold;
 }
 
 .stats-list input,
@@ -805,6 +790,7 @@ select:disabled {
 .summon-name img {
   cursor: pointer;
   margin-left: 10px;
-  height: 18px;
-  width: 18px;
+  display: block;
+  height: 25px;
+  width: 25px;
 }

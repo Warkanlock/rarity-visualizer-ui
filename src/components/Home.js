@@ -326,7 +326,13 @@ const Home = (props) => {
               (loadingAdventure ? (
                 <div>...</div>
               ) : (
-                <div style={{ textAlign: "center" }}>
+                <div
+                  style={{
+                    textAlign: "center",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
                   &#9679;{summonName}&#9679;
                 </div>
               ))}
