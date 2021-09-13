@@ -21,4 +21,19 @@ async function fetchRetry(url, delay, tries, fetchOptions = {}) {
   return result;
 }
 
+export async function RetryContractCall(method, delay = 500, tries = 3) {
+  function onError(err) {
+    var triesLeft = tries - 1;
+    if (!triesLeft) {
+      throw err;
+    }
+
+    return wait(delay).then(() => RetryContractCall(method, delay, triesLeft));
+  }
+
+  const response = await method.call().catch(onError);
+
+  return response;
+}
+
 export default fetchRetry;
