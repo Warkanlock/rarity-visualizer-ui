@@ -66,12 +66,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
     const isReadyForAdventure = async () => {
       if (summonId != null && context.contract) {
         setLoading(true);
-        const timestamp = await RetryContractCall(
-          context.contract_dungeons.methods.adventurers_log(summonId)
-        );
-        const milliseconds = timestamp * 1000;
-        const dateObject = new Date(milliseconds);
-        setAdventureTime(dateObject);
+        await getAdventureTime();
         setLoading(false);
       }
     };
@@ -83,6 +78,15 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setShowDungeonModal]);
+
+  const getAdventureTime = async () => {
+    const timestamp = await RetryContractCall(
+      context.contract_dungeons.methods.adventurers_log(summonId)
+    );
+    const milliseconds = timestamp * 1000;
+    const dateObject = new Date(milliseconds);
+    setAdventureTime(dateObject);
+  };
 
   const closeOnEscapeKeyDown = (e) => {
     if ((e.charCode || e.keyCode) === 27) {
@@ -97,6 +101,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
       await context.contract_dungeons.methods
         .adventure(summonId)
         .send({ from: context.accounts[0] });
+      await getAdventureTime();
       toast.update(id, {
         render: `Summoner started exploring the dungeon!`,
         type: "success",
@@ -120,12 +125,23 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
       const response = await RetryContractCall(
         context.contract_dungeons.methods.scout(summonId)
       );
-      toast.update(id, {
-        render: `After scouting the dungeon ${Number(response)} rewards found`,
-        type: "success",
-        isLoading: false,
-        autoClose: 3000,
-      });
+      if (Number(response) === 0) {
+        toast.update(id, {
+          render: `This dungeon is too dangerous for you... You won't find anything here`,
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      } else {
+        toast.update(id, {
+          render: `After scouting the dungeon ~${Number(
+            response
+          )} rewards found`,
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      }
     } catch (ex) {
       toast.update(id, {
         render: `Something went wrong! ${JSON.stringify(ex)}`,
