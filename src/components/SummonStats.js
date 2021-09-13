@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { NotificationManager } from "react-notifications";
 import { RarityContext } from "../context/RarityProvider";
 import { CLASSES_TYPE } from "../utils/classes";
@@ -24,17 +24,15 @@ const SummonStats = ({
   const [context] = useContext(RarityContext);
   const [editedName, setEditedName] = React.useState(summonName);
   const [editingName, setEditingName] = React.useState(false);
+  const [tempAttributes, setTempAttributes] = React.useState(attributes);
 
-  const [mapAttributes, setMapAttributes] = React.useState(
-    Object.keys(attributes).reduce((acc, item) => {
-      acc[item] = Number(attributes[item]) + 8;
-      return acc;
-    }, {})
-  );
+  useEffect(() => {
+    setTempAttributes(attributes);
+  }, [attributes]);
 
   const [totalPointsToSpend, setTotalPointsToSpend] = React.useState(
-    Object.keys(mapAttributes).reduce(
-      (acc, item) => acc + mapAttributes[item],
+    Object.keys(tempAttributes).reduce(
+      (acc, item) => acc + tempAttributes[item],
       0
     ) === 48
       ? RARITY_BASE_MAX_SCORE
@@ -42,21 +40,26 @@ const SummonStats = ({
   );
 
   const computeAssingAttributes = (attr) => {
-    if (attr <= 14) {
-      return 1;
-    }
-    if (attr > 14 && attr <= 16) {
-      return 2;
-    } else if (attr >= 17) {
-      return 3;
-    } else {
-      return 1;
-    }
+    const newAttributes = { ...tempAttributes };
+    newAttributes[attr] += 1;
+    const totalComputeCost = Object.keys(newAttributes).reduce((acc, item) => {
+      const computeLevelingScore = (value) => {
+        const base = value - 8;
+        if (value <= 14) {
+          return base;
+        } else {
+          return Math.floor(base ** 2 / 6);
+        }
+      };
+      return acc + computeLevelingScore(newAttributes[item]);
+    }, 0);
+
+    return RARITY_BASE_MAX_SCORE - totalComputeCost < 0;
   };
 
   React.useEffect(() => {
-    if (mapAttributes) {
-      const totalComputeCost = Object.keys(mapAttributes).reduce(
+    if (tempAttributes) {
+      const totalComputeCost = Object.keys(tempAttributes).reduce(
         (acc, item) => {
           const computeLevelingScore = (value) => {
             const base = value - 8;
@@ -66,16 +69,15 @@ const SummonStats = ({
               return Math.floor(base ** 2 / 6);
             }
           };
-          return acc + computeLevelingScore(mapAttributes[item]);
+          return acc + computeLevelingScore(tempAttributes[item]);
         },
         0
       );
-
       setTotalPointsToSpend(
         Math.ceil(RARITY_BASE_MAX_SCORE - totalComputeCost)
       );
     }
-  }, [mapAttributes]);
+  }, [tempAttributes]);
 
   const increase_by_skill = async (attr) => {
     try {
@@ -95,54 +97,35 @@ const SummonStats = ({
 
   const increase = async (attr) => {
     if (!(totalPointsToSpend <= 0)) {
-      setMapAttributes({
-        ...mapAttributes,
-        [attr]: mapAttributes[attr] + 1,
-      });
+      setTempAttributes((prevState) => ({
+        ...prevState,
+        [attr]: prevState[attr] + 1,
+      }));
     }
   };
 
   const decrease = async (attr) => {
     if (totalPointsToSpend >= 0) {
-      setMapAttributes({
-        ...mapAttributes,
-        [attr]: mapAttributes[attr] - 1,
-      });
+      setTempAttributes((prevState) => ({
+        ...prevState,
+        [attr]: prevState[attr] - 1,
+      }));
     }
   };
 
-  // const spendXp = async () => {
-  //   try {
-  //     if (summonId != null) {
-  //       await context.contract.methods
-  //         .spend_xp(summonId, amountXp)
-  //         .send({ from: context.accounts[0] });
-  //       NotificationManager.success(
-  //         `Summoner spent ${amountXp} xp`,
-  //         "Information"
-  //       );
-  //     }
-  //   } catch (ex) {
-  //     NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
-  //   }
-  // };
-
-  // const updateAmount = (event) => {
-  //   setAmountXp(event.target.value);
-  // };
-
   const confirmPoints = async () => {
+    if (totalPointsToSpend) return;
     try {
       if (summonId != null) {
         await context.contract_attributes.methods
           .point_buy(
             summonId,
-            mapAttributes?.strength || 8,
-            mapAttributes?.dexterity || 8,
-            mapAttributes?.constitution || 8,
-            mapAttributes?.intelligence || 8,
-            mapAttributes?.wisdom || 8,
-            mapAttributes?.charisma || 8
+            tempAttributes?.strength || 8,
+            tempAttributes?.dexterity || 8,
+            tempAttributes?.constitution || 8,
+            tempAttributes?.intelligence || 8,
+            tempAttributes?.wisdom || 8,
+            tempAttributes?.charisma || 8
           )
           .send({ from: context.accounts[0] });
         NotificationManager.success(
@@ -169,7 +152,7 @@ const SummonStats = ({
   };
 
   return (
-    mapAttributes && (
+    attributes && (
       <>
         <div className="summoner-stats">
           <div className="container-box summoner-information">
@@ -269,26 +252,25 @@ const SummonStats = ({
             </ul>
           </div>
           <div className="container-box summoner-attributes">
-            {Object.keys(attributes).map((attr) => {
+            {Object.keys(tempAttributes).map((attr) => {
               return (
                 <React.Fragment key={`class-${attr}`}>
                   <div className="summoner-attribute-container">
                     <button
                       onClick={() => decrease(attr)}
                       type="button"
-                      disabled={mapAttributes[attr] === 8}
+                      disabled={attributes[attr] === tempAttributes[attr]}
                     >
                       -
                     </button>
                     <div className="summoner-attribute">
                       {attr[0].toUpperCase() + attr.slice(1)}:{" "}
-                      <span className="golden-font">{mapAttributes[attr]}</span>
+                      <span className="golden-font">
+                        {tempAttributes[attr]}
+                      </span>
                     </div>
                     <button
-                      disabled={
-                        totalPointsToSpend <
-                        computeAssingAttributes(mapAttributes[attr])
-                      }
+                      disabled={computeAssingAttributes(attr)}
                       onClick={() => increase(attr)}
                       type="button"
                     >
@@ -310,6 +292,7 @@ const SummonStats = ({
               <button
                 className="confirm-points-summoner"
                 onClick={() => confirmPoints()}
+                disabled={totalPointsToSpend !== 0}
               >
                 Confirm points ({totalPointsToSpend})
               </button>
