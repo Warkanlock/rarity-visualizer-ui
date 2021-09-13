@@ -240,6 +240,7 @@ select:disabled {
 
 .assign-points-summoner {
   color: white;
+  font-family: "DM Serif Display", serif;
   font-size: 14px !important;
   background-color: #be6314 !important;
 }
