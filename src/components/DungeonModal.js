@@ -232,7 +232,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
                   </div>
                 </div>
                 <div className="modal-footer">
-                  Be careful...you don't know how much pain you can find
+                  If you fight without rewards, do you fight the same?
                 </div>
               </>
             )}
