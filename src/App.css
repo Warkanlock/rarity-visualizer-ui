@@ -207,6 +207,20 @@ select:disabled {
   display: flex;
 }
 
+.nav-link, .tab {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 30px;
+  color: white;
+  text-decoration: none;
+}
+
+.nav-link.selected, .tab.selected {
+  font-weight: bold;
+  color: #ddaf26;
+  text-shadow: #ccc 0 0 15px;
+}
+
 .navigation-bar span {
   display: inline-flex;
   align-items: center;

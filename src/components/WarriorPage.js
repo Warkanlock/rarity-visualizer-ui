@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
 import { SummonStats } from "./SummonStats";
 import { CLASSES_TYPE } from "../utils/classes";
@@ -8,6 +9,7 @@ import { useAuth } from "../hooks/useAuth";
 import fetchRetry, { RetryContractCall } from "../utils/fetchRetry";
 import { RARITY_SUMMONERS } from "../utils/config";
 import { reduceNumber } from "../utils";
+import Tabs from "./Tabs";
 
 const WarriorPage = ({
   summonId,
@@ -24,6 +26,7 @@ const WarriorPage = ({
   const [summonName, setSummonName] = useState(null);
   const [loadingAdventure, setLoadingAdventure] = useState(false);
   const [showDungeonModal, setShowDungeonModal] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
 
   const walletAddress = context.walletAddress;
 
@@ -414,19 +417,33 @@ const WarriorPage = ({
           </div>
         </div>
       </div>
-      {summonData != null && (
-        <SummonStats
-          summonId={summonId}
-          summonName={summonName}
-          setSummonName={setSummonName}
-          assignName={assignName}
-          levelUpPlayer={levelUpPlayer}
-          refreshView={async () => {
-            await getSummonerState();
-          }}
-          {...summonData}
-        ></SummonStats>
-      )}
+      <Tabs>
+        <div label="Stats">
+          {summonData != null && (
+            <SummonStats
+              summonId={summonId}
+              summonName={summonName}
+              setSummonName={setSummonName}
+              assignName={assignName}
+              levelUpPlayer={levelUpPlayer}
+              refreshView={async () => {
+                await getSummonerState();
+              }}
+              {...summonData}
+            ></SummonStats>
+          )}
+        </div>
+        <div label="Skills">
+          <div style={{ textAlign: "center" }}>
+            <h1>Coming soon!</h1>
+          </div>
+        </div>
+        <div label="Inventory">
+          <div style={{ textAlign: "center" }}>
+            <h1>Coming soon!</h1>
+          </div>
+        </div>
+      </Tabs>
     </React.Fragment>
   );
 };

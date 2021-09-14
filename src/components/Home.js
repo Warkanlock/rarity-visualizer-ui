@@ -5,7 +5,7 @@ import { RarityContext } from "../context/RarityProvider";
 import { Route, Switch } from "react-router";
 import WarriorPage from "./WarriorPage";
 import YourWarriorsPage from "./YourWarriosPage";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Home = () => {
   const [context] = useContext(RarityContext);
@@ -59,12 +59,17 @@ const Home = () => {
       )}
       <div className="container-box">
         <nav className="navigation-bar">
-          <Link style={{ marginRight: "10px" }} to="/">
-            Warrior stats
-          </Link>
-          <Link style={{ marginRight: "10px" }} to="/Warriors">
-            Your warriors
-          </Link>
+          <NavLink exact className="nav-link" activeClassName="selected" to="/">
+            Home
+          </NavLink>
+          <NavLink
+            exact
+            className="nav-link"
+            activeClassName="selected"
+            to="/Warriors"
+          >
+            Warriors
+          </NavLink>
           <button
             className="summon-new"
             disabled={summonId === null}
@@ -76,10 +81,10 @@ const Home = () => {
         </nav>
       </div>
       <Switch>
-        <Route path="/Warriors">
+        <Route exact path="/Warriors">
           <YourWarriorsPage />
         </Route>
-        <Route path="/">
+        <Route path="/*">
           <WarriorPage
             summonId={summonId}
             setSummonId={setSummonId}

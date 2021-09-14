@@ -185,156 +185,148 @@ const SummonStats = ({
   return (
     attributes && (
       <>
-        <div className="container-box">
-          <div className="tabs">
-            <span style={{ marginRight: "20px" }}>Stats</span>
-            <span style={{ marginRight: "20px" }}>Skills</span>
-            <span style={{ marginRight: "20px" }}>Inventory</span>
-            <hr style={{ opacity: 0.3 }} />
-          </div>
-          <div className="summoner-stats">
-            <div className="summoner-information">
-              <ul className="stats-list">
-                <li>
-                  <div className="summon-name">
-                    <p>
-                      <span>Summoner Name:</span>
-                      {summonName ? summonName : "Unknown"}
-                    </p>
-                    {summonName && !editingName && (
-                      <img
-                        src={process.env.PUBLIC_URL + "/img/edit-feather.png"}
-                        onClick={() => setEditingName(true)}
-                        alt="edit-name"
+        <div className="summoner-stats">
+          <div className="summoner-information">
+            <ul className="stats-list">
+              <li>
+                <div className="summon-name">
+                  <p>
+                    <span>Summoner Name:</span>
+                    {summonName ? summonName : "Unknown"}
+                  </p>
+                  {summonName && !editingName && (
+                    <img
+                      src={process.env.PUBLIC_URL + "/img/edit-feather.png"}
+                      onClick={() => setEditingName(true)}
+                      alt="edit-name"
+                    />
+                  )}
+                  {(!summonName || editingName) && (
+                    <>
+                      <input
+                        onChange={(e) => setEditedName(e.target.value)}
+                        max="1000"
+                        placeholder="Warrior name"
                       />
-                    )}
-                    {(!summonName || editingName) && (
-                      <>
-                        <input
-                          onChange={(e) => setEditedName(e.target.value)}
-                          max="1000"
-                          placeholder="Warrior name"
-                        />
-                        <button
+                      <button
+                        onClick={() => {
+                          assignName(editedName);
+                        }}
+                      >
+                        {summonName ? "Rename" : "Assign"}
+                      </button>
+                      {summonName && (
+                        <p
+                          style={{
+                            color: "red",
+                            cursor: "pointer",
+                            margin: "0 5px",
+                            padding: "0px",
+                            overflow: "unset",
+                          }}
                           onClick={() => {
-                            assignName(editedName);
+                            setEditingName(false);
+                            setEditedName(summonName);
                           }}
                         >
-                          {summonName ? "Rename" : "Assign"}
-                        </button>
-                        {summonName && (
-                          <p
-                            style={{
-                              color: "red",
-                              cursor: "pointer",
-                              margin: "0 5px",
-                              padding: "0px",
-                              overflow: "unset",
-                            }}
-                            onClick={() => {
-                              setEditingName(false);
-                              setEditedName(summonName);
-                            }}
-                          >
-                            X
-                          </p>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </li>
-                <li>
-                  <div className="d-flex">
-                    <p>
-                      <span>Level:</span> {level} {name.title}{" "}
-                    </p>
-                    <ProgressBar
-                      xp={xp}
-                      xpRequired={xpRequired}
-                      levelUpPlayer={levelUpPlayer}
-                    ></ProgressBar>
-                  </div>
-                </li>
-                <li>
+                          X
+                        </p>
+                      )}
+                    </>
+                  )}
+                </div>
+              </li>
+              <li>
+                <div className="d-flex">
                   <p>
-                    <span>Class:</span> {CLASSES_TYPE[classType]}
+                    <span>Level:</span> {level} {name.title}{" "}
                   </p>
-                </li>
-                <li>
-                  <div className="claim-gold">
-                    <div className="claim-gold-container">
-                      <span>Gold:</span>
-                      <p className="gold-indicator">{gold.playerGold}</p>
-                      <img
-                        alt="coin"
-                        src={process.env.PUBLIC_URL + "/img/coin.png"}
-                      />
-                    </div>
-                    <div className="claim-gold-container">
-                      <button
-                        onClick={claimGold}
-                        disabled={Number(gold.pendingGold) === 0}
-                      >
-                        {Number(gold.pendingGold) > 0
-                          ? `Claim ${gold.pendingGold} gold!`
-                          : "No gold to claim"}
-                      </button>
-                    </div>{" "}
+                  <ProgressBar
+                    xp={xp}
+                    xpRequired={xpRequired}
+                    levelUpPlayer={levelUpPlayer}
+                  ></ProgressBar>
+                </div>
+              </li>
+              <li>
+                <p>
+                  <span>Class:</span> {CLASSES_TYPE[classType]}
+                </p>
+              </li>
+              <li>
+                <div className="claim-gold">
+                  <div className="claim-gold-container">
+                    <span>Gold:</span>
+                    <p className="gold-indicator">{gold.playerGold}</p>
+                    <img
+                      alt="coin"
+                      src={process.env.PUBLIC_URL + "/img/coin.png"}
+                    />
                   </div>
-                </li>
-                <li>
-                  <p>
-                    <span>Attributes point:</span> <i>({totalPointsToSpend})</i>{" "}
-                    + {levelPoints}
-                  </p>
-                </li>
-              </ul>
-            </div>
-            <div className="summoner-attributes">
-              {Object.keys(tempAttributes).map((attr) => {
-                return (
-                  <React.Fragment key={`class-${attr}`}>
-                    <div className="summoner-attribute-container">
-                      <button
-                        onClick={() => decrease(attr)}
-                        type="button"
-                        disabled={attributes[attr] === tempAttributes[attr]}
-                      >
-                        -
-                      </button>
-                      <div className="summoner-attribute">
-                        {attr[0].toUpperCase() + attr.slice(1)}:{" "}
-                        <span className="golden-font">
-                          {tempAttributes[attr]}
-                        </span>
-                      </div>
-                      <button
-                        disabled={computeAssingAttributes(attr)}
-                        onClick={() => increase(attr)}
-                        type="button"
-                      >
-                        +
-                      </button>
-                      <button
-                        className="assign-points-summoner"
-                        type="button"
-                        onClick={() => increase_by_skill(attr)}
-                        disabled={!(levelPoints > 0)}
-                      >
-                        Assign
-                      </button>
+                  <div className="claim-gold-container">
+                    <button
+                      onClick={claimGold}
+                      disabled={Number(gold.pendingGold) === 0}
+                    >
+                      {Number(gold.pendingGold) > 0
+                        ? `Claim ${gold.pendingGold} gold!`
+                        : "No gold to claim"}
+                    </button>
+                  </div>{" "}
+                </div>
+              </li>
+              <li>
+                <p>
+                  <span>Attributes point:</span> <i>({totalPointsToSpend})</i> +{" "}
+                  {levelPoints}
+                </p>
+              </li>
+            </ul>
+          </div>
+          <div className="summoner-attributes">
+            {Object.keys(tempAttributes).map((attr) => {
+              return (
+                <React.Fragment key={`class-${attr}`}>
+                  <div className="summoner-attribute-container">
+                    <button
+                      onClick={() => decrease(attr)}
+                      type="button"
+                      disabled={attributes[attr] === tempAttributes[attr]}
+                    >
+                      -
+                    </button>
+                    <div className="summoner-attribute">
+                      {attr[0].toUpperCase() + attr.slice(1)}:{" "}
+                      <span className="golden-font">
+                        {tempAttributes[attr]}
+                      </span>
                     </div>
-                  </React.Fragment>
-                );
-              })}
-              <button
-                className="confirm-points-summoner"
-                onClick={() => confirmPoints()}
-                disabled={totalPointsToSpend !== 0}
-              >
-                Confirm points ({totalPointsToSpend})
-              </button>
-            </div>
+                    <button
+                      disabled={computeAssingAttributes(attr)}
+                      onClick={() => increase(attr)}
+                      type="button"
+                    >
+                      +
+                    </button>
+                    <button
+                      className="assign-points-summoner"
+                      type="button"
+                      onClick={() => increase_by_skill(attr)}
+                      disabled={!(levelPoints > 0)}
+                    >
+                      Assign
+                    </button>
+                  </div>
+                </React.Fragment>
+              );
+            })}
+            <button
+              className="confirm-points-summoner"
+              onClick={() => confirmPoints()}
+              disabled={totalPointsToSpend !== 0}
+            >
+              Confirm points ({totalPointsToSpend})
+            </button>
           </div>
         </div>
       </>
