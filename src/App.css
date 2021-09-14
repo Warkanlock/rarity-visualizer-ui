@@ -240,6 +240,7 @@ select:disabled {
 
 .assign-points-summoner {
   color: white;
+  font-family: "DM Serif Display", serif;
   font-size: 14px !important;
   background-color: #be6314 !important;
 }
@@ -446,6 +447,9 @@ select:disabled {
 .dungeon-image {
   outline: none !important;
   border: 1px solid #bf9b30;
+  max-height: 200px;
+  max-width: 338px;
+  width: 338px;
   box-shadow: 0 0 10px #bf9b30;
   margin: 40px 0px;
 }
@@ -470,6 +474,7 @@ select:disabled {
 .dungeon-container-right {
   display: flex;
   flex-direction: column;
+  display: block;
   width: 50%;
 }
 
@@ -481,6 +486,7 @@ select:disabled {
   color: white;
   font-weight: bolder;
   font-size: 24px;
+  width: 50%;
   background-color: #be6314;
 }
 
@@ -551,8 +557,7 @@ select:disabled {
 .dungeon-buttons-thecellar {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  height: 50%;
+  justify-content: center;
 }
 
 .dungeon-buttons-thecellar button:disabled {

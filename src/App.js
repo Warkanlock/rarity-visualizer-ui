@@ -4,14 +4,10 @@ import React, { useContext, useState } from "react";
 import "./App.css";
 import { RarityContext } from "./context/RarityProvider";
 import { Home } from "./components/Home";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
 import { setupContracts } from "./context/RarityContracts";
 import { useAuth } from "./hooks/useAuth";
 import { FANTOM_ID, FANTOM_NETWORK } from "./utils/config";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -29,7 +25,8 @@ function App() {
       if (window.ethereum && provider) {
         const webId = await provider.eth.net.getId();
         if (webId !== FANTOM_ID) {
-          NotificationManager.error("Please, use Fantom network");
+          toast.error("Please, use Fantom network");
+
           await window.ethereum.request(FANTOM_NETWORK);
           refreshView(!refresh);
         } else {
@@ -39,14 +36,12 @@ function App() {
           if (contracts) {
             setContext(contracts);
           } else {
-            NotificationManager.error(
-              "Something bad happen. Please refresh the page."
-            );
+            toast.error("Something bad happen. Please refresh the page.");
           }
         }
       } else {
         if (update) {
-          NotificationManager.info("Wallet Disconnected");
+          toast.info("Wallet Disconnected");
         }
       }
     } catch (ex) {
@@ -95,7 +90,6 @@ function App() {
         pauseOnHover
         theme={"dark"}
       />
-      <NotificationContainer />
       <footer>
         Made with 💙 by <a href="https://twitter.com/@txxnano">@txxnano</a>{" "}
         (tips <code>0xC0a210490f9e0968D24372459780D694F18694D4</code>)

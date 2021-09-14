@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RarityContext } from "../context/RarityProvider";
 import { SummonStats } from "./SummonStats";
-import { NotificationManager } from "react-notifications";
-import "react-notifications/lib/notifications.css";
 import { CLASSES_TYPE } from "../utils/classes";
 import { RARITY_SUMMONERS } from "../utils/config";
 import { useAuth } from "../hooks/useAuth";
@@ -11,8 +9,9 @@ import fetchRetry, { RetryContractCall } from "../utils/fetchRetry";
 import ForestModal from "./ForestModal";
 import SummonNewWarriorModal from "./SummonNewWarriorModal";
 import { toast } from "react-toastify";
+import { reduceNumber } from "../utils";
 
-const Home = (props) => {
+const Home = () => {
   const [context] = useContext(RarityContext);
   const [, , , update] = useAuth();
   const [summonData, setSummonData] = useState(null);
@@ -21,7 +20,6 @@ const Home = (props) => {
   const [adventureTime, setAdventureTime] = useState(null);
   const [loading, setLoading] = useState(false);
   const [summonName, setSummonName] = useState(null);
-  const [summoning, setSummoning] = useState(false);
   const [loadingAdventure, setLoadingAdventure] = useState(false);
   const [showDungeonModal, setShowDungeonModal] = useState(false);
   const [showForestModal, setShowForestModal] = useState(false);
@@ -46,29 +44,40 @@ const Home = (props) => {
           if (summonsId) setSummoners(summonsId);
         }
       } catch {
-        NotificationManager.error("Something bad happened");
+        toast.error("Something bad happened");
       }
     };
 
     try {
       getAllSummoners();
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
   }, [walletAddress]);
 
   useEffect(() => {
     if (summonId) {
+      localStorage.setItem("summonId", summonId);
       getSummonerState();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [summonId, update]);
 
+  useEffect(() => {
+    if (summoners[0] && !summonId) {
+      if (localStorage.getItem("summonId")) {
+        setSummonId(localStorage.getItem("summonId"));
+      } else {
+        setSummonId(summoners[0].id);
+      }
+    }
+  }, [summonId, summoners]);
+
   const isReadyForAdventure = async () => {
     if (summonId != null && context.contract) {
       setLoadingAdventure(true);
       const timestamp = await RetryContractCall(
-        context.contract.methods.adventurers_log(summonId)
+        context.contract_base.methods.adventurers_log(summonId)
       );
       const milliseconds = timestamp * 1000; // 1575909015000
       const dateObject = new Date(milliseconds);
@@ -94,7 +103,7 @@ const Home = (props) => {
       setLoading(true);
       if (summonId != null) {
         const summonData = await RetryContractCall(
-          context.contract.methods.summoner(summonId)
+          context.contract_base.methods.summoner(summonId)
         );
 
         const attributesDataPromise = RetryContractCall(
@@ -106,7 +115,7 @@ const Home = (props) => {
         );
 
         const xpRequiredPromise = RetryContractCall(
-          context.contract.methods.xp_required(summonData[3])
+          context.contract_base.methods.xp_required(summonData[3])
         );
 
         const fullNamePromise = RetryContractCall(
@@ -122,11 +131,15 @@ const Home = (props) => {
         );
 
         const playerGoldPromise = RetryContractCall(
-          context.contract_gold.methods.claimed(summonId)
+          context.contract_gold.methods.balanceOf(summonId)
         );
 
         const pendingGoldPromise = RetryContractCall(
           context.contract_gold.methods.claimable(summonId)
+        );
+
+        const goldDecimals = await RetryContractCall(
+          context.contract_gold.methods.decimals()
         );
 
         const [
@@ -156,12 +169,12 @@ const Home = (props) => {
             title,
           },
           gold: {
-            playerGold,
-            pendingGold: parseFloat(pendingGold) / Math.pow(10, 21),
+            playerGold: parseFloat(playerGold) / reduceNumber(goldDecimals),
+            pendingGold: parseFloat(pendingGold) / reduceNumber(goldDecimals),
           },
-          xp: parseFloat(summonData[0]) / Math.pow(10, 18),
-          xpRequired: parseFloat(xpRequired) / Math.pow(10, 18),
-          xpToGo: (xpRequired - parseFloat(summonData[0])) / Math.pow(10, 18),
+          xp: parseFloat(summonData[0]) / reduceNumber(18),
+          xpRequired: parseFloat(xpRequired) / reduceNumber(18),
+          xpToGo: (xpRequired - parseFloat(summonData[0])) / reduceNumber(18),
           classType: summonData[2],
           level: summonData[3],
           levelPoints: levelPoints,
@@ -194,7 +207,7 @@ const Home = (props) => {
         });
       }
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.error(`Something went wrong! ${JSON.stringify(ex)}`);
     }
 
     try {
@@ -202,7 +215,7 @@ const Home = (props) => {
       const nameSettedPromise = haveNameSetted();
       await Promise.all([readyForAdventurePromise, nameSettedPromise]);
     } catch (ex) {
-      NotificationManager.error(`Something went wrong!`);
+      toast.error(`Something went wrong!`);
     }
 
     setLoading(false);
@@ -210,13 +223,11 @@ const Home = (props) => {
 
   const sendToAdventure = async () => {
     if (summonId == null) return;
-    const id = toast.loading("Going on adventure...");
+    const id = toast.loading("I'm going on an adventure!");
     try {
-      await context.contract.methods
+      await context.contract_base.methods
         .adventure(summonId)
         .send({ from: context.accounts[0] });
-      setSummonData(null);
-      setSummonId(summonId);
       toast.update(id, {
         render: `Summoner went for an adventure!`,
         type: "success",
@@ -235,21 +246,26 @@ const Home = (props) => {
   };
 
   const levelUpPlayer = async () => {
+    if (!summonId) return;
+    const id = toast.loading("Levelling up...");
     try {
-      setLoading(true);
-      if (summonId != null) {
-        await context.contract.methods
-          .level_up(summonId)
-          .send({ from: context.accounts[0] });
-        NotificationManager.success(
-          "You just level up your player!",
-          "Information"
-        );
-      }
+      await context.contract_base.methods
+        .level_up(summonId)
+        .send({ from: context.accounts[0] });
+      toast.update(id, {
+        render: `You just level up your player!`,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
+      await getSummonerState();
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
-    } finally {
-      setLoading(false);
+      toast.update(id, {
+        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
@@ -257,7 +273,7 @@ const Home = (props) => {
     if (classId != null) {
       const id = toast.loading("Summoning warrior...");
       try {
-        const promise = context.contract.methods
+        const promise = context.contract_base.methods
           .summon(classId)
           .send({ from: context.accounts[0] });
         const response = await promise;
@@ -286,33 +302,38 @@ const Home = (props) => {
     }
   };
 
-  const assignName = async () => {
+  const assignName = async (summonName) => {
+    const id = toast.loading("Assigning name...");
+    if (!summonId) return;
+    if (!summonName) {
+      toast.update(id, {
+        render: `Can't assign an empty name!`,
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      return;
+    }
     try {
-      if (summonId != null && summonName != null) {
-        setLoading(true);
-        await context.contract_names.methods
-          .set_name(summonId, summonName)
-          .send({ from: context.accounts[0] });
-        NotificationManager.success(
-          `You just named your player!`,
-          "Information",
-          5000
-        );
-        setLoading(false);
-        setSummonData(null);
-      }
+      await context.contract_names.methods
+        .set_name(summonId, summonName)
+        .send({ from: context.accounts[0] });
+      setSummonName(summonName);
+      toast.update(id, {
+        render: `Name assigned!`,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
-    } finally {
-      setSummoning(false);
+      toast.update(id, {
+        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
-
-  useEffect(() => {
-    if (summoners[0] && !summonId) {
-      setSummonId(summoners[0].id);
-    }
-  }, [summonId, summoners]);
 
   const changeSummonId = (event) => {
     if (event.target.value === "" || event.target.value === 0) {
@@ -377,12 +398,6 @@ const Home = (props) => {
                 );
               })}
             </select>
-            <div className="new-summoner-button" onClick={getSummonerState}>
-              <img
-                src={process.env.PUBLIC_URL + "/img/dagger_new.png"}
-                alt="new-summoner"
-              />
-            </div>
           </div>
         </div>
         <div className="summoner-info">
@@ -402,7 +417,7 @@ const Home = (props) => {
             <div className="summoner-buttons">
               <button
                 className="summon-new"
-                disabled={summonId === null && summoning}
+                disabled={summonId === null}
                 onClick={() => setShowSummonNewWarriorModal(true)}
               >
                 Summon new warrior
@@ -480,8 +495,6 @@ const Home = (props) => {
           assignName={assignName}
           levelUpPlayer={levelUpPlayer}
           refreshView={async () => {
-            setSummonData(null);
-            setSummonId(summonId);
             await getSummonerState();
           }}
           {...summonData}

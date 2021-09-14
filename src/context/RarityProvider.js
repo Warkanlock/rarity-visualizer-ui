@@ -5,9 +5,11 @@ const RarityContext = React.createContext([{}, () => {}]);
 function RarityProvider({ children }) {
   const [context, setContext] = React.useState({
     accounts: [],
-    contract: null,
+    contract_base: null,
     contract_attributes: null,
     contract_names: null,
+    contract_dungeons: null,
+    contract_gold: null,
     walletAddress: "",
   });
 

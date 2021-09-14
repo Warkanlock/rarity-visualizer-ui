@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import { NotificationManager } from "react-notifications";
 import { RarityContext } from "../context/RarityProvider";
 import { CLASSES_TYPE } from "../utils/classes";
 import { ProgressBar } from "../components/ProgressBar";
 import { RARITY_BASE_MAX_SCORE } from "../utils/config";
+import { toast } from "react-toastify";
 
 const SummonStats = ({
   refreshView,
@@ -81,19 +81,28 @@ const SummonStats = ({
   }, [tempAttributes]);
 
   const increase_by_skill = async (attr) => {
+    if (!summonId) return;
+    const id = toast.loading("Increasing skill...");
     try {
       if (summonId != null) {
         await context.contract_attributes.methods[`increase_${attr}`](
           summonId
         ).send({ from: context.accounts[0] });
-        NotificationManager.success(
-          "Summoner went for an adventure!",
-          "Information"
-        );
+        toast.update(id, {
+          render: `Skill increased!`,
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
         refreshView();
       }
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.update(id, {
+        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
@@ -116,42 +125,61 @@ const SummonStats = ({
   };
 
   const confirmPoints = async () => {
-    if (totalPointsToSpend) return;
+    if (totalPointsToSpend || !summonId) return;
+    const id = toast.loading("Confirming points...");
     try {
-      if (summonId != null) {
-        await context.contract_attributes.methods
-          .point_buy(
-            summonId,
-            tempAttributes?.strength || 8,
-            tempAttributes?.dexterity || 8,
-            tempAttributes?.constitution || 8,
-            tempAttributes?.intelligence || 8,
-            tempAttributes?.wisdom || 8,
-            tempAttributes?.charisma || 8
-          )
-          .send({ from: context.accounts[0] });
-        NotificationManager.success(
-          "Summoner bought some points!",
-          "Information"
-        );
-        refreshView();
-      }
+      await context.contract_attributes.methods
+        .point_buy(
+          summonId,
+          tempAttributes?.strength || 8,
+          tempAttributes?.dexterity || 8,
+          tempAttributes?.constitution || 8,
+          tempAttributes?.intelligence || 8,
+          tempAttributes?.wisdom || 8,
+          tempAttributes?.charisma || 8
+        )
+        .send({ from: context.accounts[0] });
+
+      toast.update(id, {
+        render: `Summoner bought some points!`,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
+      refreshView();
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.update(id, {
+        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
   const claimGold = async () => {
+    if (!summonId) return;
+    const id = toast.loading("Claiming gold...");
     try {
-      if (summonId != null) {
-        await context.contract_gold.methods
-          .claim(summonId)
-          .send({ from: context.accounts[0] });
-        NotificationManager.success(`Summoner claimed gold!`, "Information");
-        refreshView();
-      }
+      await context.contract_gold.methods
+        .claim(summonId)
+        .send({ from: context.accounts[0] });
+
+      toast.update(id, {
+        render: `Gold claimed!`,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
+      toast.success(`Summoner claimed gold!`);
+      refreshView();
     } catch (ex) {
-      NotificationManager.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.update(id, {
+        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
@@ -183,8 +211,7 @@ const SummonStats = ({
                       />
                       <button
                         onClick={() => {
-                          setSummonName(editedName);
-                          assignName();
+                          assignName(editedName);
                         }}
                       >
                         {summonName ? "Rename" : "Assign"}

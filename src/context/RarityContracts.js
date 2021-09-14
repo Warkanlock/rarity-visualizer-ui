@@ -43,7 +43,7 @@ export const setupContracts = async ({ provider }) => {
 
   return {
     accounts: accounts,
-    contract: rarityContract,
+    contract_base: rarityContract,
     contract_attributes: attributesContract,
     contract_names: namesContract,
     contract_dungeons: dungeonsContract,
