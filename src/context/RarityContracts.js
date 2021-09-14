@@ -9,6 +9,8 @@ import {
   RARITY_ADDRESS_DUNGEONS,
   RARITY_ABI_GOLD,
   RARITY_ADDRESS_GOLD,
+  RARITY_ABI_FOREST,
+  RARITY_ADDRESS_FOREST,
 } from "../utils/config";
 
 export const setupContracts = async ({ provider }) => {
@@ -34,6 +36,11 @@ export const setupContracts = async ({ provider }) => {
     RARITY_ADDRESS_GOLD
   );
 
+  const forestContract = new provider.eth.Contract(
+    RARITY_ABI_FOREST,
+    RARITY_ADDRESS_FOREST
+  );
+
   return {
     accounts: accounts,
     contract_base: rarityContract,
@@ -41,6 +48,7 @@ export const setupContracts = async ({ provider }) => {
     contract_names: namesContract,
     contract_dungeons: dungeonsContract,
     contract_gold: goldContract,
+    contract_forest: forestContract,
     walletAddress: accounts[0],
   };
 };

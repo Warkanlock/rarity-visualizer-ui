@@ -10,6 +10,7 @@ import fetchRetry, { RetryContractCall } from "../utils/fetchRetry";
 import { RARITY_SUMMONERS } from "../utils/config";
 import { reduceNumber } from "../utils";
 import Tabs from "./Tabs";
+import ForestModal from "./ForestModal";
 
 const WarriorPage = ({
   summonId,
@@ -26,7 +27,7 @@ const WarriorPage = ({
   const [summonName, setSummonName] = useState(null);
   const [loadingAdventure, setLoadingAdventure] = useState(false);
   const [showDungeonModal, setShowDungeonModal] = useState(false);
-  const [activeTab, setActiveTab] = useState(0);
+  const [showForestModal, setShowForestModal] = useState(false);
 
   const walletAddress = context.walletAddress;
 
@@ -53,7 +54,7 @@ const WarriorPage = ({
     try {
       getAllSummoners();
     } catch (ex) {
-      toast.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.error(`Something went wrong! Try Again!.`);
     }
   }, [walletAddress]);
 
@@ -206,7 +207,7 @@ const WarriorPage = ({
         });
       }
     } catch (ex) {
-      toast.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.error(`Something went wrong! Try Again!.`);
     }
 
     try {
@@ -236,7 +237,7 @@ const WarriorPage = ({
       await getSummonerState();
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        render: `Something went wrong! Try Again!.`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -260,7 +261,7 @@ const WarriorPage = ({
       await getSummonerState();
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        render: `Something went wrong! Try Again!.`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -293,7 +294,7 @@ const WarriorPage = ({
       });
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        render: `Something went wrong! Try Again!.`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -316,6 +317,13 @@ const WarriorPage = ({
         <DungeonModal
           summonId={summonId}
           setShowDungeonModal={setShowDungeonModal}
+        />
+      )}
+      {showForestModal && summonData && (
+        <ForestModal
+          currentLevel={summonData.level}
+          summonId={summonId}
+          setShowForestModal={setShowForestModal}
         />
       )}
       <div className="d-flex">
@@ -395,16 +403,6 @@ const WarriorPage = ({
               )}
             </button>
             <button
-              disabled={summonId === null || summonData}
-              onClick={getSummonerState}
-              style={{
-                backgroundColor: "rgb(0, 147, 107)",
-                border: "2px solid rgb(9, 62, 47)",
-              }}
-            >
-              Information
-            </button>
-            <button
               disabled={summonId === null}
               onClick={() => setShowDungeonModal(true)}
               style={{
@@ -412,7 +410,17 @@ const WarriorPage = ({
                 border: "2px solid rgb(9, 62, 47)",
               }}
             >
-              Dungeons
+              The Cellar
+            </button>
+            <button
+              disabled={summonId === null}
+              onClick={() => setShowForestModal(true)}
+              style={{
+                backgroundColor: "rgb(0, 147, 107)",
+                border: "2px solid rgb(9, 62, 47)",
+              }}
+            >
+              Forest
             </button>
           </div>
         </div>

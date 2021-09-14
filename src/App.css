@@ -207,15 +207,18 @@ select:disabled {
   display: flex;
 }
 
-.nav-link, .tab {
+.nav-link,
+.tab {
   display: inline-flex;
   align-items: center;
   margin-right: 30px;
   color: white;
   text-decoration: none;
+  cursor: pointer;
 }
 
-.nav-link.selected, .tab.selected {
+.nav-link.selected,
+.tab.selected {
   font-weight: bold;
   color: #ddaf26;
   text-shadow: #ccc 0 0 15px;
@@ -585,7 +588,8 @@ select:disabled {
   }
 }
 
-.dungeon-buttons-thecellar button:disabled {
+.dungeon-buttons-thecellar button:disabled,
+.forest-content-buttons button:disabled {
   cursor: not-allowed;
   background: radial-gradient(
     circle,
@@ -824,4 +828,28 @@ select:disabled {
   display: block;
   height: 25px;
   width: 25px;
+}
+
+.forest-title {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  font-size: 18px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.forest-content {
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+}
+
+.forest-content .dungeon-image {
+  margin-bottom: 20px;
+}
+
+.forest-content-buttons {
+  display: flex;
+  align-content: center;
 }
