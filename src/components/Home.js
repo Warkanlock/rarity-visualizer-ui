@@ -72,7 +72,7 @@ const Home = () => {
   }, [summonId, summoners]);
 
   const isReadyForAdventure = async () => {
-    if (summonId != null && context.contract) {
+    if (summonId != null && context.contract_base) {
       setLoadingAdventure(true);
       const timestamp = await RetryContractCall(
         context.contract_base.methods.adventurers_log(summonId)
