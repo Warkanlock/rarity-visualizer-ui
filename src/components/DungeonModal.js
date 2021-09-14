@@ -74,7 +74,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
       loadDungeon();
       isReadyForAdventure();
     } catch (ex) {
-      toast.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.error(`Something went wrong! Try Again!.`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setShowDungeonModal]);
@@ -110,7 +110,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
       });
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        render: `Something went wrong! Try Again!.`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -144,7 +144,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
       }
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        render: `Something went wrong! Try Again!.`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -182,11 +182,13 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
                       ))}
                     </div>
                     <div className="dungeon-container-right">
-                      <img
-                        src={process.env.PUBLIC_URL + "/img/dungeon.png"}
-                        alt="dungeon-draw"
-                        className="dungeon-image"
-                      />
+                      <div className="dungeon-image-container">
+                        <img
+                          src={process.env.PUBLIC_URL + "/img/dungeon.png"}
+                          alt="dungeon-draw"
+                          className="dungeon-image"
+                        />
+                      </div>
                       <div className="dungeon-buttons-thecellar">
                         <button
                           disabled={

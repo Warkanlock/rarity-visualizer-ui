@@ -35,7 +35,7 @@ const ForestModal = ({ setShowForestModal, currentLevel, summonId }) => {
     try {
       loadForest();
     } catch (ex) {
-      toast.error(`Something went wrong! ${JSON.stringify(ex)}`);
+      toast.error(`Something went wrong! Try Again!.`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setShowForestModal]);
@@ -52,7 +52,7 @@ const ForestModal = ({ setShowForestModal, currentLevel, summonId }) => {
       toast.success(`Treasure grab!`);
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        render: `Something went wrong! Try Again!.`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -73,7 +73,7 @@ const ForestModal = ({ setShowForestModal, currentLevel, summonId }) => {
       toast.success(`Going back home!`);
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        render: `Something went wrong! Try Again!.`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -99,7 +99,12 @@ const ForestModal = ({ setShowForestModal, currentLevel, summonId }) => {
           ) : (
             forestInfo && (
               <>
-                <div>
+                <div className="forest-content">
+                  <img
+                    src={process.env.PUBLIC_URL + "/img/forest_dungeon.png"}
+                    alt="forest-dungeon"
+                    className="dungeon-image"
+                  />
                   {isLevelAllowed ? (
                     <div className="forest-title">{"Explore the forest"}</div>
                   ) : (
@@ -108,20 +113,22 @@ const ForestModal = ({ setShowForestModal, currentLevel, summonId }) => {
                     </div>
                   )}
                   {tokenId && <p>Your rewards: {tokenId}</p>}
-                  <button
-                    className="dungeon-button-adventure"
-                    onClick={takeTreasure}
-                    disabled={!isLevelAllowed}
-                  >
-                    Check if treasure
-                  </button>
-                  <button
-                    className="dungeon-button-adventure"
-                    onClick={exploreForest}
-                    disabled={!isLevelAllowed}
-                  >
-                    Explore the forest
-                  </button>
+                  <div className="forest-content-buttons">
+                    <button
+                      className="dungeon-button-adventure"
+                      onClick={exploreForest}
+                      disabled={!isLevelAllowed}
+                    >
+                      Explore the forest
+                    </button>
+                    <button
+                      className="dungeon-button-adventure"
+                      onClick={takeTreasure}
+                      disabled={!isLevelAllowed}
+                    >
+                      Scout
+                    </button>
+                  </div>
                 </div>
               </>
             )
