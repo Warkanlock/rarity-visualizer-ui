@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { RarityContext } from "../context/RarityProvider";
 import { CLASSES_TYPE } from "../utils/classes";
-import { ProgressBar } from "../components/ProgressBar";
+import { ProgressBar } from "./ProgressBar";
 import { RARITY_BASE_MAX_SCORE } from "../utils/config";
 import { toast } from "react-toastify";
 
@@ -185,142 +185,148 @@ const SummonStats = ({
   return (
     attributes && (
       <>
-        <div className="summoner-stats">
-          <div className="container-box summoner-information">
-            <ul className="stats-list">
-              <li>
-                <div className="summon-name">
-                  <p>
-                    <span>Summoner Name:</span>
-                    {summonName ? summonName : "Unknown"}
-                  </p>
-                  {summonName && !editingName && (
-                    <img
-                      src={process.env.PUBLIC_URL + "/img/edit-feather.png"}
-                      onClick={() => setEditingName(true)}
-                      alt="edit-name"
-                    />
-                  )}
-                  {(!summonName || editingName) && (
-                    <>
-                      <input
-                        onChange={(e) => setEditedName(e.target.value)}
-                        max="1000"
-                        placeholder="Warrior name"
+        <div className="container-box">
+          <div className="tabs">
+            <span style={{ marginRight: "20px" }}>Stats</span>
+            <span style={{ marginRight: "20px" }}>Skills</span>
+            <span style={{ marginRight: "20px" }}>Inventory</span>
+            <hr style={{ opacity: 0.3 }} />
+          </div>
+          <div className="summoner-stats">
+            <div className="summoner-information">
+              <ul className="stats-list">
+                <li>
+                  <div className="summon-name">
+                    <p>
+                      <span>Summoner Name:</span>
+                      {summonName ? summonName : "Unknown"}
+                    </p>
+                    {summonName && !editingName && (
+                      <img
+                        src={process.env.PUBLIC_URL + "/img/edit-feather.png"}
+                        onClick={() => setEditingName(true)}
+                        alt="edit-name"
                       />
-                      <button
-                        onClick={() => {
-                          assignName(editedName);
-                        }}
-                      >
-                        {summonName ? "Rename" : "Assign"}
-                      </button>
-                      {summonName && (
-                        <p
-                          style={{
-                            color: "red",
-                            cursor: "pointer",
-                            margin: "0 5px",
-                            padding: "0px",
-                            overflow: "unset",
-                          }}
+                    )}
+                    {(!summonName || editingName) && (
+                      <>
+                        <input
+                          onChange={(e) => setEditedName(e.target.value)}
+                          max="1000"
+                          placeholder="Warrior name"
+                        />
+                        <button
                           onClick={() => {
-                            setEditingName(false);
-                            setEditedName(summonName);
+                            assignName(editedName);
                           }}
                         >
-                          X
-                        </p>
-                      )}
-                    </>
-                  )}
-                </div>
-              </li>
-              <li>
-                <div className="d-flex">
+                          {summonName ? "Rename" : "Assign"}
+                        </button>
+                        {summonName && (
+                          <p
+                            style={{
+                              color: "red",
+                              cursor: "pointer",
+                              margin: "0 5px",
+                              padding: "0px",
+                              overflow: "unset",
+                            }}
+                            onClick={() => {
+                              setEditingName(false);
+                              setEditedName(summonName);
+                            }}
+                          >
+                            X
+                          </p>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </li>
+                <li>
+                  <div className="d-flex">
+                    <p>
+                      <span>Level:</span> {level} {name.title}{" "}
+                    </p>
+                    <ProgressBar
+                      xp={xp}
+                      xpRequired={xpRequired}
+                      levelUpPlayer={levelUpPlayer}
+                    ></ProgressBar>
+                  </div>
+                </li>
+                <li>
                   <p>
-                    <span>Level:</span> {level} {name.title}{" "}
+                    <span>Class:</span> {CLASSES_TYPE[classType]}
                   </p>
-                  <ProgressBar
-                    xp={xp}
-                    xpRequired={xpRequired}
-                    levelUpPlayer={levelUpPlayer}
-                  ></ProgressBar>
-                </div>
-              </li>
-              <li>
-                <p>
-                  <span>Class:</span> {CLASSES_TYPE[classType]}
-                </p>
-              </li>
-              <li>
-                <div className="claim-gold">
-                  <div className="claim-gold-container">
-                    <span>Gold:</span>
-                    <p className="gold-indicator">{gold.playerGold}</p>
-                    <img
-                      alt="coin"
-                      src={process.env.PUBLIC_URL + "/img/coin.png"}
-                    />
-                  </div>
-                  <div className="claim-gold-container">
-                    <button
-                      onClick={claimGold}
-                      disabled={Number(gold.pendingGold) === 0}
-                    >
-                      {Number(gold.pendingGold) > 0
-                        ? `Claim ${gold.pendingGold} gold!`
-                        : "No gold to claim"}
-                    </button>
-                  </div>{" "}
-                </div>
-              </li>
-              <li>
-                <p>
-                  <span>Attributes point:</span> <i>({totalPointsToSpend})</i> +{" "}
-                  {levelPoints}
-                </p>
-              </li>
-            </ul>
-          </div>
-          <div className="container-box summoner-attributes">
-            {Object.keys(tempAttributes).map((attr) => {
-              return (
-                <React.Fragment key={`class-${attr}`}>
-                  <div className="summoner-attribute-container">
-                    <button
-                      onClick={() => decrease(attr)}
-                      type="button"
-                      disabled={attributes[attr] === tempAttributes[attr]}
-                    >
-                      -
-                    </button>
-                    <div className="summoner-attribute">
-                      {attr[0].toUpperCase() + attr.slice(1)}:{" "}
-                      <span className="golden-font">
-                        {tempAttributes[attr]}
-                      </span>
+                </li>
+                <li>
+                  <div className="claim-gold">
+                    <div className="claim-gold-container">
+                      <span>Gold:</span>
+                      <p className="gold-indicator">{gold.playerGold}</p>
+                      <img
+                        alt="coin"
+                        src={process.env.PUBLIC_URL + "/img/coin.png"}
+                      />
                     </div>
-                    <button
-                      disabled={computeAssingAttributes(attr)}
-                      onClick={() => increase(attr)}
-                      type="button"
-                    >
-                      +
-                    </button>
-                    <button
-                      className="assign-points-summoner"
-                      type="button"
-                      onClick={() => increase_by_skill(attr)}
-                      disabled={!(levelPoints > 0)}
-                    >
-                      Assign
-                    </button>
+                    <div className="claim-gold-container">
+                      <button
+                        onClick={claimGold}
+                        disabled={Number(gold.pendingGold) === 0}
+                      >
+                        {Number(gold.pendingGold) > 0
+                          ? `Claim ${gold.pendingGold} gold!`
+                          : "No gold to claim"}
+                      </button>
+                    </div>{" "}
                   </div>
-                </React.Fragment>
-              );
-            })}
-            <div className="summoner-buttons">
+                </li>
+                <li>
+                  <p>
+                    <span>Attributes point:</span> <i>({totalPointsToSpend})</i>{" "}
+                    + {levelPoints}
+                  </p>
+                </li>
+              </ul>
+            </div>
+            <div className="summoner-attributes">
+              {Object.keys(tempAttributes).map((attr) => {
+                return (
+                  <React.Fragment key={`class-${attr}`}>
+                    <div className="summoner-attribute-container">
+                      <button
+                        onClick={() => decrease(attr)}
+                        type="button"
+                        disabled={attributes[attr] === tempAttributes[attr]}
+                      >
+                        -
+                      </button>
+                      <div className="summoner-attribute">
+                        {attr[0].toUpperCase() + attr.slice(1)}:{" "}
+                        <span className="golden-font">
+                          {tempAttributes[attr]}
+                        </span>
+                      </div>
+                      <button
+                        disabled={computeAssingAttributes(attr)}
+                        onClick={() => increase(attr)}
+                        type="button"
+                      >
+                        +
+                      </button>
+                      <button
+                        className="assign-points-summoner"
+                        type="button"
+                        onClick={() => increase_by_skill(attr)}
+                        disabled={!(levelPoints > 0)}
+                      >
+                        Assign
+                      </button>
+                    </div>
+                  </React.Fragment>
+                );
+              })}
               <button
                 className="confirm-points-summoner"
                 onClick={() => confirmPoints()}
