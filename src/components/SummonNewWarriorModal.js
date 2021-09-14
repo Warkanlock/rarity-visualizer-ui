@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { CLASSES_TYPE } from "../utils/classes";
+import { CLASSES_DESCRIPTION, CLASSES_TYPE } from "../utils/classes";
+import ReactTooltip from "react-tooltip";
 
 const SummonNewWarriorModal = ({
   setShowSummonNewWarriorModal,
@@ -32,9 +33,17 @@ const SummonNewWarriorModal = ({
               {Object.keys(CLASSES_TYPE).map((key) => {
                 return (
                   <div
+                    data-tip={CLASSES_DESCRIPTION[key]}
+                    key={`summon-${key}`}
                     className="class-container"
                     onClick={() => summonPlayer(key)}
                   >
+                    <ReactTooltip
+                      className="tooltip"
+                      type="dark"
+                      place="bottom"
+                      effect="solid"
+                    />
                     <img
                       src={`${process.env.PUBLIC_URL}/classes/${CLASSES_TYPE[key]}.png`}
                       alt={`class-img-${CLASSES_TYPE[key]}`}
