@@ -6,6 +6,7 @@ import { RARITY_SUMMONERS } from "../utils/config";
 import { useAuth } from "../hooks/useAuth";
 import DungeonModal from "./DungeonModal";
 import fetchRetry, { RetryContractCall } from "../utils/fetchRetry";
+import ForestModal from "./ForestModal";
 import SummonNewWarriorModal from "./SummonNewWarriorModal";
 import { toast } from "react-toastify";
 import { reduceNumber } from "../utils";
@@ -21,6 +22,7 @@ const Home = () => {
   const [summonName, setSummonName] = useState(null);
   const [loadingAdventure, setLoadingAdventure] = useState(false);
   const [showDungeonModal, setShowDungeonModal] = useState(false);
+  const [showForestModal, setShowForestModal] = useState(false);
   const [showSummonNewWarriorModal, setShowSummonNewWarriorModal] =
     useState(false);
 
@@ -351,6 +353,13 @@ const Home = () => {
           setShowDungeonModal={setShowDungeonModal}
         />
       )}
+      {showForestModal && summonData && (
+        <ForestModal
+          currentLevel={summonData.level}
+          summonId={summonId}
+          setShowForestModal={setShowForestModal}
+        />
+      )}
       {showSummonNewWarriorModal && (
         <SummonNewWarriorModal
           summonId={summonId}
@@ -466,6 +475,16 @@ const Home = () => {
           }}
         >
           Dungeons
+        </button>
+        <button
+          disabled={summonId === null}
+          onClick={() => setShowForestModal(true)}
+          style={{
+            backgroundColor: "rgb(0, 43, 107)",
+            border: "2px solid rgb(9, 23, 47)",
+          }}
+        >
+          Forests
         </button>
       </div>
       {summonData != null && (
