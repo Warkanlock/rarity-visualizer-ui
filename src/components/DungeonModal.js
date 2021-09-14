@@ -182,11 +182,13 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
                       ))}
                     </div>
                     <div className="dungeon-container-right">
-                      <img
-                        src={process.env.PUBLIC_URL + "/img/dungeon.png"}
-                        alt="dungeon-draw"
-                        className="dungeon-image"
-                      />
+                      <div className="dungeon-image-container">
+                        <img
+                          src={process.env.PUBLIC_URL + "/img/dungeon.png"}
+                          alt="dungeon-draw"
+                          className="dungeon-image"
+                        />
+                      </div>
                       <div className="dungeon-buttons-thecellar">
                         <button
                           disabled={

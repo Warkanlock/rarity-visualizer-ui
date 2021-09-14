@@ -171,7 +171,6 @@ const SummonStats = ({
         isLoading: false,
         autoClose: 3000,
       });
-      toast.success(`Summoner claimed gold!`);
       refreshView();
     } catch (ex) {
       toast.update(id, {

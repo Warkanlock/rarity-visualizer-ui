@@ -449,9 +449,10 @@ select:disabled {
   border: 1px solid #bf9b30;
   max-height: 200px;
   max-width: 338px;
-  width: 338px;
+  width: 100%;
   box-shadow: 0 0 10px #bf9b30;
-  margin: 40px 0px;
+  margin: auto;
+  display: flex;
 }
 
 .dungeon-container-left {
@@ -474,7 +475,6 @@ select:disabled {
 .dungeon-container-right {
   display: flex;
   flex-direction: column;
-  display: block;
   width: 50%;
 }
 
@@ -486,8 +486,9 @@ select:disabled {
   color: white;
   font-weight: bolder;
   font-size: 24px;
-  width: 50%;
+  width: 40%;
   background-color: #be6314;
+  margin: auto;
 }
 
 .dungeon-button-adventure:hover {
@@ -554,10 +555,25 @@ select:disabled {
   color: gray;
 }
 
+.dungeon-image-container {
+  flex: 1 1 50%;
+  display: flex;
+}
+
 .dungeon-buttons-thecellar {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  flex: 1 1 50%;
+}
+
+@media (max-width: 1000px) {
+  .dungeon-buttons-thecellar {
+    flex-direction: column;
+  }
+  .dungeon-button-adventure {
+    font-size: 100%;
+  }
 }
 
 .dungeon-buttons-thecellar button:disabled {
