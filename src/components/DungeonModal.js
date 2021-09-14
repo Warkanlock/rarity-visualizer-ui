@@ -64,7 +64,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
     };
 
     const isReadyForAdventure = async () => {
-      if (summonId != null && context.contract) {
+      if (summonId != null && context.contract_base) {
         setLoading(true);
         await getAdventureTime();
         setLoading(false);

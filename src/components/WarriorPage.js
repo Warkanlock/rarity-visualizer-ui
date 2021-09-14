@@ -73,8 +73,9 @@ const WarriorPage = ({
   }, [summonId, summoners]);
 
   const isReadyForAdventure = async () => {
-    if (summonId != null && context.contract) {
+    if (summonId != null && context.contract_base) {
       setLoadingAdventure(true);
+
       const timestamp = await RetryContractCall(
         context.contract_base.methods.adventurers_log(summonId)
       );
@@ -305,10 +306,8 @@ const WarriorPage = ({
       setSummonId(event.target.value);
     }
   };
-
   return (
     <React.Fragment>
-      {" "}
       {loading && <div className="loading">Loading&#8230;</div>}
       {showDungeonModal && (
         <DungeonModal
