@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { RarityContext } from "../context/RarityProvider";
 import { CLASSES_TYPE } from "../utils/classes";
-import { ProgressBar } from "../components/ProgressBar";
+import { ProgressBar } from "./ProgressBar";
 import { RARITY_BASE_MAX_SCORE } from "../utils/config";
 import { toast } from "react-toastify";
 
@@ -98,7 +98,7 @@ const SummonStats = ({
       }
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        render: `Something went wrong! Try Again!.`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -149,7 +149,7 @@ const SummonStats = ({
       refreshView();
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        render: `Something went wrong! Try Again!.`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -171,11 +171,10 @@ const SummonStats = ({
         isLoading: false,
         autoClose: 3000,
       });
-      toast.success(`Summoner claimed gold!`);
       refreshView();
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! ${JSON.stringify(ex)}`,
+        render: `Something went wrong! Try Again!.`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -187,7 +186,7 @@ const SummonStats = ({
     attributes && (
       <>
         <div className="summoner-stats">
-          <div className="container-box summoner-information">
+          <div className="summoner-information">
             <ul className="stats-list">
               <li>
                 <div className="summon-name">
@@ -292,7 +291,7 @@ const SummonStats = ({
               </li>
             </ul>
           </div>
-          <div className="container-box summoner-attributes">
+          <div className="summoner-attributes">
             {Object.keys(tempAttributes).map((attr) => {
               return (
                 <React.Fragment key={`class-${attr}`}>
@@ -329,15 +328,13 @@ const SummonStats = ({
                 </React.Fragment>
               );
             })}
-            <div className="summoner-buttons">
-              <button
-                className="confirm-points-summoner"
-                onClick={() => confirmPoints()}
-                disabled={totalPointsToSpend !== 0}
-              >
-                Confirm points ({totalPointsToSpend})
-              </button>
-            </div>
+            <button
+              className="confirm-points-summoner"
+              onClick={() => confirmPoints()}
+              disabled={totalPointsToSpend !== 0}
+            >
+              Confirm points ({totalPointsToSpend})
+            </button>
           </div>
         </div>
       </>

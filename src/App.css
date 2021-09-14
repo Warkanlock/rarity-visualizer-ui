@@ -145,7 +145,7 @@ select:disabled {
     rgba(20, 20, 20, 1) 91%
   );
   padding: 1rem 20px;
-  margin: 10px 0;
+  margin: 5px;
   box-shadow: 1px -1px 25px -1px rgba(0, 0, 0, 1) inset;
   -webkit-box-shadow: 1px -1px 25px -1px rgba(0, 0, 0, 1) inset;
   -moz-box-shadow: 1px -1px 25px -1px rgba(0, 0, 0, 1) inset;
@@ -203,37 +203,44 @@ select:disabled {
   max-width: 50%;
 }
 
-.summoner-buttons {
+.navigation-bar {
   display: flex;
-  justify-content: space-between;
-  margin: auto;
 }
 
-.summoner-buttons button {
+.nav-link,
+.tab {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 30px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nav-link.selected,
+.tab.selected {
+  font-weight: bold;
+  color: #ddaf26;
+  text-shadow: #ccc 0 0 15px;
+}
+
+.navigation-bar span {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-right: 20px;
+}
+
+.navigation-bar button {
   text-align: center;
   font-family: "DM Serif Display", serif;
-  width: 49%;
+  padding: 5px 10px;
   border: 1px solid black;
   border-radius: 5px;
 }
 
-.summoner-buttons select {
-  text-align: center;
-  color: #bf9b30;
-  font-family: "DM Serif Display", serif;
-  width: 49%;
-  border: 2px solid rgba(53, 26, 20, 1);
-  border-radius: 5px;
-  background: radial-gradient(
-    circle,
-    rgba(71, 35, 18, 1) 0%,
-    rgba(52, 27, 24, 1) 30%,
-    rgba(42, 25, 23, 1) 91%
-  );
-}
-
 .summon-new {
-  margin: auto;
+  margin-left: auto;
   color: white;
   background-color: #be6314;
 }
@@ -253,8 +260,12 @@ select:disabled {
   margin: auto;
   margin-top: 20px;
   height: 50px;
-  width: 100%;
   background-color: #be6314 !important;
+  text-align: center;
+  font-family: "DM Serif Display", serif;
+  width: 49%;
+  border: 1px solid black;
+  border-radius: 5px;
 }
 
 .summon-id {
@@ -342,12 +353,13 @@ select:disabled {
 }
 
 .summoner-information {
-  width: 49.5%;
-  margin-right: 1%;
+  flex: 1 1 50%;
+  padding-right: 10px;
+  border-right: 1px solid rgba(128, 128, 128, 0.3);
 }
 
 .summoner-attributes {
-  width: 49.5%;
+  flex: 1 1 50%;
 }
 
 .summon-name input {
@@ -449,9 +461,10 @@ select:disabled {
   border: 1px solid #bf9b30;
   max-height: 200px;
   max-width: 338px;
-  width: 338px;
+  width: 100%;
   box-shadow: 0 0 10px #bf9b30;
-  margin: 40px 0px;
+  margin: auto;
+  display: flex;
 }
 
 .dungeon-container-left {
@@ -474,7 +487,6 @@ select:disabled {
 .dungeon-container-right {
   display: flex;
   flex-direction: column;
-  display: block;
   width: 50%;
 }
 
@@ -486,8 +498,9 @@ select:disabled {
   color: white;
   font-weight: bolder;
   font-size: 24px;
-  width: 50%;
+  width: 40%;
   background-color: #be6314;
+  margin: auto;
 }
 
 .dungeon-button-adventure:hover {
@@ -554,13 +567,29 @@ select:disabled {
   color: gray;
 }
 
+.dungeon-image-container {
+  flex: 1 1 50%;
+  display: flex;
+}
+
 .dungeon-buttons-thecellar {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  flex: 1 1 50%;
 }
 
-.dungeon-buttons-thecellar button:disabled {
+@media (max-width: 1000px) {
+  .dungeon-buttons-thecellar {
+    flex-direction: column;
+  }
+  .dungeon-button-adventure {
+    font-size: 100%;
+  }
+}
+
+.dungeon-buttons-thecellar button:disabled,
+.forest-content-buttons button:disabled {
   cursor: not-allowed;
   background: radial-gradient(
     circle,
@@ -808,4 +837,19 @@ select:disabled {
   font-size: 18px;
   justify-content: center;
   margin-bottom: 20px;
+}
+
+.forest-content {
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+}
+
+.forest-content .dungeon-image {
+  margin-bottom: 20px;
+}
+
+.forest-content-buttons {
+  display: flex;
+  align-content: center;
 }
