@@ -8,6 +8,7 @@ import DungeonModal from "./DungeonModal";
 import fetchRetry, { RetryContractCall } from "../utils/fetchRetry";
 import SummonNewWarriorModal from "./SummonNewWarriorModal";
 import { toast } from "react-toastify";
+import { reduceNumber } from "../utils";
 
 const Home = () => {
   const [context] = useContext(RarityContext);
@@ -74,7 +75,7 @@ const Home = () => {
     if (summonId != null && context.contract) {
       setLoadingAdventure(true);
       const timestamp = await RetryContractCall(
-        context.contract.methods.adventurers_log(summonId)
+        context.contract_base.methods.adventurers_log(summonId)
       );
       const milliseconds = timestamp * 1000; // 1575909015000
       const dateObject = new Date(milliseconds);
@@ -100,7 +101,7 @@ const Home = () => {
       setLoading(true);
       if (summonId != null) {
         const summonData = await RetryContractCall(
-          context.contract.methods.summoner(summonId)
+          context.contract_base.methods.summoner(summonId)
         );
 
         const attributesDataPromise = RetryContractCall(
@@ -112,7 +113,7 @@ const Home = () => {
         );
 
         const xpRequiredPromise = RetryContractCall(
-          context.contract.methods.xp_required(summonData[3])
+          context.contract_base.methods.xp_required(summonData[3])
         );
 
         const fullNamePromise = RetryContractCall(
@@ -133,6 +134,10 @@ const Home = () => {
 
         const pendingGoldPromise = RetryContractCall(
           context.contract_gold.methods.claimable(summonId)
+        );
+
+        const goldDecimals = await RetryContractCall(
+          context.contract_gold.methods.decimals()
         );
 
         const [
@@ -162,12 +167,12 @@ const Home = () => {
             title,
           },
           gold: {
-            playerGold: parseFloat(playerGold) / Math.pow(10, 18),
-            pendingGold: parseFloat(pendingGold) / Math.pow(10, 18),
+            playerGold: parseFloat(playerGold) / reduceNumber(goldDecimals),
+            pendingGold: parseFloat(pendingGold) / reduceNumber(goldDecimals),
           },
-          xp: parseFloat(summonData[0]) / Math.pow(10, 18),
-          xpRequired: parseFloat(xpRequired) / Math.pow(10, 18),
-          xpToGo: (xpRequired - parseFloat(summonData[0])) / Math.pow(10, 18),
+          xp: parseFloat(summonData[0]) / reduceNumber(18),
+          xpRequired: parseFloat(xpRequired) / reduceNumber(18),
+          xpToGo: (xpRequired - parseFloat(summonData[0])) / reduceNumber(18),
           classType: summonData[2],
           level: summonData[3],
           levelPoints: levelPoints,
@@ -218,7 +223,7 @@ const Home = () => {
     if (summonId == null) return;
     const id = toast.loading("I'm going on an adventure!");
     try {
-      await context.contract.methods
+      await context.contract_base.methods
         .adventure(summonId)
         .send({ from: context.accounts[0] });
       toast.update(id, {
@@ -242,7 +247,7 @@ const Home = () => {
     if (!summonId) return;
     const id = toast.loading("Levelling up...");
     try {
-      await context.contract.methods
+      await context.contract_base.methods
         .level_up(summonId)
         .send({ from: context.accounts[0] });
       toast.update(id, {
@@ -266,7 +271,7 @@ const Home = () => {
     if (classId != null) {
       const id = toast.loading("Summoning warrior...");
       try {
-        const promise = context.contract.methods
+        const promise = context.contract_base.methods
           .summon(classId)
           .send({ from: context.accounts[0] });
         const response = await promise;

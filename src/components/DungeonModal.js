@@ -24,7 +24,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
       setLoading(true);
 
       const summonData = await RetryContractCall(
-        context.contract.methods.summoner(summonId)
+        context.contract_base.methods.summoner(summonId)
       );
 
       const dungeonDamagePromise = RetryContractCall(
