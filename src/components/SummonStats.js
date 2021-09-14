@@ -11,7 +11,7 @@ const SummonStats = ({
   name,
   xp,
   xpRequired,
-  xpToGo,
+  skills,
   level,
   classType,
   attributes,
@@ -279,6 +279,14 @@ const SummonStats = ({
                 <p>
                   <span>Attributes point:</span> <i>({totalPointsToSpend})</i> +{" "}
                   {levelPoints}
+                </p>
+              </li>
+              <li>
+                <p>
+                  <span>Class Skills:</span>{" "}
+                  {skills?.classSkills.map((item) => {
+                    return <i>{item.name}, </i>;
+                  })}
                 </p>
               </li>
             </ul>

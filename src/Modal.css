@@ -73,6 +73,15 @@
   justify-content: center;
 }
 
+.tooltip {
+  font-size: 20px !important;
+  pointer-events: auto !important;
+}
+.tooltip:hover {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 .class-container {
   display: flex;
   flex-direction: column;

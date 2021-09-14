@@ -11,6 +11,10 @@ import {
   RARITY_ADDRESS_GOLD,
   RARITY_ABI_FOREST,
   RARITY_ADDRESS_FOREST,
+  RARITY_ABI_SKILLS,
+  RARITY_ADDRESS_SKILLS,
+  CODEX__ABI_SKILLS,
+  CODEX_ADDRESS_SKILLS,
 } from "../utils/config";
 
 export const setupContracts = async ({ provider }) => {
@@ -41,6 +45,16 @@ export const setupContracts = async ({ provider }) => {
     RARITY_ADDRESS_FOREST
   );
 
+  const skillsContract = new provider.eth.Contract(
+    RARITY_ABI_SKILLS,
+    RARITY_ADDRESS_SKILLS
+  );
+
+  const skillsCodexContract = new provider.eth.Contract(
+    CODEX__ABI_SKILLS,
+    CODEX_ADDRESS_SKILLS
+  );
+
   return {
     accounts: accounts,
     contract_base: rarityContract,
@@ -49,6 +63,10 @@ export const setupContracts = async ({ provider }) => {
     contract_dungeons: dungeonsContract,
     contract_gold: goldContract,
     contract_forest: forestContract,
+    contract_skills: {
+      base: skillsContract,
+      allSkills: skillsCodexContract,
+    },
     walletAddress: accounts[0],
   };
 };
