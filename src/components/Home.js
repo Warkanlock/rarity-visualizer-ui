@@ -162,11 +162,47 @@ const Home = () => {
           pendingGoldPromise,
         ]);
 
+        const classSkills = await RetryContractCall(
+          context.contract_skills.base.methods.class_skills(summonData[2])
+        );
+
+        const allSkills = classSkills.map((skill, idx) => {
+          if (skill) {
+            return { idx: idx + 1, skill };
+          }
+          return { idx: idx + 1, skill: null };
+        });
+
+        const allSkillsInformation = [];
+
+        allSkills.forEach((item) =>
+          allSkillsInformation.push(
+            RetryContractCall(
+              context.contract_skills.allSkills.methods.skill_by_id(item.idx)
+            )
+          )
+        );
+
+        const skillsInformation = await Promise.all(allSkillsInformation);
+
+        const onlyClassIds = allSkills.filter((item) => item.skill);
+        const onlyClassInformation = [];
+
+        onlyClassIds.forEach(({ idx }) => {
+          onlyClassInformation.push(
+            skillsInformation.find(({ id }) => Number(id) === idx)
+          );
+        });
+
         setSummonData({
           name: {
             fullName,
             summonName,
             title,
+          },
+          skills: {
+            classSkills: onlyClassInformation,
+            allSkills: skillsInformation,
           },
           gold: {
             playerGold: parseFloat(playerGold) / reduceNumber(goldDecimals),
