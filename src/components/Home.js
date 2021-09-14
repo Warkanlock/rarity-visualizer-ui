@@ -19,7 +19,7 @@ const Home = () => {
     if (classId != null) {
       const id = toast.loading("Summoning warrior...");
       try {
-        const promise = context.contract.methods
+        const promise = context.contract_base.methods
           .summon(classId)
           .send({ from: context.accounts[0] });
         const response = await promise;
@@ -63,7 +63,7 @@ const Home = () => {
             Warrior stats
           </Link>
           <Link style={{ marginRight: "10px" }} to="/Warriors">
-            Your warrios
+            Your warriors
           </Link>
           <button
             className="summon-new"

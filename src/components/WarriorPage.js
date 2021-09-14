@@ -7,6 +7,7 @@ import { RarityContext } from "../context/RarityProvider";
 import { useAuth } from "../hooks/useAuth";
 import fetchRetry, { RetryContractCall } from "../utils/fetchRetry";
 import { RARITY_SUMMONERS } from "../utils/config";
+import { reduceNumber } from "../utils";
 
 const WarriorPage = ({
   summonId,
@@ -19,10 +20,7 @@ const WarriorPage = ({
   const [context] = useContext(RarityContext);
   const [, , , update] = useAuth();
   const [summonData, setSummonData] = useState(null);
-  //   const [summonId, setSummonId] = useState(null);
-  //   const [summoners, setSummoners] = useState([]);
   const [adventureTime, setAdventureTime] = useState(null);
-  //   const [loading, setLoading] = useState(false);
   const [summonName, setSummonName] = useState(null);
   const [loadingAdventure, setLoadingAdventure] = useState(false);
   const [showDungeonModal, setShowDungeonModal] = useState(false);
@@ -78,7 +76,7 @@ const WarriorPage = ({
     if (summonId != null && context.contract) {
       setLoadingAdventure(true);
       const timestamp = await RetryContractCall(
-        context.contract.methods.adventurers_log(summonId)
+        context.contract_base.methods.adventurers_log(summonId)
       );
       const milliseconds = timestamp * 1000; // 1575909015000
       const dateObject = new Date(milliseconds);
@@ -104,7 +102,7 @@ const WarriorPage = ({
       setLoading(true);
       if (summonId != null) {
         const summonData = await RetryContractCall(
-          context.contract.methods.summoner(summonId)
+          context.contract_base.methods.summoner(summonId)
         );
 
         const attributesDataPromise = RetryContractCall(
@@ -116,7 +114,7 @@ const WarriorPage = ({
         );
 
         const xpRequiredPromise = RetryContractCall(
-          context.contract.methods.xp_required(summonData[3])
+          context.contract_base.methods.xp_required(summonData[3])
         );
 
         const fullNamePromise = RetryContractCall(
@@ -166,12 +164,12 @@ const WarriorPage = ({
             title,
           },
           gold: {
-            playerGold: parseFloat(playerGold) / Math.pow(10, 18),
-            pendingGold: parseFloat(pendingGold) / Math.pow(10, 18),
+            playerGold: parseFloat(playerGold) / reduceNumber(18),
+            pendingGold: parseFloat(pendingGold) / reduceNumber(18),
           },
-          xp: parseFloat(summonData[0]) / Math.pow(10, 18),
-          xpRequired: parseFloat(xpRequired) / Math.pow(10, 18),
-          xpToGo: (xpRequired - parseFloat(summonData[0])) / Math.pow(10, 18),
+          xp: parseFloat(summonData[0]) / reduceNumber(18),
+          xpRequired: parseFloat(xpRequired) / reduceNumber(18),
+          xpToGo: (xpRequired - parseFloat(summonData[0])) / reduceNumber(18),
           classType: summonData[2],
           level: summonData[3],
           levelPoints: levelPoints,
@@ -222,7 +220,7 @@ const WarriorPage = ({
     if (summonId == null) return;
     const id = toast.loading("I'm going on an adventure!");
     try {
-      await context.contract.methods
+      await context.contract_base.methods
         .adventure(summonId)
         .send({ from: context.accounts[0] });
       toast.update(id, {
@@ -246,7 +244,7 @@ const WarriorPage = ({
     if (!summonId) return;
     const id = toast.loading("Levelling up...");
     try {
-      await context.contract.methods
+      await context.contract_base.methods
         .level_up(summonId)
         .send({ from: context.accounts[0] });
       toast.update(id, {
