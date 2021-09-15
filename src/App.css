@@ -932,6 +932,16 @@ select:disabled {
 }
 
 .summoner-card-adventure {
+  color: #ccc;
+}
+
+.summoner-card-adventure-active {
+  color: #ddaf26;
+  cursor: pointer;
+}
+
+.summoner-card-adventure-active:hover {
+  font-weight: bold;
   cursor: pointer;
 }
 

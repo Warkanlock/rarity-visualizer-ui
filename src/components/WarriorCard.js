@@ -199,18 +199,18 @@ const WarriorCard = ({ summoner, goToWarrior }) => {
               <div className="summoner-card-row">
                 <div className="summoner-card-level-adventure">
                   <p>Level: {summonData.level}</p>
-                  <p>
-                    {adventureTime?.getTime() >= new Date().getTime() ? (
-                      getAdventureTime(adventureTime?.getTime())
-                    ) : (
-                      <p
-                        className="summoner-card-adventure"
-                        onClick={sendToAdventure}
-                      >
-                        Adventure
-                      </p>
-                    )}
-                  </p>
+                  {adventureTime?.getTime() >= new Date().getTime() ? (
+                    <p className="summoner-card-adventure">
+                      {getAdventureTime(adventureTime?.getTime())}
+                    </p>
+                  ) : (
+                    <p
+                      className="summoner-card-adventure-active"
+                      onClick={sendToAdventure}
+                    >
+                      Adventure
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
