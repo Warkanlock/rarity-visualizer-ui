@@ -331,7 +331,7 @@ const SummonStats = ({
             <button
               className="confirm-points-summoner"
               onClick={() => confirmPoints()}
-              disabled={totalPointsToSpend !== 0}
+              disabled={totalPointsToSpend === 0}
             >
               Confirm points ({totalPointsToSpend})
             </button>

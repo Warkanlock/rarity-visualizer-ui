@@ -589,7 +589,8 @@ select:disabled {
 }
 
 .dungeon-buttons-thecellar button:disabled,
-.forest-content-buttons button:disabled {
+.forest-content-buttons button:disabled,
+.confirm-points-summoner:disabled {
   cursor: not-allowed;
   background: radial-gradient(
     circle,
