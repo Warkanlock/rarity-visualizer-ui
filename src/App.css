@@ -123,6 +123,7 @@ select:disabled {
   margin-left: auto;
   flex-direction: column;
   position: relative;
+  margin-bottom: 3rem;
 }
 
 @media (max-width: 1600px) and (min-width: 1200px) {
