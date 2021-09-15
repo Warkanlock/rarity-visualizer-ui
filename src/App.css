@@ -861,6 +861,7 @@ select:disabled {
 }
 
 .summoner-card {
+  width: 33%;
   flex: 0 0 33%;
 }
 
