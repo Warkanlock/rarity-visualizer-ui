@@ -68,6 +68,7 @@ const WarriorPage = ({
       const classSkills = await RetryContractCall(
         context.contract_skills.base.methods.class_skills(summonData?.classType)
       );
+
       const allSkills = classSkills.map((skill, idx) => {
         if (skill) {
           return { idx: idx + 1, skill };
@@ -83,6 +84,10 @@ const WarriorPage = ({
             context.contract_skills.allSkills.methods.skill_by_id(item.idx)
           )
         )
+      );
+
+      const playerSkills = await RetryContractCall(
+        context.contract_skills.base.methods.get_skills(summonId)
       );
 
       let skillsInformation = [];
@@ -107,6 +112,7 @@ const WarriorPage = ({
       setSkills({
         classSkills: onlyClassInformation,
         allSkills: skillsInformation,
+        playerSkills: playerSkills.map((skill) => parseInt(skill)),
       });
     } catch (ex) {
       console.log(ex);

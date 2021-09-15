@@ -10,6 +10,8 @@ function SkillItem({
   armor_check_penalty,
   check,
   action,
+  isCross,
+  totalPointsToSpend,
   handleRemoveRankPoint,
   handleAddRankPoint,
 }) {
@@ -28,8 +30,10 @@ function SkillItem({
           <span
             style={{ cursor: "pointer", userSelect: "none" }}
             onClick={() => {
-              handleRemoveRankPoint(id, skillValue);
-              setSkillValue(skillValue - 1);
+              if (skillValue > 0) {
+                handleRemoveRankPoint(id, skillValue);
+                setSkillValue(skillValue - 1);
+              }
             }}
           >
             -
@@ -38,37 +42,16 @@ function SkillItem({
           <span
             style={{ cursor: "pointer", userSelect: "none" }}
             onClick={() => {
-              handleAddRankPoint(id, skillValue);
-              setSkillValue(skillValue + 1);
+              if (skillValue < (isCross ? 2 : 5) && totalPointsToSpend > 0) {
+                handleAddRankPoint(id, skillValue);
+                setSkillValue(skillValue + 1);
+              }
             }}
           >
             +
           </span>
         </div>
       </div>
-      {/* <p>{id}</p>
-      <p>{name}</p>
-      <p>{CLASSES_ATTRIBUTES[attribute_id]}</p>
-      <p>{armor_check_penalty ? "Yes" : "No"}</p>
-      <p>{retry ? "Yes" : "No"}</p>
-      <p>{synergy}</p>
-      <button
-        onClick={() => {
-          handleRemoveRankPoint(id, skillValue);
-          setSkillValue(skillValue - 1);
-        }}
-      >
-        Remove
-      </button>
-      {skillValue}
-      <button
-        onClick={() => {
-          handleAddRankPoint(id, skillValue);
-          setSkillValue(skillValue + 1);
-        }}
-      >
-        Add
-      </button> */}
     </div>
   );
 }

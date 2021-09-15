@@ -23,6 +23,10 @@ body {
   left: 0;
 }
 
+.skill-spinner {
+  margin: 10px;
+}
+
 @media screen and (max-width: 1024px) {
   /* Specific to this particular image */
   .bg {
@@ -859,7 +863,7 @@ select:disabled {
 }
 
 .summon-skills-header {
-  margin-bottom: 10px;
+  margin: 10px 0px;
 }
 
 .summon-skills-body {
