@@ -22,17 +22,16 @@ const SummonSkills = ({
     return 0;
   };
 
-  const totalPointsToExpend = 25;
-  // (basePerClass(classType) + modifierByInt(attributes.intelligence)) *
-  // (level + 3);
+  const maxRank = level + 3;
+  const totalPointsToExpend =
+    (basePerClass(classType) + modifierByInt(attributes.intelligence)) *
+    maxRank;
 
   const [skillRanks, setSkillsRanks] = React.useState(
     skills.allSkills.map((item) => 0)
   );
   const [totalRankPoints, setTotalRankPoints] =
     React.useState(totalPointsToExpend);
-
-  console.log(skillRanks);
 
   //TODO:
   // Class All Intersection
