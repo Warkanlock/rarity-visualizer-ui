@@ -12,6 +12,15 @@ const CLASSES_TYPE = {
   11: "Wizard",
 };
 
+const CLASSES_ATTRIBUTES = {
+  1: "Strength",
+  2: "Dexterity",
+  3: "Constitution",
+  4: "Intelligence",
+  5: "Wisdom",
+  6: "Charisma",
+};
+
 const CLASSES_DESCRIPTION = {
   1: "A fierce warrior of primitive background who can enter a battle rage.",
   2: "An inspiring magician whose power echoes the music of creation",
@@ -26,4 +35,4 @@ const CLASSES_DESCRIPTION = {
   11: "A scholarly magic-user capable of manipulating the structures of reality",
 };
 
-export { CLASSES_TYPE, CLASSES_DESCRIPTION };
+export { CLASSES_TYPE, CLASSES_DESCRIPTION, CLASSES_ATTRIBUTES };

@@ -9,6 +9,39 @@ body {
   width: auto;
 }
 
+.summon-skills-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.summon-skills-all {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  display: flex;
+  width: 50%;
+}
+
+.summon-skill-item {
+  border: 1px solid rgba(80, 80, 80, 0.5);
+  border-radius: 5px;
+  text-align: left;
+  margin: 10px;
+  padding: 10px;
+  color: white;
+}
+
+.summon-skills-class {
+  flex-wrap: wrap;
+  display: flex;
+  width: 50%;
+  height: 50%;
+}
+
+.summon-skills-all div,
+.summon-skills-class div {
+  flex: 1 1 33%;
+}
+
 .bg {
   /* Set rules to fill background */
   min-height: 100%;
