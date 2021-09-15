@@ -864,7 +864,84 @@ select:disabled {
 }
 
 .summoner-card-body {
+  display: flex;
   margin: 5px;
   padding: 10px;
-  border: 1px solid white;
+  border: 1px solid transparent;
+}
+
+.summoner-card-body:hover {
+  border: 1px solid #bf9b30;
+  border-radius: 5px;
+  background: radial-gradient(
+    circle,
+    rgba(50, 50, 50, 1) 0%,
+    rgba(40, 40, 40, 1) 30%,
+    rgba(20, 20, 20, 1) 91%
+  );
+}
+
+.summoner-card-class-image {
+  width: 25%;
+  margin-right: 10px;
+  display: flex;
+  cursor: pointer;
+}
+
+.summoner-card-class-image img {
+  width: 100%;
+  margin: auto;
+}
+
+.summoner-card-info {
+  margin-bottom: 5px;
+  width: 100%;
+  text-align: left;
+}
+
+.summoner-card-info p {
+  white-space: nowrap;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.summoner-card-info {
+  width: 75%;
+}
+
+.summoner-card-row {
+  margin-bottom: 5px;
+}
+
+.summoner-card-info .progress {
+  width: 100%;
+  height: 15px;
+}
+
+.summoner-card-info .progress .total {
+  line-height: 15px;
+}
+
+.summoner-card-level-adventure {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  justify-content: space-between;
+}
+
+.summoner-card-adventure {
+  cursor: pointer;
+}
+
+.unknown-summoner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(80, 80, 80, 1) 0%,
+    rgba(55, 55, 55, 1) 60%,
+    rgba(20, 20, 20, 1) 80%
+  );
 }

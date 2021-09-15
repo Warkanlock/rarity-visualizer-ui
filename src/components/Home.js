@@ -113,7 +113,7 @@ const Home = () => {
       </div>
       <Switch>
         <Route exact path="/Warriors">
-          <YourWarriorsPage summoners={summoners} />
+          <YourWarriorsPage summoners={summoners} setSummonId={setSummonId} />
         </Route>
         <Route path="/*">
           <WarriorPage

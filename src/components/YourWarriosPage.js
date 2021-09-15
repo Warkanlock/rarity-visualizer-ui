@@ -1,8 +1,14 @@
 import React from "react";
+import { withRouter } from "react-router";
 import WarriorCard from "./WarriorCard";
 
-const YourWarriorsPage = ({ summoners }) => {
-  console.log(summoners);
+const YourWarriorsPage = ({ summoners, setSummonId, history }) => {
+  
+  const goToWarrior = (summonerId) => {
+    setSummonId(summonerId);
+    history.push("/");
+  };
+
   return (
     <div
       className="container-box summoners-container"
@@ -13,6 +19,7 @@ const YourWarriorsPage = ({ summoners }) => {
           <WarriorCard
             key={`summoner-card-${summoner.id}`}
             summoner={summoner}
+            goToWarrior={goToWarrior}
           />
         );
       })}
@@ -20,4 +27,4 @@ const YourWarriorsPage = ({ summoners }) => {
   );
 };
 
-export default YourWarriorsPage;
+export default withRouter(YourWarriorsPage);

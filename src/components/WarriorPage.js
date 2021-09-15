@@ -10,6 +10,7 @@ import { RetryContractCall } from "../utils/fetchRetry";
 import { reduceNumber } from "../utils";
 import Tabs from "./Tabs";
 import ForestModal from "./ForestModal";
+import { getAdventureTime } from "../utils/utils";
 
 const WarriorPage = ({
   summonId,
@@ -313,6 +314,7 @@ const WarriorPage = ({
       setSummonId(event.target.value);
     }
   };
+
   return (
     <React.Fragment>
       {loading && <div className="loading">Loading&#8230;</div>}
@@ -393,13 +395,8 @@ const WarriorPage = ({
                 </div>
               ) : adventureTime?.getTime() >= new Date().getTime() ? (
                 <p>
-                  Next adventure in{" "}
-                  {Math.floor(
-                    Math.abs(adventureTime?.getTime() - new Date().getTime()) /
-                      1000 /
-                      3600
-                  ) % 24}{" "}
-                  hours
+                  Next adventure in
+                  {getAdventureTime(adventureTime?.getTime())}
                 </p>
               ) : (
                 "Go on adventure"
