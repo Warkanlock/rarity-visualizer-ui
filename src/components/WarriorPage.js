@@ -6,17 +6,16 @@ import DungeonModal from "./DungeonModal";
 import { toast } from "react-toastify";
 import { RarityContext } from "../context/RarityProvider";
 import { useAuth } from "../hooks/useAuth";
-import fetchRetry, { RetryContractCall } from "../utils/fetchRetry";
-import { RARITY_SUMMONERS } from "../utils/config";
+import { RetryContractCall } from "../utils/fetchRetry";
 import { reduceNumber } from "../utils";
 import Tabs from "./Tabs";
 import ForestModal from "./ForestModal";
+import { getAdventureTime } from "../utils/utils";
 
 const WarriorPage = ({
   summonId,
   setSummonId,
   summoners,
-  setSummoners,
   loading,
   setLoading,
 }) => {
@@ -28,35 +27,6 @@ const WarriorPage = ({
   const [loadingAdventure, setLoadingAdventure] = useState(false);
   const [showDungeonModal, setShowDungeonModal] = useState(false);
   const [showForestModal, setShowForestModal] = useState(false);
-
-  const walletAddress = context.walletAddress;
-
-  useEffect(() => {
-    const getAllSummoners = async () => {
-      try {
-        if (walletAddress) {
-          const response = await fetchRetry(
-            RARITY_SUMMONERS(walletAddress),
-            500,
-            3
-          );
-          const summonsId = response?.map((event) => {
-            const id = event.tokenID;
-            return { id: Number(id) };
-          });
-          if (summonsId) setSummoners(summonsId);
-        }
-      } catch {
-        toast.error("Something bad happened");
-      }
-    };
-
-    try {
-      getAllSummoners();
-    } catch (ex) {
-      toast.error(`Something went wrong! Try Again in a few seconds!`);
-    }
-  }, [walletAddress]);
 
   useEffect(() => {
     if (summonId) {
@@ -87,15 +57,6 @@ const WarriorPage = ({
       const dateObject = new Date(milliseconds);
       setAdventureTime(dateObject);
       setLoadingAdventure(false);
-    }
-  };
-
-  const haveNameSetted = async () => {
-    if (summonId != null && context.contract_names) {
-      const summonName = await RetryContractCall(
-        context.contract_names.methods.summoner_name(summonId)
-      );
-      setSummonName(summonName);
     }
   };
 
@@ -201,6 +162,8 @@ const WarriorPage = ({
           );
         });
 
+        setSummonName(summonName);
+
         setSummonData({
           name: {
             fullName,
@@ -254,9 +217,7 @@ const WarriorPage = ({
     }
 
     try {
-      const readyForAdventurePromise = isReadyForAdventure();
-      const nameSettedPromise = haveNameSetted();
-      await Promise.all([readyForAdventurePromise, nameSettedPromise]);
+      await isReadyForAdventure();
     } catch (ex) {
       toast.error(`Something went wrong!`);
     }
@@ -353,6 +314,7 @@ const WarriorPage = ({
       setSummonId(event.target.value);
     }
   };
+
   return (
     <React.Fragment>
       {loading && <div className="loading">Loading&#8230;</div>}
@@ -433,13 +395,8 @@ const WarriorPage = ({
                 </div>
               ) : adventureTime?.getTime() >= new Date().getTime() ? (
                 <p>
-                  Next adventure in{" "}
-                  {Math.floor(
-                    Math.abs(adventureTime?.getTime() - new Date().getTime()) /
-                      1000 /
-                      3600
-                  ) % 24}{" "}
-                  hours
+                  Next adventure in
+                  {getAdventureTime(adventureTime?.getTime())}
                 </p>
               ) : (
                 "Go on adventure"
