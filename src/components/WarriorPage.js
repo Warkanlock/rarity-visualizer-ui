@@ -54,7 +54,7 @@ const WarriorPage = ({
     try {
       getAllSummoners();
     } catch (ex) {
-      toast.error(`Something went wrong! Try Again!.`);
+      toast.error(`Something went wrong! Try Again in a few seconds!`);
     }
   }, [walletAddress]);
 
@@ -183,7 +183,14 @@ const WarriorPage = ({
           )
         );
 
-        const skillsInformation = await Promise.all(allSkillsInformation);
+        let skillsInformation = [];
+
+        if (skillsInformation.length > 0) {
+          skillsInformation = localStorage.getItem("all_skills");
+        } else {
+          skillsInformation = await Promise.all(allSkillsInformation);
+          localStorage.setItem("all_skills", skillsInformation);
+        }
 
         const onlyClassIds = allSkills.filter((item) => item.skill);
         const onlyClassInformation = [];
@@ -243,7 +250,7 @@ const WarriorPage = ({
         });
       }
     } catch (ex) {
-      toast.error(`Something went wrong! Try Again!.`);
+      toast.error(`Something went wrong! Try Again in a few seconds!`);
     }
 
     try {
@@ -273,7 +280,7 @@ const WarriorPage = ({
       await getSummonerState();
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! Try Again!.`,
+        render: `Something went wrong! Try Again in a few seconds!`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -297,7 +304,7 @@ const WarriorPage = ({
       await getSummonerState();
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! Try Again!.`,
+        render: `Something went wrong! Try Again in a few seconds!`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -330,7 +337,7 @@ const WarriorPage = ({
       });
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! Try Again!.`,
+        render: `Something went wrong! Try Again in a few seconds!`,
         type: "error",
         isLoading: false,
         autoClose: 3000,

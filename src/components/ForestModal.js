@@ -35,7 +35,7 @@ const ForestModal = ({ setShowForestModal, currentLevel, summonId }) => {
     try {
       loadForest();
     } catch (ex) {
-      toast.error(`Something went wrong! Try Again!.`);
+      toast.error(`Something went wrong! Try Again in a few seconds!`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setShowForestModal]);
@@ -52,7 +52,7 @@ const ForestModal = ({ setShowForestModal, currentLevel, summonId }) => {
       toast.success(`Treasure grab!`);
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! Try Again!.`,
+        render: `Something went wrong! Try Again in a few seconds!`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -73,7 +73,7 @@ const ForestModal = ({ setShowForestModal, currentLevel, summonId }) => {
       toast.success(`Going back home!`);
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! Try Again!.`,
+        render: `Something went wrong! Try Again in a few seconds!`,
         type: "error",
         isLoading: false,
         autoClose: 3000,

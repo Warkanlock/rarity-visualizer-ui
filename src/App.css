@@ -2,7 +2,7 @@ body {
   overflow-x: hidden; /* Hide horizontal scrollbar */
   background-color: #264653;
   /* background: no-repeat center url("../public/img/background.png"); */
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
 }
 
 .App {
@@ -54,7 +54,7 @@ ul {
 .wallet-button {
   height: calc(10px + 2vmin);
   text-align: center;
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
   border: 1px solid rgba(80, 80, 80, 0.5);
   border-radius: 5px;
   color: white;
@@ -233,7 +233,7 @@ select:disabled {
 
 .navigation-bar button {
   text-align: center;
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
   padding: 5px 10px;
   border: 1px solid black;
   border-radius: 5px;
@@ -247,7 +247,7 @@ select:disabled {
 
 .assign-points-summoner {
   color: white;
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
   font-size: 14px !important;
   background-color: #be6314 !important;
 }
@@ -262,7 +262,7 @@ select:disabled {
   height: 50px;
   background-color: #be6314 !important;
   text-align: center;
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
   width: 49%;
   border: 1px solid black;
   border-radius: 5px;
@@ -280,7 +280,7 @@ select:disabled {
   text-align: center;
   margin: auto;
   color: #bf9b30;
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
   width: 70%;
   border: 2px solid rgba(53, 26, 20, 1);
   border-radius: 5px;
@@ -318,7 +318,7 @@ select:disabled {
 
   width: 50%;
   color: white;
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
   border: 1px solid rgba(37, 37, 37, 1);
   border-radius: 5px;
   background: radial-gradient(
@@ -340,7 +340,7 @@ select:disabled {
 }
 
 .actions button {
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
   width: 33%;
   height: 4rem;
   color: white;
@@ -365,7 +365,7 @@ select:disabled {
 .summon-name input {
   text-align: center;
   color: #bf9b30;
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
   border: 2px solid rgba(53, 26, 20, 1);
   border-radius: 5px;
   background: radial-gradient(
@@ -492,7 +492,7 @@ select:disabled {
 
 .dungeon-button-adventure {
   text-align: center;
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
   border: 1px solid black;
   border-radius: 5px;
   color: white;
@@ -505,7 +505,7 @@ select:disabled {
 
 .dungeon-button-adventure:hover {
   text-align: center;
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
   border: 1px solid black;
   border-radius: 5px;
   color: #be6314;
@@ -516,7 +516,7 @@ select:disabled {
 
 .summon-name button,
 .claim-gold button {
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
   color: white;
   width: 5rem;
   background-color: rgb(27, 98, 136);
@@ -617,7 +617,7 @@ select:disabled {
   justify-content: center;
   align-items: center;
   height: 90%;
-  font-family: "DM Serif Display", serif;
+  font-family: "Lato", sans-serif;
   width: 70%;
   border: 2px solid rgba(53, 26, 20, 1);
   border-radius: 5px;

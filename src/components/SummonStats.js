@@ -98,7 +98,7 @@ const SummonStats = ({
       }
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! Try Again!.`,
+        render: `Something went wrong! Try Again in a few seconds!`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -149,7 +149,7 @@ const SummonStats = ({
       refreshView();
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! Try Again!.`,
+        render: `Something went wrong! Try Again in a few seconds!`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -174,7 +174,7 @@ const SummonStats = ({
       refreshView();
     } catch (ex) {
       toast.update(id, {
-        render: `Something went wrong! Try Again!.`,
+        render: `Something went wrong! Try Again in a few seconds!`,
         type: "error",
         isLoading: false,
         autoClose: 3000,
