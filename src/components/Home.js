@@ -103,7 +103,6 @@ const Home = () => {
           </NavLink>
           <button
             className="summon-new"
-            disabled={summonId === null}
             onClick={() => setShowSummonNewWarriorModal(true)}
             style={{ float: "right" }}
           >
