@@ -68,7 +68,6 @@ const WarriorPage = ({
       const classSkills = await RetryContractCall(
         context.contract_skills.base.methods.class_skills(summonData?.classType)
       );
-
       const allSkills = classSkills.map((skill, idx) => {
         if (skill) {
           return { idx: idx + 1, skill };
@@ -86,8 +85,10 @@ const WarriorPage = ({
         )
       );
 
-      let skillsInformation =
-        JSON.parse(localStorage.getItem("all_skills")) || [];
+      let skillsInformation = [];
+      if (localStorage.getItem("all_skills")) {
+        skillsInformation = JSON.parse(localStorage.getItem("all_skills"));
+      }
 
       if (skillsInformation.length === 0) {
         skillsInformation = await Promise.all(allSkillsInformation);

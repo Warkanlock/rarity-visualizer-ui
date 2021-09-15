@@ -15,9 +15,38 @@ function SkillItem({
 }) {
   const [skillValue, setSkillValue] = React.useState(0);
 
+  var randomColor = "#" + (((1 << 24) * Math.random()) | 0).toString(16);
+
   return (
     <div className="summon-skill-item">
-      <p>{id}</p>
+      {/* replace with image */}
+      <div
+        className="summon-skill-item-card"
+        style={{ backgroundColor: randomColor }}
+      >
+        <div className="summon-skill-item-card-buttons">
+          <span
+            style={{ cursor: "pointer", userSelect: "none" }}
+            onClick={() => {
+              handleRemoveRankPoint(id, skillValue);
+              setSkillValue(skillValue - 1);
+            }}
+          >
+            -
+          </span>
+          <span>{skillValue}</span>
+          <span
+            style={{ cursor: "pointer", userSelect: "none" }}
+            onClick={() => {
+              handleAddRankPoint(id, skillValue);
+              setSkillValue(skillValue + 1);
+            }}
+          >
+            +
+          </span>
+        </div>
+      </div>
+      {/* <p>{id}</p>
       <p>{name}</p>
       <p>{CLASSES_ATTRIBUTES[attribute_id]}</p>
       <p>{armor_check_penalty ? "Yes" : "No"}</p>
@@ -39,7 +68,7 @@ function SkillItem({
         }}
       >
         Add
-      </button>
+      </button> */}
     </div>
   );
 }

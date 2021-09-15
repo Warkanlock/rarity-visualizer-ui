@@ -22,10 +22,12 @@ const SummonSkills = ({
     return 0;
   };
 
-  const maxRank = level + 3;
-  const totalPointsToExpend =
-    (basePerClass(classType) + modifierByInt(attributes.intelligence)) *
-    maxRank;
+  const maxRank = Number(level) + 3;
+
+  // const totalPointsToExpend =
+  //   (basePerClass(classType) + modifierByInt(attributes.intelligence)) *
+  //   maxRank;
+  const totalPointsToExpend = 25;
 
   const [skillRanks, setSkillsRanks] = React.useState(
     skills.allSkills.map((item) => 0)
@@ -38,64 +40,67 @@ const SummonSkills = ({
   // Calculate Total Points To Expend
   // Compute Skills to check if it's correct
   // set_skills(summoner, skillRanks);
-
   return (
     <>
       <div className="summon-skills-container">
-        <div className="summon-skills-class">
-          {skills?.classSkills
-            .sort((a, b) => {
-              return Number(a.id) < Number(b.id);
-            })
-            .map((skill) => (
-              <SkillItem
-                {...skill}
-                handleAddRankPoint={(id, value) => {
-                  setTotalRankPoints(totalRankPoints - 1);
-
-                  let tempRank = skillRanks;
-                  tempRank[id - 1] = value + 1;
-
-                  setSkillsRanks(tempRank);
-                }}
-                handleRemoveRankPoint={(id, value) => {
-                  setTotalRankPoints(totalRankPoints + 1);
-
-                  let tempRank = skillRanks;
-                  tempRank[id - 1] = value - 1;
-
-                  setSkillsRanks(tempRank);
-                }}
-              />
-            ))}
+        <div className="summon-skills-header">
+          Points to spend:{totalRankPoints}
         </div>
-        <div className="summon-skills-all">
-          {totalRankPoints}
-          {skills?.allSkills
-            .sort((a, b) => {
-              return Number(a.id) < Number(b.id);
-            })
-            .map((skill) => (
-              <SkillItem
-                {...skill}
-                handleAddRankPoint={(id, value) => {
-                  setTotalRankPoints(totalRankPoints - 1);
+        <div className="summon-skills-body">
+          <div className="summon-skills-class">
+            {skills?.classSkills
+              .sort((a, b) => {
+                return Number(a.id) > Number(b.id);
+              })
+              .map((skill) => (
+                <SkillItem
+                  {...skill}
+                  handleAddRankPoint={(id, value) => {
+                    setTotalRankPoints(totalRankPoints - 1);
 
-                  let tempRank = skillRanks;
-                  tempRank[id - 1] = value + 1;
+                    let tempRank = skillRanks;
+                    tempRank[id - 1] = value + 1;
 
-                  setSkillsRanks(tempRank);
-                }}
-                handleRemoveRankPoint={(id, value) => {
-                  setTotalRankPoints(totalRankPoints + 1);
+                    setSkillsRanks(tempRank);
+                  }}
+                  handleRemoveRankPoint={(id, value) => {
+                    setTotalRankPoints(totalRankPoints + 1);
 
-                  let tempRank = skillRanks;
-                  tempRank[id - 1] = value - 1;
+                    let tempRank = skillRanks;
+                    tempRank[id - 1] = value - 1;
 
-                  setSkillsRanks(tempRank);
-                }}
-              />
-            ))}
+                    setSkillsRanks(tempRank);
+                  }}
+                />
+              ))}
+          </div>
+          <div className="summon-skills-all">
+            {skills?.allSkills
+              .sort((a, b) => {
+                return Number(a.id) > Number(b.id);
+              })
+              .map((skill) => (
+                <SkillItem
+                  {...skill}
+                  handleAddRankPoint={(id, value) => {
+                    setTotalRankPoints(totalRankPoints - 1);
+
+                    let tempRank = skillRanks;
+                    tempRank[id - 1] = value + 1;
+
+                    setSkillsRanks(tempRank);
+                  }}
+                  handleRemoveRankPoint={(id, value) => {
+                    setTotalRankPoints(totalRankPoints + 1);
+
+                    let tempRank = skillRanks;
+                    tempRank[id - 1] = value - 1;
+
+                    setSkillsRanks(tempRank);
+                  }}
+                />
+              ))}
+          </div>
         </div>
       </div>
     </>

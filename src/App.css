@@ -1,45 +1,11 @@
 body {
   overflow-x: hidden; /* Hide horizontal scrollbar */
   background-color: #264653;
-  /* background: no-repeat center url("../public/img/background.png"); */
   font-family: "Lato", sans-serif;
 }
 
 .App {
   width: auto;
-}
-
-.summon-skills-container {
-  display: flex;
-  flex-direction: row;
-}
-
-.summon-skills-all {
-  flex-wrap: wrap;
-  justify-content: space-between;
-  display: flex;
-  width: 50%;
-}
-
-.summon-skill-item {
-  border: 1px solid rgba(80, 80, 80, 0.5);
-  border-radius: 5px;
-  text-align: left;
-  margin: 10px;
-  padding: 10px;
-  color: white;
-}
-
-.summon-skills-class {
-  flex-wrap: wrap;
-  display: flex;
-  width: 50%;
-  height: 50%;
-}
-
-.summon-skills-all div,
-.summon-skills-class div {
-  flex: 1 1 33%;
 }
 
 .bg {
@@ -885,4 +851,74 @@ select:disabled {
 .forest-content-buttons {
   display: flex;
   align-content: center;
+}
+
+.summon-skills-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.summon-skills-header {
+  margin-bottom: 10px;
+}
+
+.summon-skills-body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.summon-skills-class {
+  flex: 0 0 48%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  height: fit-content;
+  margin: 0 auto;
+}
+
+.summon-skills-all {
+  flex: 0 0 48%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.summon-skill-item {
+  display: flex;
+  border-radius: 5px;
+  text-align: left;
+  color: white;
+  flex: 0 0 30%;
+  height: 100px;
+}
+
+.summon-skill-item-card {
+  position: relative;
+  border-radius: 5px;
+  height: 70%;
+  width: 70%;
+  margin: auto;
+  border: 2px solid black;
+}
+.summon-skill-item-card:hover {
+  box-shadow: 1px -1px 15px -1px #bf9b30;
+  -webkit-box-shadow: 1px -1px 15px -1px #bf9b30;
+  -moz-box-shadow: 1px -1px 15px -1px #bf9b30;
+}
+
+.summon-skill-item-card-buttons {
+  border: 1px solid #bf9b30;
+  background-color: black;
+  border-radius: 5px 5px 0 5px;
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+  right: 0;
+}
+
+.summon-skill-item-card-buttons span {
+  text-align: center;
+  margin: 0 2px;
 }
