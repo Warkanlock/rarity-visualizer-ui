@@ -1,9 +1,21 @@
 import React from "react";
+import WarriorCard from "./WarriorCard";
 
-const YourWarriorsPage = () => {
+const YourWarriorsPage = ({ summoners }) => {
+  console.log(summoners);
   return (
-    <div className="container-box" style={{ textAlign: "center" }}>
-      <h1>Coming soon!</h1>
+    <div
+      className="container-box summoners-container"
+      style={{ textAlign: "center" }}
+    >
+      {summoners?.map((summoner) => {
+        return (
+          <WarriorCard
+            key={`summoner-card-${summoner.id}`}
+            summoner={summoner}
+          />
+        );
+      })}
     </div>
   );
 };

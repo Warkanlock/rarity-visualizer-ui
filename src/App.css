@@ -853,3 +853,18 @@ select:disabled {
   display: flex;
   align-content: center;
 }
+
+.summoners-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.summoner-card {
+  flex: 0 0 33%;
+}
+
+.summoner-card-body {
+  margin: 5px;
+  padding: 10px;
+  border: 1px solid white;
+}

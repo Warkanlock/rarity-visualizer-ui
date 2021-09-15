@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SummonNewWarriorModal from "./SummonNewWarriorModal";
 import { toast } from "react-toastify";
 import { RarityContext } from "../context/RarityProvider";
@@ -6,6 +6,8 @@ import { Route, Switch } from "react-router";
 import WarriorPage from "./WarriorPage";
 import YourWarriorsPage from "./YourWarriosPage";
 import { NavLink } from "react-router-dom";
+import fetchRetry from "../utils/fetchRetry";
+import { RARITY_SUMMONERS } from "../utils/config";
 
 const Home = () => {
   const [context] = useContext(RarityContext);
@@ -14,6 +16,35 @@ const Home = () => {
   const [summoners, setSummoners] = useState([]);
   const [summonId, setSummonId] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const walletAddress = context.walletAddress;
+
+  useEffect(() => {
+    const getAllSummoners = async () => {
+      try {
+        if (walletAddress) {
+          const response = await fetchRetry(
+            RARITY_SUMMONERS(walletAddress),
+            500,
+            3
+          );
+          const summonsId = response?.map((event) => {
+            const id = event.tokenID;
+            return { id: Number(id) };
+          });
+          if (summonsId) setSummoners(summonsId);
+        }
+      } catch {
+        toast.error("Something bad happened");
+      }
+    };
+
+    try {
+      getAllSummoners();
+    } catch (ex) {
+      toast.error(`Something went wrong! Try Again in a few seconds!`);
+    }
+  }, [walletAddress]);
 
   const summonPlayer = async (classId) => {
     if (classId != null) {
@@ -82,7 +113,7 @@ const Home = () => {
       </div>
       <Switch>
         <Route exact path="/Warriors">
-          <YourWarriorsPage />
+          <YourWarriorsPage summoners={summoners} />
         </Route>
         <Route path="/*">
           <WarriorPage
