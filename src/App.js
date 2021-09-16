@@ -66,6 +66,11 @@ function App() {
       <header className="App-header">
         Rarity Visualizer - Beta
         <div className="wallet">
+          <div className="donate-button">
+            <a href="https://ftmscan.com/address/0xC0a210490f9e0968D24372459780D694F18694D4" target="_blank" rel="noreferrer">
+              <p>DONATE</p>
+            </a>
+          </div>
           <div className="wallet-address">
             <p>{getWalletAddressSummary(context.accounts[0])}</p>
           </div>
@@ -91,8 +96,7 @@ function App() {
         theme={"dark"}
       />
       <footer>
-        Made with 💙 by <a href="https://twitter.com/@txxnano">@txxnano</a>{" "}
-        (tips <code>0xC0a210490f9e0968D24372459780D694F18694D4</code>)
+        Made with 💙 by <a href="https://twitter.com/@txxnano">@txxnano</a>
       </footer>
     </div>
   );

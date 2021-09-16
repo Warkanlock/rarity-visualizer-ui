@@ -61,6 +61,40 @@ ul {
   background-color: #be6314;
 }
 
+.donate-button {
+  height: calc(10px + 2vmin);
+  width: 7rem;
+  display: flex;
+  vertical-align: middle;
+  margin-right: 10px;
+  background: radial-gradient(
+    circle,
+    rgba(80, 80, 80, 1) 0%,
+    rgba(55, 55, 55, 1) 40%,
+    rgba(20, 20, 20, 1) 91%
+  );
+  border: 1px solid #bf9b30;
+  box-shadow: 0 0 10px #bf9b30;
+  border-radius: 5px;
+}
+
+.donate-button a {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  color: white;
+  text-decoration: none;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+.donate-button a p {
+  display: flex;
+  vertical-align: middle;
+  padding: 0;
+  margin: auto;
+}
+
 .wallet-address {
   height: calc(10px + 2vmin);
   width: 7rem;
