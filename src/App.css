@@ -901,11 +901,12 @@ select:disabled {
 .summon-skill-item-card {
   position: relative;
   border-radius: 5px;
-  height: 70%;
+  height: 90%;
   width: 70%;
   margin: auto;
   border: 2px solid black;
 }
+
 .summon-skill-item-card:hover {
   box-shadow: 1px -1px 15px -1px #bf9b30;
   -webkit-box-shadow: 1px -1px 15px -1px #bf9b30;
@@ -924,9 +925,17 @@ select:disabled {
   text-align: center;
 }
 
+.summon-skill-item-card-buttons{
+  height: 25%;
+}
+
+.summon-skill-item-card-buttons{
+  display: flex;
+}
+
 .summon-skill-item-card-buttons span {
   text-align: center;
-  margin: 0 2px;
+  margin: auto 2px;
 }
 
 .summon-skill-item-card-buttons {
@@ -935,27 +944,39 @@ select:disabled {
 }
 
 .summon-skill-item-card-synergy {
+  display: flex;
   right: 0;
-  height: 25%;
+  height: 20%;
   width: 20%;
+}
+
+.summon-skill-item-card-synergy span{
+  margin: auto;
 }
 
 .summon-skill-item-card-retry {
   bottom: 0;
-  height: 25%;
+  height: 20%;
   width: 20%;
 }
 
 .summon-skill-item-card-armorpenalty {
-  height: 25%;
+  height: 20%;
   width: 20%;
 }
 
 .summon-skill-item-card-armorpenalty img,
 .summon-skill-item-card-retry img {
-  height: 100%;
+  height: 90%;
+  width: 90%;
 }
 
 .summon-skill-item{
   user-select: none;
+}
+
+.summon-skill-item-card-img{
+  position: absolute;
+  height: 100%;
+  width: 100%;
 }
