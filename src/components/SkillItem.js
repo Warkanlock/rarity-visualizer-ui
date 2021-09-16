@@ -19,13 +19,42 @@ function SkillItem({
 
   var randomColor = "#" + (((1 << 24) * Math.random()) | 0).toString(16);
 
+  console.log({
+    synergy,
+    attribute_id,
+    name,
+    id,
+    retry,
+    armor_check_penalty,
+    check,
+    action,
+    isCross,
+  });
   return (
     <div className="summon-skill-item">
-      {/* replace with image */}
       <div
         className="summon-skill-item-card"
         style={{ backgroundColor: randomColor }}
       >
+        <div className="summon-skill-item-card-synergy">
+          <span>{synergy}</span>
+        </div>
+        {armor_check_penalty && (
+          <div className="summon-skill-item-card-armorpenalty">
+            <img
+              src={`${process.env.PUBLIC_URL}/icons/armor_penalty.png`}
+              alt="summon-img"
+            />
+          </div>
+        )}
+        {armor_check_penalty && (
+          <div className="summon-skill-item-card-retry">
+            <img
+              src={`${process.env.PUBLIC_URL}/icons/retry.png`}
+              alt="summon-img"
+            />
+          </div>
+        )}
         <div className="summon-skill-item-card-buttons">
           <span
             style={{ cursor: "pointer", userSelect: "none" }}

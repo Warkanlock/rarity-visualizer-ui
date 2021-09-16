@@ -912,17 +912,46 @@ select:disabled {
   -moz-box-shadow: 1px -1px 15px -1px #bf9b30;
 }
 
-.summon-skill-item-card-buttons {
+.summon-skill-item-card-buttons,
+.summon-skill-item-card-synergy,
+.summon-skill-item-card-armorpenalty,
+.summon-skill-item-card-retry {
+  font-size: 12px;
   border: 1px solid #bf9b30;
   background-color: black;
   border-radius: 5px 5px 0 5px;
   position: absolute;
   text-align: center;
-  bottom: 0;
-  right: 0;
 }
 
 .summon-skill-item-card-buttons span {
   text-align: center;
   margin: 0 2px;
+}
+
+.summon-skill-item-card-buttons {
+  bottom: 0;
+  right: 0;
+}
+
+.summon-skill-item-card-synergy {
+  right: 0;
+  height: 25%;
+  width: 20%;
+}
+
+.summon-skill-item-card-retry {
+  bottom: 0;
+  height: 25%;
+  width: 20%;
+}
+
+.summon-skill-item-card-armorpenalty {
+  height: 25%;
+  width: 20%;
+}
+
+.summon-skill-item-card-armorpenalty img,
+.summon-skill-item-card-retry img {
+  height: 100%;
 }

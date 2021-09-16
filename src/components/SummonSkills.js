@@ -101,6 +101,7 @@ const SummonSkills = ({ summonId, skills, level, classType, attributes }) => {
     setTotalRankPoints(totalRankPoints + costRankSkill);
   };
 
+  const classSkill = skills?.classSkills[0];
   return (
     <>
       <div className="summon-skills-container">
@@ -122,7 +123,28 @@ const SummonSkills = ({ summonId, skills, level, classType, attributes }) => {
             </div>
             <div className="summon-skills-body">
               <div className="summon-skills-class">
-                {skills?.classSkills
+                <SkillItem
+                  key={`skill-${classSkill.id}`}
+                  {...classSkill}
+                  totalPointsToSpend={totalRankPoints}
+                  handleAddRankPoint={(id, value) => {
+                    calculateCost(id);
+
+                    let tempRank = skillRanks;
+                    tempRank[id - 1] = value + 1;
+
+                    setSkillsRanks(tempRank);
+                  }}
+                  handleRemoveRankPoint={(id, value) => {
+                    calculateReturn(id);
+
+                    let tempRank = skillRanks;
+                    tempRank[id - 1] = value - 1;
+
+                    setSkillsRanks(tempRank);
+                  }}
+                />
+                {/* {skills?.classSkills
                   .sort((a, b) => {
                     return Number(a.id) > Number(b.id);
                   })
@@ -148,10 +170,10 @@ const SummonSkills = ({ summonId, skills, level, classType, attributes }) => {
                         setSkillsRanks(tempRank);
                       }}
                     />
-                  ))}
+                  ))} */}
               </div>
               <div className="summon-skills-all">
-                {Array.from(
+                {/* {Array.from(
                   new Set(
                     [...new Set(skills?.allSkills)].filter(
                       (skill) => !new Set(skills?.classSkills).has(skill)
@@ -184,7 +206,7 @@ const SummonSkills = ({ summonId, skills, level, classType, attributes }) => {
                         setSkillsRanks(tempRank);
                       }}
                     />
-                  ))}
+                  ))} */}
               </div>
             </div>
           </>
