@@ -18,24 +18,18 @@ function SkillItem({
   const [skillValue, setSkillValue] = React.useState(0);
 
   var randomColor = "#" + (((1 << 24) * Math.random()) | 0).toString(16);
-
-  console.log({
-    synergy,
-    attribute_id,
-    name,
-    id,
-    retry,
-    armor_check_penalty,
-    check,
-    action,
-    isCross,
-  });
   return (
     <div className="summon-skill-item">
       <div
         className="summon-skill-item-card"
         style={{ backgroundColor: randomColor }}
       >
+        <div style={{ position: "absolute", top: "10%", left: "25%" }}>
+          <p style={{ padding: 0, margin: 0 }}>{name}</p>
+          <p style={{ padding: 0, margin: 0 }}>
+            {CLASSES_ATTRIBUTES[attribute_id]}
+          </p>
+        </div>
         <div className="summon-skill-item-card-synergy">
           <span>{synergy}</span>
         </div>
@@ -47,7 +41,7 @@ function SkillItem({
             />
           </div>
         )}
-        {armor_check_penalty && (
+        {retry && (
           <div className="summon-skill-item-card-retry">
             <img
               src={`${process.env.PUBLIC_URL}/icons/retry.png`}

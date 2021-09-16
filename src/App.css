@@ -955,3 +955,7 @@ select:disabled {
 .summon-skill-item-card-retry img {
   height: 100%;
 }
+
+.summon-skill-item{
+  user-select: none;
+}
