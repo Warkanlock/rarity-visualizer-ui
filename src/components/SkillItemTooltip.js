@@ -20,7 +20,8 @@ const SkillItemTooltip = ({
           <h2>{name}</h2>
           <h5>{attribute}</h5>
           <h6>
-            {skillValue}/{isCross ? 2 : summonLevel + 3}
+            {skillValue}/
+            {isCross ? Math.trunc((summonLevel + 3) / 2) : summonLevel + 3}
           </h6>
         </div>
         <img

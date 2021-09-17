@@ -47,7 +47,8 @@ const SkillItem = ({
 
   const increase = () => {
     if (
-      skillValue < (isCross ? 2 : summonLevel + 3) &&
+      skillValue <
+        (isCross ? Math.trunc((summonLevel + 3) / 2) : summonLevel + 3) &&
       totalPointsToSpend > 0
     ) {
       handleAddRankPoint(id, skillValue);
