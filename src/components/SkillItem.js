@@ -1,7 +1,9 @@
-import React from "react";
-import { createPopper } from '@popperjs/core';
+import React, { useState } from "react";
+import { usePopper } from "react-popper";
+import { CLASSES_ATTRIBUTES } from "../utils/classes";
+import SkillItemTooltip from "./SkillItemTooltip";
 
-function SkillItem({
+const SkillItem = ({
   synergy,
   attribute_id,
   name,
@@ -14,69 +16,115 @@ function SkillItem({
   totalPointsToSpend,
   handleRemoveRankPoint,
   handleAddRankPoint,
-}) {
-  const [skillValue, setSkillValue] = React.useState(0);
-  const [currentSkillValue, setCurrentSkillValue] = React.useState(skillValue);
+}) => {
+  const [skillValue, setSkillValue] = useState(0);
+  const [currentSkillValue, setCurrentSkillValue] = useState(skillValue);
+  const [showPopper, setShowPopper] = useState(false);
+
+  const [referenceElement, setReferenceElement] = useState(null);
+  const [popperElement, setPopperElement] = useState(null);
+  const [arrowElement, setArrowElement] = useState(null);
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {
+    modifiers: [
+      {
+        name: "arrow",
+        options: {
+          element: arrowElement,
+        },
+      },
+    ],
+    placement: "right",
+  });
 
   return (
-    <div className="summon-skill-item">
-      <div className="summon-skill-item-card">
-        <img
-          className="summon-skill-item-card-img"
-          src={`${process.env.PUBLIC_URL}/skills/${name}.png`}
-          alt={`${name}-skill-img`}
-        />
-        <div className="summon-skill-item-card-synergy">
-          <span>{synergy}</span>
-        </div>
-        {armor_check_penalty && (
-          <div className="summon-skill-item-card-armorpenalty">
-            <img
-              src={`${process.env.PUBLIC_URL}/icons/armor_penalty.png`}
-              alt="summon-img"
-            />
+    <>
+      <div
+        className="summon-skill-item"
+        ref={setReferenceElement}
+        onMouseEnter={() => setShowPopper(true)}
+        onMouseLeave={() => setShowPopper(false)}
+      >
+        <div className="summon-skill-item-card">
+          <img
+            className="summon-skill-item-card-img"
+            src={`${process.env.PUBLIC_URL}/skills/${name}.png`}
+            alt={`${name}-skill-img`}
+          />
+          <div className="summon-skill-item-card-synergy">
+            <span>{synergy}</span>
           </div>
-        )}
-        {retry && (
-          <div className="summon-skill-item-card-retry">
-            <img
-              src={`${process.env.PUBLIC_URL}/icons/retry.png`}
-              alt="summon-img"
-            />
-          </div>
-        )}
-        <div className="summon-skill-item-card-buttons">
-          <span
-            style={{ cursor: "pointer", userSelect: "none" }}
-            onClick={() => {
-              if (skillValue > 0) {
-                handleRemoveRankPoint(id, skillValue);
-                setSkillValue(skillValue - 1);
-              }
-            }}
-          >
-            -
-          </span>
-          {skillValue > currentSkillValue ? (
-            <span style={{ color: "green" }}>{skillValue}</span>
-          ) : (
-            <span>{skillValue}</span>
+          {armor_check_penalty && (
+            <div className="summon-skill-item-card-armorpenalty">
+              <img
+                src={`${process.env.PUBLIC_URL}/icons/armor_penalty.png`}
+                alt="summon-img"
+              />
+            </div>
           )}
-          <span
-            style={{ cursor: "pointer", userSelect: "none" }}
-            onClick={() => {
-              if (skillValue < (isCross ? 2 : 5) && totalPointsToSpend > 0) {
-                handleAddRankPoint(id, skillValue);
-                setSkillValue(skillValue + 1);
-              }
-            }}
-          >
-            +
-          </span>
+          {retry && (
+            <div className="summon-skill-item-card-retry">
+              <img
+                src={`${process.env.PUBLIC_URL}/icons/retry.png`}
+                alt="summon-img"
+              />
+            </div>
+          )}
+          <div className="summon-skill-item-card-buttons">
+            <span
+              style={{ cursor: "pointer", userSelect: "none" }}
+              onClick={() => {
+                if (skillValue > 0) {
+                  handleRemoveRankPoint(id, skillValue);
+                  setSkillValue(skillValue - 1);
+                }
+              }}
+            >
+              -
+            </span>
+            {skillValue > currentSkillValue ? (
+              <span style={{ color: "green" }}>{skillValue}</span>
+            ) : (
+              <span>{skillValue}</span>
+            )}
+            <span
+              style={{ cursor: "pointer", userSelect: "none" }}
+              onClick={() => {
+                if (skillValue < (isCross ? 2 : 5) && totalPointsToSpend > 0) {
+                  handleAddRankPoint(id, skillValue);
+                  setSkillValue(skillValue + 1);
+                }
+              }}
+            >
+              +
+            </span>
+          </div>
         </div>
       </div>
-    </div>
+      {showPopper && (
+        <div
+          className="summon-skill-tooltip"
+          ref={setPopperElement}
+          style={styles.popper}
+          {...attributes.popper}
+        >
+          <SkillItemTooltip
+            name={name}
+            attribute={CLASSES_ATTRIBUTES[attribute_id]}
+            action={action}
+            check={check}
+            synergy={synergy}
+            retry={retry}
+            armorPenalty={armor_check_penalty}
+          />
+          <div
+            className="summon-skill-arrow"
+            ref={setArrowElement}
+            style={styles.arrow}
+          />
+        </div>
+      )}
+    </>
   );
-}
+};
 
 export default SkillItem;

@@ -29,6 +29,7 @@ const WarriorPage = ({
   const [showDungeonModal, setShowDungeonModal] = useState(false);
   const [showForestModal, setShowForestModal] = useState(false);
   const [skills, setSkills] = useState(null);
+  const [noSkills, setNoSkills] = useState(false);
 
   useEffect(() => {
     if (summonId) {
@@ -72,7 +73,11 @@ const WarriorPage = ({
       let skillsInformation = [];
 
       if (localStorage.getItem("all_skills")) {
-        skillsInformation = JSON.parse(localStorage.getItem("all_skills"));
+        try {
+          skillsInformation = JSON.parse(localStorage.getItem("all_skills"));
+        } catch {
+          skillsInformation = [];
+        }
       }
 
       if (skillsInformation.length === 0) {
@@ -95,7 +100,6 @@ const WarriorPage = ({
         playerSkills: playerSkills.map((skill) => parseInt(skill)),
       });
     } catch (ex) {
-      console.log(ex);
       toast.error(`Something went wrong! Try Again in a few seconds!`);
     }
   };
@@ -136,6 +140,8 @@ const WarriorPage = ({
     }
     try {
       setLoading(true);
+      setNoSkills(false);
+
       if (summonId != null) {
         const summonData = await RetryContractCall(
           context.contract_base.methods.summoner(summonId)
@@ -192,6 +198,10 @@ const WarriorPage = ({
           playerGoldPromise,
           pendingGoldPromise,
         ]);
+
+        if (Number(attributesData.intelligence) === 0) {
+          setNoSkills(true);
+        }
 
         setSummonName(summonName);
 
@@ -470,12 +480,19 @@ const WarriorPage = ({
         </div>
         <div label="Skills">
           <div style={{ textAlign: "center" }}>
-            {summonData != null && skills != null && (
+            {summonData != null && skills != null ? (
               <SummonSkills
                 skills={skills}
                 summonId={summonId}
+                noSkills={noSkills}
                 {...summonData}
               />
+            ) : (
+              <>
+                <div className="skill-spinner">
+                  <div className="spinner"></div>
+                </div>
+              </>
             )}
           </div>
         </div>

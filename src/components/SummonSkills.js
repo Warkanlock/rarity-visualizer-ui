@@ -5,7 +5,14 @@ import { RetryContractCall } from "../utils/fetchRetry";
 import { toast } from "react-toastify";
 import { useEffect } from "react/cjs/react.development";
 
-const SummonSkills = ({ summonId, skills, level, classType, attributes }) => {
+const SummonSkills = ({
+  summonId,
+  skills,
+  level,
+  classType,
+  attributes,
+  noSkills,
+}) => {
   const [context] = React.useContext(RarityContext);
   const [loading, setLoading] = React.useState(true);
   const [skillRanks, setSkillsRanks] = React.useState(skills.playerSkills);
@@ -113,12 +120,16 @@ const SummonSkills = ({ summonId, skills, level, classType, attributes }) => {
         ) : (
           <>
             <div>
-              {totalRankPoints > 0
+              {noSkills
+                ? "Please assign initial attributes"
+                : totalRankPoints > 0
                 ? `Points Available: ${totalRankPoints}`
                 : "No points left to spend"}
-              <button onClick={trainSkills} className="assign-skills-points">
-                Assign Skills
-              </button>
+              {!noSkills && (
+                <button onClick={trainSkills} className="assign-skills-points">
+                  Assign Skills
+                </button>
+              )}
             </div>
             <div className="summon-skills-header">
               <h3>Class Skills</h3>

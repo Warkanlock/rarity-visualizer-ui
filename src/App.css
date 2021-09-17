@@ -1064,6 +1064,7 @@ select:disabled {
 .summon-skill-item-card-synergy,
 .summon-skill-item-card-armorpenalty,
 .summon-skill-item-card-retry {
+  display: flex;
   font-size: 12px;
   border: 1px solid #bf9b30;
   background-color: black;
@@ -1114,6 +1115,7 @@ select:disabled {
 
 .summon-skill-item-card-armorpenalty img,
 .summon-skill-item-card-retry img {
+  margin: auto;
   height: 90%;
   width: 90%;
 }
@@ -1141,4 +1143,55 @@ select:disabled {
 
 .assign-skills-points:disabled {
   cursor: not-allowed;
+}
+
+.summon-skill-tooltip,
+.summon-skill-arrow {
+  z-index: 9999999;
+}
+
+.summon-skill-tooltip-container {
+  border: 1px solid #bf9b30;
+  width: 300px;
+}
+
+.summon-skill-tooltip-header {
+  display: flex;
+}
+
+.summon-skill-tooltip-header-name {
+  display: flex;
+  flex-direction: column;
+  margin-right: auto;
+  text-align: left;
+}
+
+.summon-skill-tooltip-header h2,
+.summon-skill-tooltip-header h4,
+.summon-skill-tooltip-header h5,
+.summon-skill-tooltip-header p {
+  margin: 0;
+  padding: 0;
+}
+
+.summon-skill-tooltip-body h4,
+.summon-skill-tooltip-body p {
+  margin: 5px 0;
+}
+
+.summon-skill-tooltip-header img {
+  height: 60px;
+  width: 60px;
+  border: 1px solid black;
+  box-shadow: 0 0 5px #ccc;
+  border-radius: 3px;
+}
+
+.summon-skill-tooltip-body {
+  text-align: left;
+}
+
+.summon-skill-tooltip-info {
+  display: flex;
+  flex-direction: column;
 }
