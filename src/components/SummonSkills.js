@@ -75,7 +75,7 @@ const SummonSkills = ({
       await context.contract_skills.base.methods
         .set_skills(summonId, skillRanks)
         .send({ from: context.accounts[0] });
-      toast.success(id, {
+      toast.update(id, {
         render: `Your skills were trained by a master!`,
         type: "success",
         isLoading: false,
