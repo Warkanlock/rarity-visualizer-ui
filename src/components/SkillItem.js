@@ -16,19 +16,16 @@ function SkillItem({
   handleAddRankPoint,
 }) {
   const [skillValue, setSkillValue] = React.useState(0);
+  const [currentSkillValue, setCurrentSkillValue] = React.useState(skillValue);
 
   return (
     <div className="summon-skill-item">
       <div className="summon-skill-item-card">
         <img
-        className="summon-skill-item-card-img"
+          className="summon-skill-item-card-img"
           src={`${process.env.PUBLIC_URL}/skills/${name}.png`}
-          alt={` `}
-          // alt={`${name}-skill-img`}
+          alt={`${name}-skill-img`}
         />
-        <div style={{ position: "absolute", top: "10%", left: "25%" }}>
-          <p style={{ padding: 0, margin: 0 }}>{name}</p>
-        </div>
         <div className="summon-skill-item-card-synergy">
           <span>{synergy}</span>
         </div>
@@ -60,7 +57,11 @@ function SkillItem({
           >
             -
           </span>
-          <span>{skillValue}</span>
+          {skillValue > currentSkillValue ? (
+            <span style={{ color: "green" }}>{skillValue}</span>
+          ) : (
+            <span>{skillValue}</span>
+          )}
           <span
             style={{ cursor: "pointer", userSelect: "none" }}
             onClick={() => {

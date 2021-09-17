@@ -64,6 +64,40 @@ ul {
   background-color: #be6314;
 }
 
+.donate-button {
+  height: calc(10px + 2vmin);
+  width: 7rem;
+  display: flex;
+  vertical-align: middle;
+  margin-right: 10px;
+  background: radial-gradient(
+    circle,
+    rgba(80, 80, 80, 1) 0%,
+    rgba(55, 55, 55, 1) 40%,
+    rgba(20, 20, 20, 1) 91%
+  );
+  border: 1px solid #bf9b30;
+  box-shadow: 0 0 10px #bf9b30;
+  border-radius: 5px;
+}
+
+.donate-button a {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  color: white;
+  text-decoration: none;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+.donate-button a p {
+  display: flex;
+  vertical-align: middle;
+  padding: 0;
+  margin: auto;
+}
+
 .wallet-address {
   height: calc(10px + 2vmin);
   width: 7rem;
@@ -126,6 +160,7 @@ select:disabled {
   margin-left: auto;
   flex-direction: column;
   position: relative;
+  margin-bottom: 3rem;
 }
 
 @media (max-width: 1600px) and (min-width: 1200px) {
@@ -592,7 +627,8 @@ select:disabled {
 }
 
 .dungeon-buttons-thecellar button:disabled,
-.forest-content-buttons button:disabled {
+.forest-content-buttons button:disabled,
+.confirm-points-summoner:disabled {
   cursor: not-allowed;
   background: radial-gradient(
     circle,
@@ -857,13 +893,124 @@ select:disabled {
   align-content: center;
 }
 
+.summoners-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.summoner-card {
+  width: 33%;
+  flex: 0 0 33%;
+}
+
+.summoner-card-body {
+  display: flex;
+  margin: 5px;
+  padding: 10px;
+  border: 1px solid transparent;
+}
+
+.summoner-card-body:hover {
+  border: 1px solid #bf9b30;
+  border-radius: 5px;
+  background: radial-gradient(
+    circle,
+    rgba(50, 50, 50, 1) 0%,
+    rgba(40, 40, 40, 1) 30%,
+    rgba(20, 20, 20, 1) 91%
+  );
+}
+
+.summoner-card-class-image {
+  width: 25%;
+  margin-right: 10px;
+  display: flex;
+  cursor: pointer;
+}
+
+.summoner-card-class-image img {
+  width: 100%;
+  margin: auto;
+}
+
+.summoner-card-info {
+  margin-bottom: 5px;
+  width: 100%;
+  text-align: left;
+}
+
+.summoner-card-info p {
+  white-space: nowrap;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.summoner-card-info {
+  width: 75%;
+}
+
+.summoner-card-row {
+  margin-bottom: 5px;
+}
+
+.summoner-card-info .progress {
+  width: 100%;
+  height: 15px;
+}
+
+.summoner-card-info .progress .total {
+  line-height: 15px;
+}
+
+.summoner-card-level-adventure {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  justify-content: space-between;
+}
+
+.summoner-card-adventure {
+  color: #ccc;
+}
+
+.summoner-card-adventure-active {
+  color: #ddaf26;
+  cursor: pointer;
+}
+
+.summoner-card-adventure-active:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.unknown-summoner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(80, 80, 80, 1) 0%,
+    rgba(55, 55, 55, 1) 60%,
+    rgba(20, 20, 20, 1) 80%
+  );
+}
+
 .summon-skills-container {
   display: flex;
   flex-direction: column;
 }
 
 .summon-skills-header {
-  margin: 10px 0px;
+  display: flex;
+  align-content: space-between;
+  flex-wrap: wrap;
+  margin: auto;
+  width: 100%;
+}
+.summon-skills-header h3 {
+  flex: 1 1 50%;
+  margin: 0;
 }
 
 .summon-skills-body {
@@ -895,16 +1042,16 @@ select:disabled {
   text-align: left;
   color: white;
   flex: 0 0 30%;
-  height: 100px;
+  margin: auto;
 }
 
 .summon-skill-item-card {
   position: relative;
   border-radius: 5px;
-  height: 90%;
-  width: 70%;
-  margin: auto;
-  border: 2px solid black;
+  height: 100px;
+  width: 100px;
+  margin: 10px auto;
+  border: 3px solid black;
 }
 
 .summon-skill-item-card:hover {
@@ -925,11 +1072,11 @@ select:disabled {
   text-align: center;
 }
 
-.summon-skill-item-card-buttons{
+.summon-skill-item-card-buttons {
   height: 25%;
 }
 
-.summon-skill-item-card-buttons{
+.summon-skill-item-card-buttons {
   display: flex;
 }
 
@@ -950,7 +1097,7 @@ select:disabled {
   width: 20%;
 }
 
-.summon-skill-item-card-synergy span{
+.summon-skill-item-card-synergy span {
   margin: auto;
 }
 
@@ -971,12 +1118,27 @@ select:disabled {
   width: 90%;
 }
 
-.summon-skill-item{
+.summon-skill-item {
   user-select: none;
 }
 
-.summon-skill-item-card-img{
+.summon-skill-item-card-img {
   position: absolute;
   height: 100%;
   width: 100%;
+}
+
+.assign-skills-points {
+  color: white;
+  margin: auto 10px;
+  padding: 5px;
+  background-color: #be6314 !important;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.assign-skills-points:disabled {
+  cursor: not-allowed;
 }

@@ -101,7 +101,6 @@ const SummonSkills = ({ summonId, skills, level, classType, attributes }) => {
     setTotalRankPoints(totalRankPoints + costRankSkill);
   };
 
-  const classSkill = skills?.classSkills[0];
   return (
     <>
       <div className="summon-skills-container">
@@ -113,13 +112,17 @@ const SummonSkills = ({ summonId, skills, level, classType, attributes }) => {
           </>
         ) : (
           <>
-            <div className="summon-skills-header">
+            <div>
               {totalRankPoints > 0
-                ? `Points to spend:${totalRankPoints}`
+                ? `Points Available: ${totalRankPoints}`
                 : "No points left to spend"}
-              <button onClick={trainSkills} className="summon-new">
-                Train your summoner!
+              <button onClick={trainSkills} className="assign-skills-points">
+                Assign Skills
               </button>
+            </div>
+            <div className="summon-skills-header">
+              <h3>Class Skills</h3>
+              <h3>All Class Skills</h3>
             </div>
             <div className="summon-skills-body">
               <div className="summon-skills-class">
@@ -151,6 +154,7 @@ const SummonSkills = ({ summonId, skills, level, classType, attributes }) => {
                     />
                   ))}
               </div>
+              <div style={{ border: "1px solid rgba( 0, 0, 0, .2)" }}></div>
               <div className="summon-skills-all">
                 {Array.from(
                   new Set(
