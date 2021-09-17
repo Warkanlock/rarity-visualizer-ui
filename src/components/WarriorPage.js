@@ -485,6 +485,7 @@ const WarriorPage = ({
                 setSkills={setSkills}
                 summonId={summonId}
                 noSkills={noSkills}
+                summonLevel={Number(summonData.level)}
                 {...summonData}
               />
             ) : (

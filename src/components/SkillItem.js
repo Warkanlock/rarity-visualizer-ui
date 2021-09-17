@@ -19,6 +19,7 @@ const SkillItem = ({
   handleAddRankPoint,
   skillSynergy,
   trainSkillsFlag,
+  summonLevel,
 }) => {
   const [skillValue, setSkillValue] = useState(currentValue || 0);
   const [currentSkillValue, setCurrentSkillValue] = useState(currentValue || 0);
@@ -45,7 +46,10 @@ const SkillItem = ({
   }, [trainSkillsFlag]);
 
   const increase = () => {
-    if (skillValue < (isCross ? 2 : 4) && totalPointsToSpend > 0) {
+    if (
+      skillValue < (isCross ? 2 : summonLevel + 3) &&
+      totalPointsToSpend > 0
+    ) {
       handleAddRankPoint(id, skillValue);
       setSkillValue(skillValue + 1);
     }
@@ -141,6 +145,7 @@ const SkillItem = ({
             skillSynergy={skillSynergy}
             skillValue={skillValue}
             isCross={isCross}
+            summonLevel={summonLevel}
           />
           <div
             className="summon-skill-arrow"
