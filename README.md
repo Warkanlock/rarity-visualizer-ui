@@ -8,4 +8,5 @@ Contributors:
 
 - [@txxnano](https://twitter.com/txxnano) (main contributor)
 - **dagokas** (main contributor)
+- AraragiRukasu (designer and ui contributor)
 - **jvanpeborgh** (UI inspiration)
