@@ -1084,6 +1084,7 @@ select:disabled {
 .summon-skill-item-card-buttons span {
   text-align: center;
   margin: auto 2px;
+  font-size: 20px;
 }
 
 .summon-skill-item-card-buttons {
