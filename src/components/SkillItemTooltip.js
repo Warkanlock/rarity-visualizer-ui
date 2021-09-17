@@ -9,6 +9,8 @@ const SkillItemTooltip = ({
   retry,
   armorPenalty,
   skillSynergy,
+  skillValue,
+  isCross,
 }) => {
   return (
     <div className="container-box summon-skill-tooltip-container">
@@ -16,6 +18,9 @@ const SkillItemTooltip = ({
         <div className="summon-skill-tooltip-header-name">
           <h2>{name}</h2>
           <h5>{attribute}</h5>
+          <h6>
+            {skillValue}/{isCross ? 2 : 5}
+          </h6>
         </div>
         <img
           src={`${process.env.PUBLIC_URL}/skills/${name}.png`}

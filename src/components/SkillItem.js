@@ -38,6 +38,21 @@ const SkillItem = ({
     placement: "right",
   });
 
+  const increase = () => {
+    if (skillValue < (isCross ? 2 : 5) && totalPointsToSpend > 0) {
+      handleAddRankPoint(id, skillValue);
+      setSkillValue(skillValue + 1);
+    }
+  };
+
+  const decrease = () => {
+    if (skillValue <= currentSkillValue) return;
+    if (skillValue > 0) {
+      handleRemoveRankPoint(id, skillValue);
+      setSkillValue(skillValue - 1);
+    }
+  };
+
   return (
     <>
       <div
@@ -51,6 +66,11 @@ const SkillItem = ({
             className="summon-skill-item-card-img"
             src={`${process.env.PUBLIC_URL}/skills/${name}.png`}
             alt={`${name}-skill-img`}
+            onClick={increase}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              decrease();
+            }}
           />
           {skillSynergy && (
             <div className="summon-skill-item-card-synergy">
@@ -79,13 +99,7 @@ const SkillItem = ({
           <div className="summon-skill-item-card-buttons">
             <span
               style={{ cursor: "pointer", userSelect: "none" }}
-              onClick={() => {
-                if (skillValue <= currentSkillValue) return;
-                if (skillValue > 0) {
-                  handleRemoveRankPoint(id, skillValue);
-                  setSkillValue(skillValue - 1);
-                }
-              }}
+              onClick={decrease}
             >
               -
             </span>
@@ -96,12 +110,7 @@ const SkillItem = ({
             )}
             <span
               style={{ cursor: "pointer", userSelect: "none" }}
-              onClick={() => {
-                if (skillValue < (isCross ? 2 : 5) && totalPointsToSpend > 0) {
-                  handleAddRankPoint(id, skillValue);
-                  setSkillValue(skillValue + 1);
-                }
-              }}
+              onClick={increase}
             >
               +
             </span>
@@ -124,6 +133,8 @@ const SkillItem = ({
             retry={retry}
             armorPenalty={armor_check_penalty}
             skillSynergy={skillSynergy}
+            skillValue={skillValue}
+            isCross={isCross}
           />
           <div
             className="summon-skill-arrow"

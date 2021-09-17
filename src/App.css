@@ -1176,6 +1176,7 @@ select:disabled {
 .summon-skill-tooltip-header h2,
 .summon-skill-tooltip-header h4,
 .summon-skill-tooltip-header h5,
+.summon-skill-tooltip-header h6,
 .summon-skill-tooltip-header p {
   margin: 0;
   padding: 0;
