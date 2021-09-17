@@ -68,9 +68,7 @@ const ForestModal = ({ setShowForestModal, currentLevel, summonId }) => {
         .discover(summonId)
         .send({ from: context.accounts[0] });
 
-      console.log(treasure);
-
-      toast.success(`Going back home!`);
+      toast.success(`Going back home! ${treasure}`);
     } catch (ex) {
       toast.update(id, {
         render: `Something went wrong! Try Again in a few seconds!`,

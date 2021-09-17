@@ -14,8 +14,12 @@ const SummonSkills = ({
 }) => {
   const [context] = React.useContext(RarityContext);
   const [loading, setLoading] = React.useState(true);
-  const [skillRanks, setSkillsRanks] = React.useState(skills.playerSkills);
+  const [skillRanks, setSkillsRanks] = React.useState(null);
   const [totalRankPoints, setTotalRankPoints] = React.useState(0);
+
+  useEffect(() => {
+    setSkillsRanks(skills.playerSkills);
+  }, [skills.playerSkills, summonId]);
 
   useEffect(() => {
     async function modifierByInt(intelligence) {
@@ -67,7 +71,7 @@ const SummonSkills = ({
       toast.error(`Something went wrong! Try Again in a few seconds!`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [skills.playerSkills, summonId]);
 
   const trainSkills = async () => {
     const id = toast.loading("Training skills...");
@@ -107,12 +111,10 @@ const SummonSkills = ({
     setTotalRankPoints(totalRankPoints + costRankSkill);
   };
 
-  console.log(skillRanks);
-
   return (
     <>
       <div className="summon-skills-container">
-        {loading ? (
+        {loading || !skillRanks ? (
           <>
             <div className="skill-spinner">
               <div className="spinner"></div>

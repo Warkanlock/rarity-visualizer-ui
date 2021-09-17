@@ -31,15 +31,6 @@ const WarriorPage = ({
   const [skills, setSkills] = useState(null);
   const [noSkills, setNoSkills] = useState(false);
 
-  useEffect(() => {
-    if (summonId) {
-      localStorage.setItem("summonId", summonId);
-      getSummonerState();
-      getAllSkills();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [summonId, update]);
-
   const getAllSkills = async () => {
     if (!summonData) {
       return;
@@ -105,10 +96,18 @@ const WarriorPage = ({
   };
 
   useEffect(() => {
+    if (summonId) {
+      localStorage.setItem("summonId", summonId);
+      getSummonerState();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [summonId, update]);
+
+  useEffect(() => {
     if (summonData) {
       getAllSkills();
     }
-  }, [summonData]);
+  }, [summonData, summonId]);
 
   useEffect(() => {
     if (summoners[0] && !summonId) {
