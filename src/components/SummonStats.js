@@ -281,14 +281,6 @@ const SummonStats = ({
                   {levelPoints}
                 </p>
               </li>
-              <li>
-                <p>
-                  <span>Class Skills:</span>{" "}
-                  {skills?.classSkills.map((item) => {
-                    return <i>{item.name}, </i>;
-                  })}
-                </p>
-              </li>
             </ul>
           </div>
           <div className="summoner-attributes">

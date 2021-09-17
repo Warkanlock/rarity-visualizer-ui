@@ -10,6 +10,7 @@ import { RetryContractCall } from "../utils/fetchRetry";
 import { reduceNumber } from "../utils";
 import Tabs from "./Tabs";
 import ForestModal from "./ForestModal";
+import SummonSkills from "./SummonSkills";
 import { getAdventureTime } from "../utils/utils";
 
 const WarriorPage = ({
@@ -27,14 +28,87 @@ const WarriorPage = ({
   const [loadingAdventure, setLoadingAdventure] = useState(false);
   const [showDungeonModal, setShowDungeonModal] = useState(false);
   const [showForestModal, setShowForestModal] = useState(false);
+  const [skills, setSkills] = useState(null);
+  const [noSkills, setNoSkills] = useState(false);
 
   useEffect(() => {
     if (summonId) {
       localStorage.setItem("summonId", summonId);
       getSummonerState();
+      getAllSkills();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [summonId, update]);
+
+  const getAllSkills = async () => {
+    if (!summonData) {
+      return;
+    }
+    try {
+      const classSkills = await RetryContractCall(
+        context.contract_skills.base.methods.class_skills(summonData?.classType)
+      );
+
+      const allSkills = classSkills.map((skill, idx) => {
+        if (skill) {
+          return { idx: idx + 1, skill };
+        }
+        return { idx: idx + 1, skill: null };
+      });
+
+      const allSkillsInformation = [];
+
+      allSkills.forEach((item) =>
+        allSkillsInformation.push(
+          RetryContractCall(
+            context.contract_skills.allSkills.methods.skill_by_id(item.idx)
+          )
+        )
+      );
+
+      const playerSkills = await RetryContractCall(
+        context.contract_skills.base.methods.get_skills(summonId)
+      );
+
+      let skillsInformation = [];
+
+      if (localStorage.getItem("all_skills")) {
+        try {
+          skillsInformation = JSON.parse(localStorage.getItem("all_skills"));
+        } catch {
+          skillsInformation = [];
+        }
+      }
+
+      if (skillsInformation.length === 0) {
+        skillsInformation = await Promise.all(allSkillsInformation);
+        localStorage.setItem("all_skills", JSON.stringify(skillsInformation));
+      }
+
+      const onlyClassIds = allSkills.filter((item) => item.skill);
+      const onlyClassInformation = [];
+
+      onlyClassIds.forEach(({ idx }) => {
+        onlyClassInformation.push(
+          skillsInformation.find(({ id }) => Number(id) === idx)
+        );
+      });
+
+      setSkills({
+        classSkills: onlyClassInformation,
+        allSkills: skillsInformation,
+        playerSkills: playerSkills.map((skill) => parseInt(skill)),
+      });
+    } catch (ex) {
+      toast.error(`Something went wrong! Try Again in a few seconds!`);
+    }
+  };
+
+  useEffect(() => {
+    if (summonData) {
+      getAllSkills();
+    }
+  }, [summonData]);
 
   useEffect(() => {
     if (summoners[0] && !summonId) {
@@ -66,6 +140,8 @@ const WarriorPage = ({
     }
     try {
       setLoading(true);
+      setNoSkills(false);
+
       if (summonId != null) {
         const summonData = await RetryContractCall(
           context.contract_base.methods.summoner(summonId)
@@ -123,44 +199,9 @@ const WarriorPage = ({
           pendingGoldPromise,
         ]);
 
-        const classSkills = await RetryContractCall(
-          context.contract_skills.base.methods.class_skills(summonData[2])
-        );
-
-        const allSkills = classSkills.map((skill, idx) => {
-          if (skill) {
-            return { idx: idx + 1, skill };
-          }
-          return { idx: idx + 1, skill: null };
-        });
-
-        const allSkillsInformation = [];
-
-        allSkills.forEach((item) =>
-          allSkillsInformation.push(
-            RetryContractCall(
-              context.contract_skills.allSkills.methods.skill_by_id(item.idx)
-            )
-          )
-        );
-
-        let skillsInformation = [];
-
-        if (skillsInformation.length > 0) {
-          skillsInformation = localStorage.getItem("all_skills");
-        } else {
-          skillsInformation = await Promise.all(allSkillsInformation);
-          localStorage.setItem("all_skills", skillsInformation);
+        if (Number(attributesData.intelligence) === 0) {
+          setNoSkills(true);
         }
-
-        const onlyClassIds = allSkills.filter((item) => item.skill);
-        const onlyClassInformation = [];
-
-        onlyClassIds.forEach(({ idx }) => {
-          onlyClassInformation.push(
-            skillsInformation.find(({ id }) => Number(id) === idx)
-          );
-        });
 
         setSummonName(summonName);
 
@@ -169,10 +210,6 @@ const WarriorPage = ({
             fullName,
             summonName,
             title,
-          },
-          skills: {
-            classSkills: onlyClassInformation,
-            allSkills: skillsInformation,
           },
           gold: {
             playerGold: parseFloat(playerGold) / reduceNumber(18),
@@ -443,7 +480,20 @@ const WarriorPage = ({
         </div>
         <div label="Skills">
           <div style={{ textAlign: "center" }}>
-            <h1>Coming soon!</h1>
+            {summonData != null && skills != null ? (
+              <SummonSkills
+                skills={skills}
+                summonId={summonId}
+                noSkills={noSkills}
+                {...summonData}
+              />
+            ) : (
+              <>
+                <div className="skill-spinner">
+                  <div className="spinner"></div>
+                </div>
+              </>
+            )}
           </div>
         </div>
         <div label="Inventory">
