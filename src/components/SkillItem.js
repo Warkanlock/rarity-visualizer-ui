@@ -18,7 +18,7 @@ const SkillItem = ({
   handleAddRankPoint,
 }) => {
   const [skillValue, setSkillValue] = useState(0);
-  const [currentSkillValue, setCurrentSkillValue] = useState(skillValue);
+  const [currentSkillValue] = useState(skillValue);
   const [showPopper, setShowPopper] = useState(false);
 
   const [referenceElement, setReferenceElement] = useState(null);

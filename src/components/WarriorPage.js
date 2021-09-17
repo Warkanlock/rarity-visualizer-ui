@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SummonStats } from "./SummonStats";
 import { CLASSES_TYPE } from "../utils/classes";
 import DungeonModal from "./DungeonModal";
