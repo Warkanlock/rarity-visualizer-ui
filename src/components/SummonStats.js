@@ -125,7 +125,7 @@ const SummonStats = ({
   };
 
   const confirmPoints = async () => {
-    if (totalPointsToSpend || !summonId) return;
+    if (!summonId) return;
     const id = toast.loading("Confirming points...");
     try {
       await context.contract_attributes.methods
@@ -281,14 +281,6 @@ const SummonStats = ({
                   {levelPoints}
                 </p>
               </li>
-              <li>
-                <p>
-                  <span>Class Skills:</span>{" "}
-                  {skills?.classSkills.map((item) => {
-                    return <i>{item.name}, </i>;
-                  })}
-                </p>
-              </li>
             </ul>
           </div>
           <div className="summoner-attributes">
@@ -331,7 +323,6 @@ const SummonStats = ({
             <button
               className="confirm-points-summoner"
               onClick={() => confirmPoints()}
-              disabled={totalPointsToSpend === 0}
             >
               Confirm points ({totalPointsToSpend})
             </button>
