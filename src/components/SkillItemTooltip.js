@@ -19,7 +19,7 @@ const SkillItemTooltip = ({
           <h2>{name}</h2>
           <h5>{attribute}</h5>
           <h6>
-            {skillValue}/{isCross ? 2 : 5}
+            {skillValue}/{isCross ? 2 : 4}
           </h6>
         </div>
         <img

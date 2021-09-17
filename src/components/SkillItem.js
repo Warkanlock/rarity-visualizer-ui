@@ -45,7 +45,7 @@ const SkillItem = ({
   }, [trainSkillsFlag]);
 
   const increase = () => {
-    if (skillValue < (isCross ? 2 : 5) && totalPointsToSpend > 0) {
+    if (skillValue < (isCross ? 2 : 4) && totalPointsToSpend > 0) {
       handleAddRankPoint(id, skillValue);
       setSkillValue(skillValue + 1);
     }
