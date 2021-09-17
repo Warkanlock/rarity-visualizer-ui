@@ -11,11 +11,13 @@ const SummonSkills = ({
   classType,
   attributes,
   noSkills,
+  setSkills,
 }) => {
   const [context] = React.useContext(RarityContext);
   const [loading, setLoading] = React.useState(true);
   const [skillRanks, setSkillsRanks] = React.useState(null);
   const [totalRankPoints, setTotalRankPoints] = React.useState(0);
+  const [trainSkillsFlag, setTrainSkillsFlag] = React.useState(false);
 
   useEffect(() => {
     setSkillsRanks(skills.playerSkills);
@@ -79,6 +81,7 @@ const SummonSkills = ({
       await context.contract_skills.base.methods
         .set_skills(summonId, skillRanks)
         .send({ from: context.accounts[0] });
+      setTrainSkillsFlag((prevState) => !prevState);
       toast.update(id, {
         render: `Your skills were trained by a master!`,
         type: "success",
@@ -155,6 +158,7 @@ const SummonSkills = ({
                     <SkillItem
                       key={`skill-${skill.id}`}
                       currentValue={skillRanks[skill.id - 1]}
+                      trainSkillsFlag={trainSkillsFlag}
                       {...skill}
                       skillSynergy={
                         skillsListName?.find(
@@ -197,6 +201,7 @@ const SummonSkills = ({
                     <SkillItem
                       key={`skill-${skill.id}-player`}
                       currentValue={skillRanks[skill.id - 1]}
+                      trainSkillsFlag={trainSkillsFlag}
                       {...skill}
                       skillSynergy={
                         skillsListName?.find(

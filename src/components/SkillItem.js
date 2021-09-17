@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 import { CLASSES_ATTRIBUTES } from "../utils/classes";
 import SkillItemTooltip from "./SkillItemTooltip";
@@ -18,9 +18,10 @@ const SkillItem = ({
   handleRemoveRankPoint,
   handleAddRankPoint,
   skillSynergy,
+  trainSkillsFlag,
 }) => {
   const [skillValue, setSkillValue] = useState(currentValue || 0);
-  const [currentSkillValue] = useState(skillValue);
+  const [currentSkillValue, setCurrentSkillValue] = useState(currentValue || 0);
   const [showPopper, setShowPopper] = useState(false);
 
   const [referenceElement, setReferenceElement] = useState(null);
@@ -37,6 +38,11 @@ const SkillItem = ({
     ],
     placement: "right",
   });
+
+  useEffect(() => {
+    setCurrentSkillValue(currentValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trainSkillsFlag]);
 
   const increase = () => {
     if (skillValue < (isCross ? 2 : 5) && totalPointsToSpend > 0) {
