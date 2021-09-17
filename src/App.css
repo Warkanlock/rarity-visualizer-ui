@@ -51,6 +51,12 @@ ul {
   margin-left: auto;
 }
 
+.made-with-text {
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  color: white;
+}
+
 .wallet-button {
   height: calc(10px + 2vmin);
   text-align: center;
