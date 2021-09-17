@@ -1,5 +1,5 @@
 import React from "react";
-import { CLASSES_ATTRIBUTES } from "../utils/classes";
+import { createPopper } from '@popperjs/core';
 
 function SkillItem({
   synergy,

@@ -7,7 +7,7 @@ import { useEffect } from "react/cjs/react.development";
 
 const SummonSkills = ({ summonId, skills, level, classType, attributes }) => {
   const [context] = React.useContext(RarityContext);
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [skillRanks, setSkillsRanks] = React.useState(skills.playerSkills);
   const [totalRankPoints, setTotalRankPoints] = React.useState(0);
 
