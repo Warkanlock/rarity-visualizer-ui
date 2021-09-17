@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import SkillItem from "./SkillItem";
 import { RarityContext } from "../context/RarityProvider";
 import { RetryContractCall } from "../utils/fetchRetry";
@@ -11,11 +11,13 @@ const SummonSkills = ({
   classType,
   attributes,
   noSkills,
+  setSkills,
 }) => {
   const [context] = React.useContext(RarityContext);
   const [loading, setLoading] = React.useState(true);
   const [skillRanks, setSkillsRanks] = React.useState(null);
   const [totalRankPoints, setTotalRankPoints] = React.useState(0);
+  const [trainSkillsFlag, setTrainSkillsFlag] = React.useState(false);
 
   useEffect(() => {
     setSkillsRanks(skills.playerSkills);
@@ -79,6 +81,7 @@ const SummonSkills = ({
       await context.contract_skills.base.methods
         .set_skills(summonId, skillRanks)
         .send({ from: context.accounts[0] });
+      setTrainSkillsFlag((prevState) => !prevState);
       toast.update(id, {
         render: `Your skills were trained by a master!`,
         type: "success",
@@ -110,6 +113,13 @@ const SummonSkills = ({
     const costRankSkill = checkIfSkillFromClass(id) ? 1 : 2;
     setTotalRankPoints(totalRankPoints + costRankSkill);
   };
+
+  const skillsListName = useMemo(() => {
+    return skills?.allSkills.map((skill) => ({
+      id: skill.id,
+      name: skill.name,
+    }));
+  }, [skills?.allSkills]);
 
   return (
     <>
@@ -148,7 +158,13 @@ const SummonSkills = ({
                     <SkillItem
                       key={`skill-${skill.id}`}
                       currentValue={skillRanks[skill.id - 1]}
+                      trainSkillsFlag={trainSkillsFlag}
                       {...skill}
+                      skillSynergy={
+                        skillsListName?.find(
+                          (x) => Number(x.id) === Number(skill.synergy)
+                        )?.name
+                      }
                       totalPointsToSpend={totalRankPoints}
                       handleAddRankPoint={(id, value) => {
                         calculateCost(id);
@@ -185,7 +201,13 @@ const SummonSkills = ({
                     <SkillItem
                       key={`skill-${skill.id}-player`}
                       currentValue={skillRanks[skill.id - 1]}
+                      trainSkillsFlag={trainSkillsFlag}
                       {...skill}
+                      skillSynergy={
+                        skillsListName?.find(
+                          (x) => Number(x.id) === Number(skill.synergy)
+                        )?.name
+                      }
                       isCross
                       totalPointsToSpend={totalRankPoints}
                       handleAddRankPoint={(id, value) => {

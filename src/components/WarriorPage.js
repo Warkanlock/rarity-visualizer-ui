@@ -482,6 +482,7 @@ const WarriorPage = ({
             {summonData != null && skills != null ? (
               <SummonSkills
                 skills={skills}
+                setSkills={setSkills}
                 summonId={summonId}
                 noSkills={noSkills}
                 {...summonData}
