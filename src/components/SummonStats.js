@@ -125,7 +125,7 @@ const SummonStats = ({
   };
 
   const confirmPoints = async () => {
-    if (totalPointsToSpend || !summonId) return;
+    if (!summonId) return;
     const id = toast.loading("Confirming points...");
     try {
       await context.contract_attributes.methods
@@ -331,7 +331,6 @@ const SummonStats = ({
             <button
               className="confirm-points-summoner"
               onClick={() => confirmPoints()}
-              disabled={totalPointsToSpend === 0}
             >
               Confirm points ({totalPointsToSpend})
             </button>
