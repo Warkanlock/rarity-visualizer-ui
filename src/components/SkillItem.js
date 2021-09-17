@@ -13,11 +13,12 @@ const SkillItem = ({
   check,
   action,
   isCross,
+  currentValue,
   totalPointsToSpend,
   handleRemoveRankPoint,
   handleAddRankPoint,
 }) => {
-  const [skillValue, setSkillValue] = useState(0);
+  const [skillValue, setSkillValue] = useState(currentValue || 0);
   const [currentSkillValue] = useState(skillValue);
   const [showPopper, setShowPopper] = useState(false);
 

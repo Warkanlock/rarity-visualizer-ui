@@ -107,6 +107,8 @@ const SummonSkills = ({
     setTotalRankPoints(totalRankPoints + costRankSkill);
   };
 
+  console.log(skillRanks);
+
   return (
     <>
       <div className="summon-skills-container">
@@ -143,6 +145,7 @@ const SummonSkills = ({
                   .map((skill) => (
                     <SkillItem
                       key={`skill-${skill.id}`}
+                      currentValue={skillRanks[skill.id - 1]}
                       {...skill}
                       totalPointsToSpend={totalRankPoints}
                       handleAddRankPoint={(id, value) => {
@@ -179,6 +182,7 @@ const SummonSkills = ({
                   .map((skill) => (
                     <SkillItem
                       key={`skill-${skill.id}-player`}
+                      currentValue={skillRanks[skill.id - 1]}
                       {...skill}
                       isCross
                       totalPointsToSpend={totalRankPoints}
