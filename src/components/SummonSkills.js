@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SkillItem from "./SkillItem";
 import { RarityContext } from "../context/RarityProvider";
 import { RetryContractCall } from "../utils/fetchRetry";
 import { toast } from "react-toastify";
-import { useEffect } from "react/cjs/react.development";
 
 const SummonSkills = ({
   summonId,
