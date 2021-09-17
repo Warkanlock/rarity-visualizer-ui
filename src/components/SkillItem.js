@@ -46,11 +46,18 @@ const SkillItem = ({
   }, [trainSkillsFlag]);
 
   const increase = () => {
-    if (
-      skillValue <
-        (isCross ? Math.trunc((summonLevel + 3) / 2) : summonLevel + 3) &&
-      totalPointsToSpend > 0
-    ) {
+    let maxSkillRank;
+    let minPointsNeeded;
+
+    if(isCross){
+      maxSkillRank = Math.trunc((summonLevel + 3) / 2);
+      minPointsNeeded = 2;
+    } else {
+      maxSkillRank = summonLevel + 3;
+      minPointsNeeded = 1
+    }
+
+    if (skillValue < maxSkillRank && totalPointsToSpend >= minPointsNeeded) {
       handleAddRankPoint(id, skillValue);
       setSkillValue(skillValue + 1);
     }
