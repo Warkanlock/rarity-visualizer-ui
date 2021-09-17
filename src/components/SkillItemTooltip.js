@@ -8,6 +8,7 @@ const SkillItemTooltip = ({
   synergy,
   retry,
   armorPenalty,
+  skillSynergy,
 }) => {
   return (
     <div className="container-box summon-skill-tooltip-container">
@@ -26,7 +27,14 @@ const SkillItemTooltip = ({
       />
       <div className="summon-skill-tooltip-body">
         <div className="summon-skill-tooltip-info">
-          <span>Synergy: {synergy}</span>
+          <span>
+            Synergy with:{" "}
+            {skillSynergy ? (
+              <span>{skillSynergy}</span>
+            ) : (
+              <span style={{ color: "red" }}>✘</span>
+            )}
+          </span>
           <span>
             Retry:{" "}
             {retry ? (

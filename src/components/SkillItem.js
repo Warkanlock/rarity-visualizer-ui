@@ -17,6 +17,7 @@ const SkillItem = ({
   totalPointsToSpend,
   handleRemoveRankPoint,
   handleAddRankPoint,
+  skillSynergy,
 }) => {
   const [skillValue, setSkillValue] = useState(currentValue || 0);
   const [currentSkillValue] = useState(skillValue);
@@ -51,14 +52,19 @@ const SkillItem = ({
             src={`${process.env.PUBLIC_URL}/skills/${name}.png`}
             alt={`${name}-skill-img`}
           />
-          <div className="summon-skill-item-card-synergy">
-            <span>{synergy}</span>
-          </div>
+          {skillSynergy && (
+            <div className="summon-skill-item-card-synergy">
+              <img
+                src={`${process.env.PUBLIC_URL}/icons/syngergy.png`}
+                alt="syngegy-img"
+              />
+            </div>
+          )}
           {armor_check_penalty && (
             <div className="summon-skill-item-card-armorpenalty">
               <img
                 src={`${process.env.PUBLIC_URL}/icons/armor_penalty.png`}
-                alt="summon-img"
+                alt="armorpenalty-img"
               />
             </div>
           )}
@@ -66,7 +72,7 @@ const SkillItem = ({
             <div className="summon-skill-item-card-retry">
               <img
                 src={`${process.env.PUBLIC_URL}/icons/retry.png`}
-                alt="summon-img"
+                alt="retry-img"
               />
             </div>
           )}
@@ -74,6 +80,7 @@ const SkillItem = ({
             <span
               style={{ cursor: "pointer", userSelect: "none" }}
               onClick={() => {
+                if (skillValue <= currentSkillValue) return;
                 if (skillValue > 0) {
                   handleRemoveRankPoint(id, skillValue);
                   setSkillValue(skillValue - 1);
@@ -116,6 +123,7 @@ const SkillItem = ({
             synergy={synergy}
             retry={retry}
             armorPenalty={armor_check_penalty}
+            skillSynergy={skillSynergy}
           />
           <div
             className="summon-skill-arrow"

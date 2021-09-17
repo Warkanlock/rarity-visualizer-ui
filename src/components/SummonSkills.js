@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import SkillItem from "./SkillItem";
 import { RarityContext } from "../context/RarityProvider";
 import { RetryContractCall } from "../utils/fetchRetry";
@@ -111,6 +111,13 @@ const SummonSkills = ({
     setTotalRankPoints(totalRankPoints + costRankSkill);
   };
 
+  const skillsListName = useMemo(() => {
+    return skills?.allSkills.map((skill) => ({
+      id: skill.id,
+      name: skill.name,
+    }));
+  }, [skills?.allSkills]);
+
   return (
     <>
       <div className="summon-skills-container">
@@ -149,6 +156,11 @@ const SummonSkills = ({
                       key={`skill-${skill.id}`}
                       currentValue={skillRanks[skill.id - 1]}
                       {...skill}
+                      skillSynergy={
+                        skillsListName?.find(
+                          (x) => Number(x.id) === Number(skill.synergy)
+                        )?.name
+                      }
                       totalPointsToSpend={totalRankPoints}
                       handleAddRankPoint={(id, value) => {
                         calculateCost(id);
@@ -186,6 +198,11 @@ const SummonSkills = ({
                       key={`skill-${skill.id}-player`}
                       currentValue={skillRanks[skill.id - 1]}
                       {...skill}
+                      skillSynergy={
+                        skillsListName?.find(
+                          (x) => Number(x.id) === Number(skill.synergy)
+                        )?.name
+                      }
                       isCross
                       totalPointsToSpend={totalRankPoints}
                       handleAddRankPoint={(id, value) => {
