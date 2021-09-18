@@ -1185,8 +1185,9 @@ select:disabled {
 .summon-feat-item {
   font-family: "Lato", sans-serif;
   display: flex;
-  /* border-bottom: 1px solid gray; */
+  border-bottom: 1px solid gray;
   padding-bottom: 20px;
+  margin-bottom: 20px;
   justify-content: left;
   text-align: justify;
   align-items: flex-start;

@@ -33,7 +33,6 @@ function FeatItem({
           </button>
         )}
       </div>
-      <hr style={{ margin: "auto auto 15px auto", width: "95" }} />
     </>
   );
 }
