@@ -11,7 +11,6 @@ const SummonSkills = ({
   classType,
   attributes,
   noSkills,
-  setSkills,
   summonLevel,
 }) => {
   const [context] = React.useContext(RarityContext);
@@ -19,7 +18,7 @@ const SummonSkills = ({
   const [skillRanks, setSkillsRanks] = React.useState(null);
   const [totalRankPoints, setTotalRankPoints] = React.useState(0);
   const [trainSkillsFlag, setTrainSkillsFlag] = React.useState(false);
-  
+
   useEffect(() => {
     setSkillsRanks(skills.playerSkills);
   }, [skills.playerSkills, summonId]);
