@@ -13,6 +13,7 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
   const [availablePoints, setAvailablePoints] = React.useState(null);
   const [featsByClassWithDescription, setFeatsDescription] =
     React.useState(null);
+  const [loadingSummonerFeats, setLoadingSummonerFeats] = React.useState(true);
 
   const humanizeFeats = (featList) => {
     return featList
@@ -47,22 +48,28 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
     };
 
     const getFeatsForSummonerWithDescription = async () => {
-      if (feats && feats.summonerFeats) {
-        const allFeatsPromise = feats.summonerFeats.map(
-          async (isFeatCheck, idx) => {
-            if (!isFeatCheck) {
-              return RetryContractCall(
-                context.contract_feats.base.methods.feat_by_id(Number(idx))
-              );
+      try {
+        setLoadingSummonerFeats(true);
+        if (feats && feats.summonerFeats) {
+          const allFeatsPromise = feats.summonerFeats.map(
+            async (isFeatCheck, idx) => {
+              if (!isFeatCheck) {
+                return RetryContractCall(
+                  context.contract_feats.base.methods.feat_by_id(Number(idx))
+                );
+              }
             }
-          }
-        );
+          );
 
-        const allFeatsDescription = await Promise.all(
-          allFeatsPromise.filter((nonNull) => nonNull)
-        );
+          const allFeatsDescription = await Promise.all(
+            allFeatsPromise.filter((nonNull) => nonNull)
+          );
 
-        setFeatsSummonerDescription(humanizeFeats(allFeatsDescription));
+          setFeatsSummonerDescription(humanizeFeats(allFeatsDescription));
+          setLoadingSummonerFeats(false);
+        }
+      } catch {
+        setLoadingSummonerFeats(false);
       }
     };
 
@@ -176,6 +183,13 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
     }
   };
 
+  const canPickFeatFn = (feat) => {
+    if (!feat.prerequisites_feat) {
+      return true;
+    }
+    return feats.summonerFeatsById.includes(feat.prerequisites_feat);
+  };
+
   return (
     <div>
       <div className="summon-skills-container">
@@ -209,21 +223,26 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
                       ))}
                     </div>
                     <div className="summon-feats-all">
-                      {featsBySummonerWithDescription?.map((feat) => (
-                        <FeatItem
-                          key={`feat-${feat.id}-all`}
-                          information={feat}
-                          onSelection={selectFeat}
-                          isSummonerSkill={
-                            availablePoints === 0 ||
-                            (!feats.prerequisites_feat &&
-                              feats.summonerFeatsById.includes(
-                                feat.prerequisites_feat
-                              ))
-                          }
-                          //if the player has the id on the array of summoner skills we disable the button
-                        />
-                      ))}
+                      {loadingSummonerFeats ? (
+                        <div>
+                          <div className="spinner"></div>
+                          <span>Loading Feats...</span>
+                        </div>
+                      ) : (
+                        featsBySummonerWithDescription?.map((feat) => (
+                          <FeatItem
+                            key={`feat-${feat.id}-all`}
+                            information={feat}
+                            onSelection={selectFeat}
+                            hasPointsAvailable={availablePoints > 0}
+                            prerequisitesFeat={featsBySummonerWithDescription.find(
+                              (x) => x.id === feat.prerequisites_feat
+                            )}
+                            canPickFeat={canPickFeatFn(feat)}
+                            //if the player has the id on the array of summoner skills we disable the button
+                          />
+                        ))
+                      )}
                     </div>
                   </div>
                 </>

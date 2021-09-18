@@ -15,7 +15,7 @@ const Home = () => {
     useState(false);
   const [summoners, setSummoners] = useState([]);
   const [summonId, setSummonId] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const walletAddress = context.walletAddress;
 

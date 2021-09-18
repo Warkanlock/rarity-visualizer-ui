@@ -1129,9 +1129,14 @@ select:disabled {
   justify-content: space-between;
 }
 
+.summon-feats-container h3 {
+  margin: 0;
+}
+
 .summon-feats-all {
   flex: 0 0 48%;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 0 auto;
@@ -1140,6 +1145,7 @@ select:disabled {
 .summon-feats-class {
   flex: 0 0 48%;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   flex-wrap: wrap;
   height: fit-content;
@@ -1148,7 +1154,7 @@ select:disabled {
 
 .summon-feat-item {
   display: flex;
-  border-bottom: 1px solid gray;
+  /* border-bottom: 1px solid gray; */
   padding-bottom: 20px;
   justify-content: left;
   text-align: justify;
@@ -1279,4 +1285,17 @@ select:disabled {
 .summon-skill-tooltip-info {
   display: flex;
   flex-direction: column;
+}
+
+.summon-feats-all .spinner {
+  margin: 20px auto 0 auto;
+}
+
+.summon-feat-prerequisites p {
+  color: red;
+  margin: 0;
+}
+
+.summon-feat-prerequisites span {
+  margin-left: 10px;
 }
