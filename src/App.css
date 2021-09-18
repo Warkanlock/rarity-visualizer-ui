@@ -70,6 +70,26 @@ ul {
   background-color: #be6314;
 }
 
+.summon-feat-nopoints {
+  height: calc(10px + 2vmin);
+  width: 7rem;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  cursor: context-menu;
+  background: radial-gradient(
+    circle,
+    rgba(80, 80, 80, 1) 0%,
+    rgba(55, 55, 55, 1) 40%,
+    rgba(20, 20, 20, 1) 91%
+  );
+  color: white;
+  border: 1px solid #bf9b30;
+  box-shadow: 0 0 10px #bf9b30;
+  border-radius: 5px;
+}
+
 .summon-feat-base-class {
   height: calc(10px + 2vmin);
   width: 7rem;
@@ -1123,6 +1143,16 @@ select:disabled {
   text-align: center;
 }
 
+.summon-feat-points {
+  display: flex;
+  justify-content: center;
+  border: 1px solid #bf9b30;
+  background-color: black;
+  margin: 20px;
+  border-radius: 5px 5px 0 5px;
+  text-align: center;
+}
+
 .summon-feats-container {
   display: flex;
   flex-direction: row;
@@ -1153,6 +1183,7 @@ select:disabled {
 }
 
 .summon-feat-item {
+  font-family: "Lato", sans-serif;
   display: flex;
   /* border-bottom: 1px solid gray; */
   padding-bottom: 20px;

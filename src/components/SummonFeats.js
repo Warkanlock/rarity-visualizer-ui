@@ -205,7 +205,9 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
             <div className="summon-feats-body">
               {isPrepare ? (
                 <>
-                  <p>Points available to spend: {availablePoints}</p>
+                  <div className="summon-feat-points">
+                    Points available to spend: {availablePoints}
+                  </div>
                   {/* Include loading state for all feats and player feats */}
                   <div className="summon-feats-container">
                     <div className="summon-feats-class">

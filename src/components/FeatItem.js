@@ -14,9 +14,11 @@ function FeatItem({
         <h3>{information.name}</h3>
         <p>{information.benefit}</p>
         {isBase ? (
-          <div className="summon-feat-base-class">BASE CLASS</div>
+          <div className="summon-feat-base-class">Assigned</div>
         ) : !hasPointsAvailable ? (
-          <div className="summon-feat-base-class">No points</div>
+          <div disabled className="summon-feat-base-class">
+            No points
+          </div>
         ) : !canPickFeat ? (
           <div className="summon-feat-prerequisites">
             <p>Prerequisites not met:</p>
@@ -31,7 +33,7 @@ function FeatItem({
           </button>
         )}
       </div>
-      <hr style={{ margin: "auto auto 10px auto", width: "95%" }} />
+      <hr style={{ margin: "auto auto 15px auto", width: "95" }} />
     </>
   );
 }
