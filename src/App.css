@@ -1149,6 +1149,7 @@ select:disabled {
   border: 1px solid #bf9b30;
   background-color: black;
   margin: 20px;
+  padding: 10px;
   border-radius: 5px 5px 0 5px;
   text-align: center;
 }
