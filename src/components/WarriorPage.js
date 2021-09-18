@@ -570,6 +570,9 @@ const WarriorPage = ({
                 feats={feats}
                 summonId={summonId}
                 summonData={summonData}
+                refreshView={async () => {
+                  await getSummonerState();
+                }}
               />
             )}
           </div>

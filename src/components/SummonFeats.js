@@ -4,7 +4,7 @@ import { RarityContext } from "../context/RarityProvider";
 import { RetryContractCall } from "../utils/fetchRetry";
 import FeatItem from "./FeatItem";
 
-function SummonFeats({ summonId, feats, summonData }) {
+function SummonFeats({ summonId, feats, summonData, update }) {
   const [context] = React.useContext(RarityContext);
   const [loading, setLoading] = React.useState(true);
   const [isPrepare, setIsPrepare] = React.useState(null);
@@ -33,7 +33,7 @@ function SummonFeats({ summonId, feats, summonData }) {
   useEffect(() => {
     const getFeatsForClassWithDescription = async () => {
       if (feats && feats.featsByClass) {
-        const allFeatsPromise = feats.featsByClass.map(async (featId) => {
+        const allFeatsPromise = feats.summonerFeatsById.map(async (featId) => {
           if (featId > 0) {
             return RetryContractCall(
               context.contract_feats.base.methods.feat_by_id(Number(featId))
@@ -69,13 +69,17 @@ function SummonFeats({ summonId, feats, summonData }) {
     if (feats) {
       setLoading(true);
       setIsPrepare(feats.isCharacterCreated);
-      setAvailablePoints(feats.pointsPerLevel);
+      setAvailablePoints(
+        feats.maxLevelClassFeats -
+          (feats.summonerFeatsById.length + 1) +
+          feats.pointsPerLevel
+      );
       getFeatsForClassWithDescription();
       getFeatsForSummonerWithDescription();
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [summonId, feats.isCharacterCreated]);
+  }, [summonId, summonData, feats, feats.isCharacterCreated]);
 
   const setupClass = async () => {
     const id = toast.loading("Preparing your summoner...");
@@ -118,41 +122,50 @@ function SummonFeats({ summonId, feats, summonData }) {
       const isValidFeatPromise = RetryContractCall(
         context.contract_feats.base.methods.is_valid(featId)
       );
+
+      const featInfo = featsBySummonerWithDescription.find(
+        (feat) => feat.id === featId
+      );
+
       const isValidClassPromise = RetryContractCall(
         context.contract_feats.base.methods.is_valid_class(
-          featId,
+          featInfo.prerequisites_class,
           summonData.classType
         )
       );
+
+      const hasRequiredFeat =
+        featInfo.prerequisites_feat === 0 ||
+        feats.summonerFeatsById.includes(featInfo.prerequisites_feat);
+
+      const isValidLevel =
+        Number(summonData.level) >= featInfo.prerequisites_level;
 
       const [isValid, isValidClass] = await Promise.all([
         isValidFeatPromise,
         isValidClassPromise,
       ]);
-      console.log(isValid, isValidClass);
 
-      if (isValid && isValidClass) {
+      if (isValid && isValidClass && isValidLevel && hasRequiredFeat) {
         await context.contract_feats.base.methods
           .select_feat(summonId, featId)
           .send({ from: context.accounts[0] });
         toast.update(id, {
-          render: `Your summoner is feat with ${
-            featsByClassWithDescription?.find((item) => item.id === featId).name
-          }!`,
+          render: `Your summoner is feat with ${featInfo?.name}!`,
           type: "success",
           isLoading: false,
           autoClose: 3000,
         });
+        update();
       } else {
         toast.update(id, {
-          render: `Your class does not match with this feat!`,
+          render: `Your are not capable of handle this feat yet!`,
           type: "error",
           isLoading: false,
           autoClose: 3000,
         });
       }
     } catch (ex) {
-      console.log(ex);
       toast.update(id, {
         render: `Something went wrong! Try Again in a few seconds!`,
         type: "error",
@@ -187,9 +200,9 @@ function SummonFeats({ summonId, feats, summonData }) {
                           information={feat}
                           onSelection={selectFeat}
                           isBase
-                          isSummonerSkill={
-                            !feats.summonerFeatsById.includes(feat.id)
-                          }
+                          isSummonerSkill={feats.summonerFeatsById.includes(
+                            feat.id
+                          )}
                           //if the player has the id on the array of summoner skills we disable the button
                         />
                       ))}
@@ -200,7 +213,7 @@ function SummonFeats({ summonId, feats, summonData }) {
                           key={`feat-${feat.id}-all`}
                           information={feat}
                           onSelection={selectFeat}
-                          isSummonerSkill={false}
+                          isSummonerSkill={availablePoints === 0}
                           //if the player has the id on the array of summoner skills we disable the button
                         />
                       ))}
