@@ -4,7 +4,7 @@ import { RarityContext } from "../context/RarityProvider";
 import { RetryContractCall } from "../utils/fetchRetry";
 import FeatItem from "./FeatItem";
 
-function SummonFeats({ summonId, feats, summonData, update }) {
+function SummonFeats({ summonId, feats, summonData, refreshView }) {
   const [context] = React.useContext(RarityContext);
   const [loading, setLoading] = React.useState(true);
   const [isPrepare, setIsPrepare] = React.useState(null);
@@ -156,7 +156,7 @@ function SummonFeats({ summonId, feats, summonData, update }) {
           isLoading: false,
           autoClose: 3000,
         });
-        update();
+        refreshView();
       } else {
         toast.update(id, {
           render: `Your are not capable of handle this feat yet!`,
@@ -213,7 +213,7 @@ function SummonFeats({ summonId, feats, summonData, update }) {
                           key={`feat-${feat.id}-all`}
                           information={feat}
                           onSelection={selectFeat}
-                          isSummonerSkill={availablePoints === 0}
+                          // isSummonerSkill={availablePoints === 0}
                           //if the player has the id on the array of summoner skills we disable the button
                         />
                       ))}
