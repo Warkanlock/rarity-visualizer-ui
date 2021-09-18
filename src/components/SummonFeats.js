@@ -90,13 +90,14 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
         isLoading: false,
         autoClose: 3000,
       });
-      return;
+      refreshView();
     }
     try {
       await context.contract_feats.base.methods
         .setup_class(summonId)
         .send({ from: context.accounts[0] });
       setIsPrepare(true);
+      refreshView();
       toast.update(id, {
         render: `Your summoner is prepare for the metamorfis!`,
         type: "success",
@@ -213,7 +214,13 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
                           key={`feat-${feat.id}-all`}
                           information={feat}
                           onSelection={selectFeat}
-                          // isSummonerSkill={availablePoints === 0}
+                          isSummonerSkill={
+                            availablePoints === 0 ||
+                            (!feats.prerequisites_feat &&
+                              feats.summonerFeatsById.includes(
+                                feat.prerequisites_feat
+                              ))
+                          }
                           //if the player has the id on the array of summoner skills we disable the button
                         />
                       ))}
