@@ -10,6 +10,13 @@ function RarityProvider({ children }) {
     contract_names: null,
     contract_dungeons: null,
     contract_gold: null,
+    contract_feats: {
+      base: null,
+      codex: {
+        one: null,
+        two: null,
+      },
+    },
     walletAddress: "",
   });
 
