@@ -89,6 +89,11 @@ ul {
   border-radius: 5px;
 }
 
+.summon-feats-button {
+  padding: 10px;
+  margin-top: 10px;
+}
+
 .summon-feat-select-feat {
   height: calc(10px + 2vmin);
   width: 7rem;

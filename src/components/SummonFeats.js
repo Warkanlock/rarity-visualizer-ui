@@ -228,7 +228,10 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
                   </div>
                 </>
               ) : (
-                <button className="summon-new" onClick={setupClass}>
+                <button
+                  className="summon-new summon-feats-button"
+                  onClick={setupClass}
+                >
                   Prepare your summoner!
                 </button>
               )}

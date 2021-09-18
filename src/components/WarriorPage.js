@@ -169,6 +169,7 @@ const WarriorPage = ({
   }, [summonId, update]);
 
   useEffect(() => {
+    setFeats(null);
     if (summonData) {
       getAllSkills();
       getAllFeats();
