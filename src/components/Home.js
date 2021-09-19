@@ -33,6 +33,8 @@ const Home = () => {
             return { id: Number(id) };
           });
           if (summonsId) setSummoners(summonsId);
+          if (!summonsId.includes(localStorage.getItem("summonId")))
+          localStorage.setItem("summonId", summonsId[0].id);
         }
       } catch {
         toast.error("Something bad happened");
