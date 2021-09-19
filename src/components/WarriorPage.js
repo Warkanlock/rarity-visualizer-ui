@@ -102,6 +102,7 @@ const WarriorPage = ({
       return;
     }
     try {
+      setLoading(true);
       const isCharacterCreatedPromise = RetryContractCall(
         context.contract_feats.base.methods.character_created(summonId)
       );
@@ -157,6 +158,8 @@ const WarriorPage = ({
       });
     } catch (ex) {
       toast.error(`Something went wrong! Try Again in a few seconds!`);
+    } finally {
+      setLoading(false);
     }
   };
 

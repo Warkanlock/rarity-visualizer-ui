@@ -112,6 +112,9 @@ ul {
 .summon-feats-button {
   padding: 10px;
   margin-top: 10px;
+  border: 1px solid #bf9b30;
+  box-shadow: 0 0 10px #bf9b30;
+  border-radius: 5px;
 }
 
 .summon-feat-select-feat {

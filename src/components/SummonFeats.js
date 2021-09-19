@@ -33,17 +33,28 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
 
   useEffect(() => {
     const getFeatsForClassWithDescription = async () => {
-      if (feats && feats.featsByClass) {
-        const allFeatsPromise = feats.summonerFeatsById.map(async (featId) => {
-          if (featId > 0) {
-            return RetryContractCall(
-              context.contract_feats.base.methods.feat_by_id(Number(featId))
-            );
-          }
-        });
-        const allFeatsDescription = await Promise.all(allFeatsPromise);
+      try {
+        setLoading(true);
+        if (feats && feats.summonerFeatsById) {
+          const allFeatsPromise = [];
+          feats.summonerFeatsById.forEach((featId) => {
+            if (featId > 0) {
+              allFeatsPromise.push(
+                context.contract_feats.base.methods
+                  .feat_by_id(Number(featId))
+                  .call()
+              );
+            }
+          });
 
-        setFeatsDescription(humanizeFeats(allFeatsDescription));
+          const allFeatsDescription = await Promise.all(allFeatsPromise);
+
+          setFeatsDescription(humanizeFeats(allFeatsDescription));
+        }
+      } catch (ex) {
+        toast.error("Something went wrong! Try Again in a few seconds");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -66,23 +77,30 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
           );
 
           setFeatsSummonerDescription(humanizeFeats(allFeatsDescription));
-          setLoadingSummonerFeats(false);
         }
-      } catch {
+      } catch (ex) {
+        toast.error("Something went wrong! Try Again in a few seconds");
+      } finally {
         setLoadingSummonerFeats(false);
       }
     };
 
-    if (feats) {
+    try {
       setLoading(true);
-      setIsPrepare(feats.isCharacterCreated);
-      setAvailablePoints(
-        feats.maxLevelClassFeats -
-          (feats.summonerFeatsById.length + 1) +
-          feats.pointsPerLevel
-      );
-      getFeatsForClassWithDescription();
-      getFeatsForSummonerWithDescription();
+      if (feats) {
+        setIsPrepare(feats.isCharacterCreated);
+        setAvailablePoints(
+          feats.maxLevelClassFeats -
+            (feats.summonerFeatsById.length + 1) +
+            feats.pointsPerLevel
+        );
+        getFeatsForClassWithDescription();
+        getFeatsForSummonerWithDescription();
+      }
+    } catch (ex) {
+      console.log(ex);
+      toast.error("Something went wrong! Try Again in a few seconds");
+    } finally {
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
