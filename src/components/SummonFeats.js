@@ -7,7 +7,7 @@ import FeatItem from "./FeatItem";
 function SummonFeats({ summonId, feats, summonData, refreshView }) {
   const [context] = React.useContext(RarityContext);
   const [loading, setLoading] = React.useState(true);
-  const [isPrepare, setIsPrepare] = React.useState(null);
+  const [isPrepare, setIsPrepare] = React.useState(false);
   const [featsBySummonerWithDescription, setFeatsSummonerDescription] =
     React.useState(null);
   const [availablePoints, setAvailablePoints] = React.useState(null);
@@ -201,7 +201,6 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
           </>
         ) : (
           <>
-            <div className="summon-feats-header"></div>
             <div className="summon-feats-body">
               {isPrepare ? (
                 <>
@@ -228,6 +227,7 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
                       {loadingSummonerFeats ? (
                         <div>
                           <div className="spinner"></div>
+                          <br />
                           <span>Loading Feats...</span>
                         </div>
                       ) : (
