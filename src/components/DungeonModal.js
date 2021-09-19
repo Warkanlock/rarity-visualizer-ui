@@ -134,9 +134,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
         });
       } else {
         toast.update(id, {
-          render: `After scouting the dungeon ~${Number(
-            response
-          )} rewards found`,
+          render: `After scouting the dungeon ~${Number(response)} drops found`,
           type: "success",
           isLoading: false,
           autoClose: 3000,
@@ -182,13 +180,11 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
                       ))}
                     </div>
                     <div className="dungeon-container-right">
-                      <div className="dungeon-image-container">
-                        <img
-                          src={process.env.PUBLIC_URL + "/img/dungeon.png"}
-                          alt="dungeon-draw"
-                          className="dungeon-image"
-                        />
-                      </div>
+                      <img
+                        src={process.env.PUBLIC_URL + "/img/dungeon.png"}
+                        alt="dungeon-draw"
+                        className="dungeon-image"
+                      />
                       <div className="dungeon-buttons-thecellar">
                         <button
                           disabled={
@@ -234,7 +230,7 @@ const DungeonModal = ({ setShowDungeonModal, summonId }) => {
                   </div>
                 </div>
                 <div className="modal-footer">
-                  If you fight without rewards, do you fight the same?
+                  Try to not get lost in the fog...
                 </div>
               </>
             )}
