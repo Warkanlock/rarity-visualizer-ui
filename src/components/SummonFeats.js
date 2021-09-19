@@ -34,7 +34,6 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
   useEffect(() => {
     const getFeatsForClassWithDescription = async () => {
       try {
-        setLoading(true);
         if (feats && feats.summonerFeatsById) {
           const allFeatsPromise = [];
           feats.summonerFeatsById.forEach((featId) => {
@@ -53,8 +52,6 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
         }
       } catch (ex) {
         toast.error("Something went wrong! Try Again in a few seconds");
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -98,7 +95,6 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
         getFeatsForSummonerWithDescription();
       }
     } catch (ex) {
-      console.log(ex);
       toast.error("Something went wrong! Try Again in a few seconds");
     } finally {
       setLoading(false);
