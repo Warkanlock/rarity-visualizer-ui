@@ -583,7 +583,7 @@ const WarriorPage = ({
           </div>
         </div>
         <div label="Inventory">
-          <Inventory summonId={summonId} />
+          {summonData != null && <Inventory summonId={summonId} />}
         </div>
       </Tabs>
     </React.Fragment>
