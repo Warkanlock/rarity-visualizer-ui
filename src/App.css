@@ -1336,3 +1336,47 @@ select:disabled {
 .summon-feat-prerequisites span {
   margin-left: 10px;
 }
+
+.inventory-container{
+  margin-top: 15px;
+}
+
+.inventory-item {
+  display: flex;
+  position: relative;
+  border: 2px solid #000;
+  border-radius: 5px;
+  height: 100px;
+  width: 100px;
+  padding: 5px;
+  margin: 5px;
+  background: radial-gradient(
+    circle,
+    rgba(80, 80, 80, 1) 0%,
+    rgba(55, 55, 55, 1) 40%,
+    rgba(20, 20, 20, 1) 91%
+  );
+  font-weight: bold;
+  color: #bf9b30;
+}
+
+.inventory-item:hover {
+  box-shadow: 1px -1px 15px -1px #bf9b30;
+  -webkit-box-shadow: 1px -1px 15px -1px #bf9b30;
+  -moz-box-shadow: 1px -1px 15px -1px #bf9b30;
+}
+
+.inventory-item-image {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.inventory-item-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  width: 100%;
+}
