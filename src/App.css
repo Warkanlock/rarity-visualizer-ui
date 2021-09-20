@@ -123,11 +123,11 @@ ul {
   box-shadow: 0 0 10px #bf9b30;
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 105, 150, 1) 40%,
-    rgb(255, 255, 255) 91%
+    rgb(138, 84, 59) 0%,
+    rgb(100, 41, 34) 40%,
+    rgb(73, 38, 34) 91%
   );
-  color: black;
+  color: white;
 }
 
 .summon-feat-select-feat {
