@@ -1337,7 +1337,7 @@ select:disabled {
   margin-left: 10px;
 }
 
-.inventory-container{
+.inventory-container {
   margin-top: 15px;
 }
 
@@ -1358,6 +1358,9 @@ select:disabled {
   );
   font-weight: bold;
   color: #bf9b30;
+  box-shadow: 1px -1px 10px -1px rgba(255, 255, 255, 0.75);
+  -webkit-box-shadow: 1px -1px 10px -1px rgba(255, 255, 255, 0.75);
+  -moz-box-shadow: 1px -1px 10px -1px rgba(255, 255, 255, 0.75);
 }
 
 .inventory-item:hover {
