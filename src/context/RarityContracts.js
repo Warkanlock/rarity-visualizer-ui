@@ -21,6 +21,8 @@ import {
   CODEX_ADDRESS_FEATS_2,
   RARITY_ABI_FEATS,
   RARITY_ADDRESS_FEATS,
+  RARITY_ABI_DAYCARE,
+  RARITY_ADDRESS_DAYCARE,
 } from "../utils/config";
 
 export const setupContracts = async ({ provider }) => {
@@ -76,6 +78,11 @@ export const setupContracts = async ({ provider }) => {
     RARITY_ADDRESS_FEATS
   );
 
+  const daycareContract = new provider.eth.Contract(
+    RARITY_ABI_DAYCARE,
+    RARITY_ADDRESS_DAYCARE
+  );
+
   return {
     accounts: accounts,
     contract_base: rarityContract,
@@ -96,5 +103,6 @@ export const setupContracts = async ({ provider }) => {
       allSkills: skillsCodexContract,
     },
     walletAddress: accounts[0],
+    contract_daycare: daycareContract,
   };
 };
