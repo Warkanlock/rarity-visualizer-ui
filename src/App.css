@@ -40,18 +40,25 @@ ul {
 }
 
 .App-header {
-  /* background-color: #600101; */
-  padding: 10px;
+  padding: 0px 10px;
   display: flex;
   font-size: calc(10px + 2vmin);
   color: #ffe8d6;
   position: relative;
+  flex-flow: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  width: 50vw;
+  min-width: 400px;
+  max-width: 550px;
 }
 
 .wallet {
   font-size: 15px;
   display: flex;
-  margin-left: auto;
 }
 
 .made-with-text {
@@ -242,7 +249,6 @@ select:disabled {
   display: flex;
   justify-content: center;
   width: 50vw;
-  margin-top: 2rem;
   margin-right: auto;
   margin-left: auto;
   flex-direction: column;
@@ -259,6 +265,12 @@ select:disabled {
 @media (max-width: 1199px) {
   .container {
     width: 90vw;
+  }
+}
+
+@media (max-width: 750px) {
+  .App-header {
+    justify-content: space-around;
   }
 }
 

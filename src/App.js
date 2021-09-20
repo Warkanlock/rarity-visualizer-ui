@@ -64,7 +64,11 @@ function App() {
         alt="background"
       />
       <header className="App-header">
-        Rarity Visualizer - Beta
+        <img
+          className="logo"
+          src={`${process.env.PUBLIC_URL}/img/page-logo.png`}
+          alt="logo"
+        />
         <div className="wallet">
           <div className="donate-button">
             <a
