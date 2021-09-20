@@ -7,6 +7,7 @@ import { CLASSES_TYPE } from "../utils/classes";
 import { RetryContractCall } from "../utils/fetchRetry";
 import { getAdventureTime } from "../utils/utils";
 import { ProgressBar } from "./ProgressBar";
+import ReactTooltip from "react-tooltip";
 
 const WarriorCard = ({ summoner, goToWarrior }) => {
   const [context] = useContext(RarityContext);
@@ -181,13 +182,34 @@ const WarriorCard = ({ summoner, goToWarrior }) => {
             </div>
             <div className="summoner-card-info">
               <div className="summoner-card-row">
-                {summonData?.name?.summonName ? (
-                  <p>
-                    {summoner.id} - <i>{summonData?.name?.summonName}</i>
-                  </p>
-                ) : (
-                  summoner.id
-                )}
+                <div className="summoner-card-top">
+                  {summonData?.name?.summonName ? (
+                    <p
+                      className="summoner-card-title"
+                      data-tip={summonData?.name?.summonName}
+                    >
+                      {summoner.id} - <i>{summonData?.name?.summonName}</i>
+                    </p>
+                  ) : (
+                    summoner.id
+                  )}
+                  <ReactTooltip place="top"></ReactTooltip>
+
+                  <div className="summoner-card-buttons">
+                    <img
+                      className="summoner-card-delete"
+                      src={`${process.env.PUBLIC_URL}/icons/exchange.png`}
+                      alt="Exchange"
+                      onClick={() => console.log("Exchange Summoner")}
+                    ></img>
+                    <img
+                      className="summoner-card-delete"
+                      src={`${process.env.PUBLIC_URL}/icons/close2.png`}
+                      alt="Close"
+                      onClick={() => console.log("Delete summoner")}
+                    ></img>
+                  </div>
+                </div>
               </div>
               <div className="summoner-card-row">
                 <ProgressBar

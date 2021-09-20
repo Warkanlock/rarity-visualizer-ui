@@ -3,7 +3,6 @@ import { withRouter } from "react-router";
 import WarriorCard from "./WarriorCard";
 
 const YourWarriorsPage = ({ summoners, setSummonId, history }) => {
-  
   const goToWarrior = (summonerId) => {
     setSummonId(summonerId);
     history.push("/");
