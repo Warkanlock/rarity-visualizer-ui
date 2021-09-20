@@ -40,8 +40,7 @@ ul {
 }
 
 .App-header {
-  /* background-color: #600101; */
-  padding: 10px;
+  padding: 0px 10px;
   display: flex;
   font-size: calc(10px + 2vmin);
   color: #ffe8d6;
@@ -54,7 +53,7 @@ ul {
 .logo {
   width: 50vw;
   min-width: 400px;
-  max-width: 600px;
+  max-width: 550px;
 }
 
 .wallet {
@@ -250,7 +249,6 @@ select:disabled {
   display: flex;
   justify-content: center;
   width: 50vw;
-  margin-top: 2rem;
   margin-right: auto;
   margin-left: auto;
   flex-direction: column;
