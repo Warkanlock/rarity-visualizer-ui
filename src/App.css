@@ -1348,10 +1348,12 @@ select:disabled {
 }
 
 .summon-feat-prerequisites p {
-  color: red;
-  margin: 0;
+  margin: auto;
+  text-align: center;
+  width: 100%;
 }
 
 .summon-feat-prerequisites span {
   margin-left: 10px;
+  color: red;
 }

@@ -21,8 +21,9 @@ function FeatItem({
           </div>
         ) : !canPickFeat ? (
           <div className="summon-feat-prerequisites">
-            <p>Prerequisites not met:</p>
-            <span>{prerequisitesFeat?.name}</span>
+            <p>
+              <i>Requisite not met</i>: <span>{prerequisitesFeat?.name}</span>
+            </p>
           </div>
         ) : (
           <button
