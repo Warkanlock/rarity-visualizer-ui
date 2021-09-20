@@ -92,7 +92,7 @@ ul {
 
 .summon-feat-base-class {
   height: calc(10px + 2vmin);
-  width: 7rem;
+  width: 100%;
   display: flex;
   align-items: center;
   align-content: center;
@@ -119,15 +119,26 @@ ul {
   border-radius: 5px;
 }
 
+.summon-feat-select-feat:hover {
+  box-shadow: 0 0 10px #bf9b30;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 105, 150, 1) 40%,
+    rgb(255, 255, 255) 91%
+  );
+  color: black;
+}
+
 .summon-feat-select-feat {
   height: calc(10px + 2vmin);
-  width: 7rem;
   display: flex;
   align-items: center;
   align-content: center;
   font-weight: bolder;
   justify-content: center;
   cursor: pointer;
+  width: 100%;
   background: radial-gradient(
     circle,
     rgba(80, 80, 80, 1) 0%,
