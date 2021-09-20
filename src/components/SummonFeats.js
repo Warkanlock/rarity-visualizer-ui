@@ -120,7 +120,7 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
       setIsPrepare(true);
       refreshView();
       toast.update(id, {
-        render: `Your summoner is prepare for the metamorfis!`,
+        render: `Your summoner is prepared for the metamorfis!`,
         type: "success",
         isLoading: false,
         autoClose: 3000,
@@ -226,7 +226,7 @@ function SummonFeats({ summonId, feats, summonData, refreshView }) {
                     <div className="summon-feats-class">
                       {featsByClassWithDescription?.map((feat) => (
                         <FeatItem
-                          key={`feat-${feat.name.toLowerCase()}-player`}
+                          key={`feat-${feat.id}-player`}
                           information={feat}
                           onSelection={selectFeat}
                           isBase
