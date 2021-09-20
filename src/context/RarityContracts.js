@@ -13,8 +13,14 @@ import {
   RARITY_ADDRESS_FOREST,
   RARITY_ABI_SKILLS,
   RARITY_ADDRESS_SKILLS,
-  CODEX__ABI_SKILLS,
+  CODEX_ABI_SKILLS,
   CODEX_ADDRESS_SKILLS,
+  CODEX_ABI_FEATS_1,
+  CODEX_ADDRESS_FEATS_1,
+  CODEX_ABI_FEATS_2,
+  CODEX_ADDRESS_FEATS_2,
+  RARITY_ABI_FEATS,
+  RARITY_ADDRESS_FEATS,
 } from "../utils/config";
 
 export const setupContracts = async ({ provider }) => {
@@ -51,8 +57,23 @@ export const setupContracts = async ({ provider }) => {
   );
 
   const skillsCodexContract = new provider.eth.Contract(
-    CODEX__ABI_SKILLS,
+    CODEX_ABI_SKILLS,
     CODEX_ADDRESS_SKILLS
+  );
+
+  const featsPartOneCodexContract = new provider.eth.Contract(
+    CODEX_ABI_FEATS_1,
+    CODEX_ADDRESS_FEATS_1
+  );
+
+  const featsPartTwoCodexContract = new provider.eth.Contract(
+    CODEX_ABI_FEATS_2,
+    CODEX_ADDRESS_FEATS_2
+  );
+
+  const featsContract = new provider.eth.Contract(
+    RARITY_ABI_FEATS,
+    RARITY_ADDRESS_FEATS
   );
 
   return {
@@ -63,6 +84,13 @@ export const setupContracts = async ({ provider }) => {
     contract_dungeons: dungeonsContract,
     contract_gold: goldContract,
     contract_forest: forestContract,
+    contract_feats: {
+      base: featsContract,
+      codex: {
+        one: featsPartOneCodexContract,
+        two: featsPartTwoCodexContract,
+      },
+    },
     contract_skills: {
       base: skillsContract,
       allSkills: skillsCodexContract,

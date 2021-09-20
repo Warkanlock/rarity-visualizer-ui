@@ -28,14 +28,19 @@ const Home = () => {
             500,
             3
           );
+          if (response.length === 0) return;
           const summonsId = response?.map((event) => {
             const id = event.tokenID;
             return { id: Number(id) };
           });
           if (summonsId) setSummoners(summonsId);
+          if (!summonsId.includes(localStorage.getItem("summonId")))
+            localStorage.setItem("summonId", summonsId[0].id);
         }
-      } catch {
-        toast.error("Something bad happened");
+      } catch (ex) {
+        toast.error(
+          "Something bad happened with your account. Please referesh the page"
+        );
       }
     };
 

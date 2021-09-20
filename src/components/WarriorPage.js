@@ -11,6 +11,7 @@ import { reduceNumber } from "../utils";
 import Tabs from "./Tabs";
 import ForestModal from "./ForestModal";
 import SummonSkills from "./SummonSkills";
+import SummonFeats from "./SummonFeats";
 import { getAdventureTime } from "../utils/utils";
 
 const WarriorPage = ({
@@ -29,6 +30,7 @@ const WarriorPage = ({
   const [showDungeonModal, setShowDungeonModal] = useState(false);
   const [showForestModal, setShowForestModal] = useState(false);
   const [skills, setSkills] = useState(null);
+  const [feats, setFeats] = useState(null);
   const [noSkills, setNoSkills] = useState(false);
 
   const getAllSkills = async () => {
@@ -95,6 +97,72 @@ const WarriorPage = ({
     }
   };
 
+  const getAllFeats = async () => {
+    if (!summonData) {
+      return;
+    }
+    try {
+      setLoading(true);
+      const isCharacterCreatedPromise = RetryContractCall(
+        context.contract_feats.base.methods.character_created(summonId)
+      );
+
+      const maxLevelClassFeatsPromise = RetryContractCall(
+        context.contract_feats.base.methods.feats_per_class(
+          summonData?.classType,
+          summonData?.level
+        )
+      );
+
+      const featsBaseByClassPromise = RetryContractCall(
+        context.contract_feats.base.methods.get_base_class_feats(
+          summonData?.classType
+        )
+      );
+
+      const summonerFeatsPromise = RetryContractCall(
+        context.contract_feats.base.methods.get_feats(summonId)
+      );
+
+      const summonerFeatsWithIdPromise = RetryContractCall(
+        context.contract_feats.base.methods.get_feats_by_id(summonId)
+      );
+
+      const pointsPerLevelPromise = RetryContractCall(
+        context.contract_feats.base.methods.feats_per_level(summonData?.level)
+      );
+
+      const [
+        isCharacterCreated,
+        maxLevelClassFeats,
+        featsByClass,
+        summonerFeats,
+        summonerFeatsById,
+        pointsPerLevel,
+      ] = await Promise.all([
+        isCharacterCreatedPromise,
+        maxLevelClassFeatsPromise,
+        featsBaseByClassPromise,
+        summonerFeatsPromise,
+        summonerFeatsWithIdPromise,
+        pointsPerLevelPromise,
+      ]);
+
+      setFeats({
+        isCharacterCreated,
+        maxLevelClassFeats: Number(maxLevelClassFeats),
+        featsByClass: featsByClass.map((s) => parseInt(s)),
+        summonerFeats,
+        summonerFeatsById: summonerFeatsById.map((s) => parseInt(s)),
+        pointsPerLevel: Number(pointsPerLevel),
+      });
+    } catch (ex) {
+      toast.error(`Something went wrong! Try Again in a few seconds!`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (summonId) {
       localStorage.setItem("summonId", summonId);
@@ -104,8 +172,10 @@ const WarriorPage = ({
   }, [summonId, update]);
 
   useEffect(() => {
+    setFeats(null);
     if (summonData) {
       getAllSkills();
+      getAllFeats();
     }
   }, [summonData, summonId]);
 
@@ -494,6 +564,20 @@ const WarriorPage = ({
                   <div className="spinner"></div>
                 </div>
               </>
+            )}
+          </div>
+        </div>
+        <div label="Feats">
+          <div style={{ textAlign: "center" }}>
+            {summonData != null && feats != null && (
+              <SummonFeats
+                feats={feats}
+                summonId={summonId}
+                summonData={summonData}
+                refreshView={async () => {
+                  await getSummonerState();
+                }}
+              />
             )}
           </div>
         </div>
