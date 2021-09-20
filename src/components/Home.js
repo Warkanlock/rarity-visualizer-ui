@@ -38,7 +38,9 @@ const Home = () => {
             localStorage.setItem("summonId", summonsId[0].id);
         }
       } catch (ex) {
-        toast.error("Something bad happened");
+        toast.error(
+          "Something bad happened with your account. Please referesh the page"
+        );
       }
     };
 
