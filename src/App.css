@@ -981,6 +981,32 @@ select:disabled {
   align-content: center;
 }
 
+.summoner-card-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.summoner-card-buttons {
+  margin-left: 2px;
+  width: 20%;
+  height: 10%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.summoner-card-delete {
+  cursor: pointer;
+}
+
+.summoner-card-title {
+  width: 80%;
+  text-overflow: ellipsis;
+}
+
+.summoner-card-transfer {
+  cursor: pointer;
+}
+
 .summoners-container {
   display: flex;
   flex-wrap: wrap;
