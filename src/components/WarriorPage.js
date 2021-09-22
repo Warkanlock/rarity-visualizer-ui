@@ -13,6 +13,7 @@ import ForestModal from "./ForestModal";
 import SummonSkills from "./SummonSkills";
 import SummonFeats from "./SummonFeats";
 import { getAdventureTime } from "../utils/utils";
+import Inventory from "./Inventory";
 
 const WarriorPage = ({
   summonId,
@@ -582,9 +583,7 @@ const WarriorPage = ({
           </div>
         </div>
         <div label="Inventory">
-          <div style={{ textAlign: "center" }}>
-            <h1>Coming soon!</h1>
-          </div>
+          {summonData != null && <Inventory summonId={summonId} />}
         </div>
       </Tabs>
     </React.Fragment>

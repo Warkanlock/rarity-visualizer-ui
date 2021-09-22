@@ -40,18 +40,25 @@ ul {
 }
 
 .App-header {
-  /* background-color: #600101; */
-  padding: 10px;
+  padding: 0px 10px;
   display: flex;
   font-size: calc(10px + 2vmin);
   color: #ffe8d6;
   position: relative;
+  flex-flow: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  width: 50vw;
+  min-width: 400px;
+  max-width: 550px;
 }
 
 .wallet {
   font-size: 15px;
   display: flex;
-  margin-left: auto;
 }
 
 .made-with-text {
@@ -123,11 +130,11 @@ ul {
   box-shadow: 0 0 10px #bf9b30;
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 105, 150, 1) 40%,
-    rgb(255, 255, 255) 91%
+    rgb(138, 84, 59) 0%,
+    rgb(100, 41, 34) 40%,
+    rgb(73, 38, 34) 91%
   );
-  color: black;
+  color: white;
 }
 
 .summon-feat-select-feat {
@@ -242,7 +249,6 @@ select:disabled {
   display: flex;
   justify-content: center;
   width: 50vw;
-  margin-top: 2rem;
   margin-right: auto;
   margin-left: auto;
   flex-direction: column;
@@ -259,6 +265,12 @@ select:disabled {
 @media (max-width: 1199px) {
   .container {
     width: 90vw;
+  }
+}
+
+@media (max-width: 750px) {
+  .App-header {
+    justify-content: space-around;
   }
 }
 
@@ -1382,4 +1394,70 @@ select:disabled {
 .summon-feat-prerequisites span {
   margin-left: 10px;
   color: red;
+}
+
+.inventory-container {
+  margin-top: 15px;
+}
+
+.inventory-item {
+  display: flex;
+  position: relative;
+  border: 2px solid #000;
+  border-radius: 5px;
+  height: 100px;
+  width: 100px;
+  padding: 5px;
+  margin: 5px;
+  background: radial-gradient(
+    circle,
+    rgba(80, 80, 80, 1) 0%,
+    rgba(55, 55, 55, 1) 40%,
+    rgba(20, 20, 20, 1) 91%
+  );
+  font-weight: bold;
+  color: #bf9b30;
+  box-shadow: 1px -1px 10px -1px rgba(255, 255, 255, 0.75);
+  -webkit-box-shadow: 1px -1px 10px -1px rgba(255, 255, 255, 0.75);
+  -moz-box-shadow: 1px -1px 10px -1px rgba(255, 255, 255, 0.75);
+}
+
+.inventory-item:hover {
+  box-shadow: 1px -1px 15px -1px #bf9b30;
+  -webkit-box-shadow: 1px -1px 15px -1px #bf9b30;
+  -moz-box-shadow: 1px -1px 15px -1px #bf9b30;
+}
+
+.inventory-item-image {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.inventory-item-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  width: 100%;
+}
+
+.send-all-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.send-all-buttons button {
+  margin-left: auto;
+  color: white;
+  background-color: #be6314;
+  padding: 5px 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.send-all-buttons button .spinner {
+  height: 10px;
+  width: 10px;
 }

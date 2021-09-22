@@ -3677,6 +3677,18 @@ const RARITY_ABI_FOREST = [
 ];
 const RARITY_ADDRESS_FOREST = "0xb37d3d79ea86B0334d9322c695339D577A3D57be";
 
+const RARITY_ABI_DAYCARE = [
+  {
+    inputs: [{ internalType: "uint256[]", name: "_ids", type: "uint256[]" }],
+    name: "adventureTime",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+
+const RARITY_ADDRESS_DAYCARE = "0x0D4C98901563ca730332e841EDBCB801fe9F2551";
+
 export {
   RARITY_ABI,
   RARITY_ADDRESS,
@@ -3706,4 +3718,6 @@ export {
   CODEX_ABI_FEATS_2,
   CODEX_ADDRESS_FEATS_1,
   CODEX_ADDRESS_FEATS_2,
+  RARITY_ABI_DAYCARE,
+  RARITY_ADDRESS_DAYCARE,
 };
