@@ -2,7 +2,7 @@
 
 A hobby project inspired by https://andrecronje.medium.com/loot-rarity-d341faa4485c
 
-Summon your warriors and join the world of Rarity Manifested!
+Summon your warriors and join the great world of Rarity Manifested!
 
 Contributors:
 
