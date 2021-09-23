@@ -1350,6 +1350,117 @@ select:disabled {
   text-align: left;
 }
 
+.item-generic-minimal-description {
+  font-size: 15 px;
+  color: gray;
+  font-weight: 700;
+  color: #bf9b30;
+}
+
+.item-generic-title {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+}
+
+.item-generic-style {
+  font-family: "Lato", sans-serif;
+  display: flex;
+  border-color: rgb(201, 76, 76);
+  border-style: solid;
+  border-radius: 5px;
+  box-shadow: 0 0 10px black;
+  border-width: 1px;
+  border-color: gray;
+  padding: 20px;
+  margin-bottom: 20px;
+  justify-content: left;
+  text-align: justify;
+  flex-direction: column;
+}
+
+.item-generic-title-button {
+  width: 100px;
+  height: 50px;
+  margin-left: auto;
+  color: white;
+  background-color: #be6314;
+  padding: 5px 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.item-generic-minimal-description-item {
+  margin: 5px 0px;
+}
+
+.items {
+  display: flex;
+  flex-direction: row;
+}
+
+.item-generic-armour-stats {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.items-title {
+  display: flex;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 24px;
+  margin: 10px 0px;
+}
+
+.items-desc {
+  display: flex;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  margin: 10px 0px;
+}
+
+.items-desc-good {
+  font-size: 15 px;
+  color: gray;
+  font-weight: 700;
+  color: #bf9b30;
+  margin: 0px 5px;
+}
+
+.items-approve-button {
+  color: white;
+  background-color: #be6314;
+  padding: 10px 15px;
+  font-size: 18px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.item-generic-cost-and-weight {
+  border: 2px solid #ffe8d6;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 5px;
+  border: 1px solid rgba(37, 37, 37, 1);
+  border-radius: 5px;
+  background: radial-gradient(
+    circle,
+    rgba(99, 84, 75, 1) 0%,
+    rgba(72, 72, 67, 1) 30%,
+    rgba(43, 44, 38, 1) 91%
+  );
+}
+
+.items > div {
+  width: 33%;
+  margin: 5px;
+}
+
 .summon-skill-tooltip-info {
   display: flex;
   flex-direction: column;
