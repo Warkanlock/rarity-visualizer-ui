@@ -25,6 +25,10 @@ function Crafting({ summonData, summonId }) {
     console.log(itemId, base);
   };
 
+  const onApprove = (itemId, base) => {
+    console.log(itemId, base);
+  };
+
   const fetchIsApprovedForAll = async () => {
     if (!context || !context.contract_base) return;
     try {
@@ -249,10 +253,12 @@ function Crafting({ summonData, summonId }) {
                     </>
                   ) : (
                     <div className="items-goods-list">
+                      <h2>Goods</h2>
                       {goods?.map((item) => (
                         <GenericItem
                           key={`base-goods-${item.id}`}
                           onCraft={onCraft}
+                          onApprove={onApprove}
                           {...item}
                         />
                       ))}
@@ -268,10 +274,12 @@ function Crafting({ summonData, summonId }) {
                     </>
                   ) : (
                     <div className="items-goods-list">
+                      <h2>Armour</h2>
                       {armours?.map((item) => (
                         <GenericItem
                           key={`base-armours-${item.id}`}
                           onCraft={onCraft}
+                          onApprove={onApprove}
                           {...item}
                         />
                       ))}
@@ -287,10 +295,12 @@ function Crafting({ summonData, summonId }) {
                     </>
                   ) : (
                     <div className="items-goods-list">
+                      <h2>Weapons</h2>
                       {weapons?.map((item) => (
                         <GenericItem
                           key={`base-weapons-${item.id}`}
                           onCraft={onCraft}
+                          onApprove={onApprove}
                           {...item}
                         />
                       ))}

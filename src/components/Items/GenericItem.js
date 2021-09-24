@@ -10,42 +10,42 @@ function GenericItem({
   armourStat,
   weaponStat,
   onCraft,
+  onApprove
 }) {
   const humanize = (text) => {
-    return text[0].toUpperCase() + text.slice(1).replace("_", " ");
+    return text[0].toUpperCase() + text.slice(1).replaceAll("_", " ");
   };
 
   return (
     <div className="item-generic-style">
       <div className="item-generic-title">
-        <h2>{name}</h2>
-        <button
-          className="item-generic-title-button"
-          onClick={() => onCraft(id, base)}
-        >
-          Craft
-        </button>
+        <span className="item-name">{name}</span>
       </div>
       {description && <p>{description}</p>}
       <div className="item-generic-cost-and-weight">
         <div className="item-generic-minimal-description-item">
           <span className="item-generic-minimal-description">Cost :</span>{" "}
-          {cost / reduceNumber(18)}
+          <span className="indicator">{cost / reduceNumber(18)}</span>
+          <img
+            className="gold-icon"
+            alt="coin"
+            src={process.env.PUBLIC_URL + "/img/coin.png"}
+          />
         </div>
         <div className="item-generic-minimal-description-item">
           <span className="item-generic-minimal-description">Weight :</span>{" "}
-          {weight}
+          <span className="indicator">{weight}</span>
         </div>
       </div>
 
       {armourStat && (
         <div className="item-generic-armour-stats">
           {Object.keys(armourStat).map((key) => (
-            <div className="item-generic-minimal-description-item">
+            <div key={key} className="item-generic-minimal-description-item">
               <span className="item-generic-minimal-description">
                 {humanize(key)}:
               </span>{" "}
-              {armourStat[key]}
+              <span className="indicator">{armourStat[key]}</span>
             </div>
           ))}
         </div>
@@ -54,15 +54,29 @@ function GenericItem({
       {weaponStat && (
         <div className="item-generic-armour-stats">
           {Object.keys(weaponStat).map((key) => (
-            <div className="item-generic-minimal-description-item">
+            <div key={key} className="item-generic-minimal-description-item">
               <span className="item-generic-minimal-description">
                 {humanize(key)}:
               </span>{" "}
-              {weaponStat[key]}
+              <span className="indicator">{weaponStat[key]}</span>
             </div>
           ))}
         </div>
       )}
+      <div className="item-actions">
+          <button
+            className="item-generic-small-button approve"
+            onClick={() => onApprove(id, base)}
+          >
+            Approve
+          </button>
+          <button
+            className="item-generic-small-button craft"
+            onClick={() => onCraft(id, base)}
+          >
+            Craft
+          </button>
+        </div>
     </div>
   );
 }
