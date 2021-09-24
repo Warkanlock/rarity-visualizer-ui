@@ -259,6 +259,7 @@ const SummonStats = ({
                     <span>Gold:</span>
                     <p className="gold-indicator">{gold.playerGold}</p>
                     <img
+                      className="gold-icon"
                       alt="coin"
                       src={process.env.PUBLIC_URL + "/img/coin.png"}
                     />
