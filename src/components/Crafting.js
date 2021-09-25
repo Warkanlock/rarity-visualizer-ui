@@ -20,6 +20,7 @@ function Crafting({ summonData, summonId }) {
   const [context] = useContext(RarityContext);
   const [isCraftApproved, setCraftApproval] = React.useState(false);
   const [totalMaterials, setTotalMaterials] = React.useState(0);
+  const [gold, setGold] = React.useState(0);
 
   const onCraft = (itemId, base) => {
     console.log(itemId, base);
@@ -85,6 +86,21 @@ function Crafting({ summonData, summonId }) {
       toast.error(`Something went wrong! Try Again in a few seconds!`);
     }
   }, [context.contract_dungeons.methods, summonId]);
+  
+  const getGold = React.useCallback(async () => {
+    if (!summonId) {
+      return;
+    }
+    try {
+      const amount = await RetryContractCall(
+        context.contract_gold.methods.balanceOf(summonId)
+      );
+      
+      setGold(parseFloat(amount) / Math.pow(10, 18));
+    } catch (ex) {
+      toast.error(`Something went wrong! Try Again in a few seconds!`);
+    }
+  }, [context.contract_gold.methods, summonId]);
 
   const getItems = async ({ onLoading, key, totalItems, onMapping, onSet }) => {
     if (!summonData) {
@@ -206,6 +222,7 @@ function Crafting({ summonData, summonId }) {
         ),
     });
     getTotalMaterials();
+    getGold();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -237,11 +254,25 @@ function Crafting({ summonData, summonId }) {
             </>
           ) : (
             <>
-              <div className="items-title">Crafting system</div>
-              <div className="items-desc">
-                You have{" "}
-                <span className="items-desc-good">{totalMaterials}</span>{" "}
-                materials, use it to craft something!
+              <div className="crafting-header">
+                <div className="quick-inventory">
+                  <span>Quick Inventory</span>
+                  <hr/>
+                  <div>
+                    <div className="quick-inventory-item">
+                      <img className="gold-icon" alt="coin" src={process.env.PUBLIC_URL + "/img/coin.png"} />
+                      <span className="indicator">{gold}</span>
+                    </div>
+                    <div className="quick-inventory-item">
+                      <img src={process.env.PUBLIC_URL + "/img/chest.png"} alt="chest-img" class="quick-inventory-item-image"/>
+                      <span className="item-generic-minimal-description">(I)</span>
+                      <span className="indicator">{totalMaterials}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="crafting-approval-actions">
+                  Place buttons here
+                </div>
               </div>
               <div className="items">
                 <div className="goods">
@@ -274,7 +305,7 @@ function Crafting({ summonData, summonId }) {
                     </>
                   ) : (
                     <div className="items-goods-list">
-                      <h2>Armour</h2>
+                      <h2>Armor</h2>
                       {armours?.map((item) => (
                         <GenericItem
                           key={`base-armours-${item.id}`}

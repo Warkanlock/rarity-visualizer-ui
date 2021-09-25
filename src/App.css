@@ -1350,6 +1350,58 @@ select:disabled {
   text-align: left;
 }
 
+.crafting-header {
+  display: flex;
+  justify-content: stretch;
+}
+
+.quick-inventory {
+  flex-grow: 3;
+  margin: 0px 15px;
+}
+
+.quick-inventory > span {
+  font-weight: bold;
+}
+
+.quick-inventory > hr {
+  opacity: 0.4;
+  border-color: #be6314;
+}
+
+.quick-inventory > div {
+  display: flex;
+  justify-content: left;
+}
+
+.quick-inventory-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  margin: 0 5px;
+  font-weight: bold;
+  background: radial-gradient(
+    circle,
+    rgba(80, 80, 80, 1) 0%,
+    rgba(55, 55, 55, 1) 40%,
+    rgba(20, 20, 20, 1) 91%
+  );
+  border: 2px solid #000;
+  border-radius: 5px;
+  box-shadow: 1px -1px 10px -1px rgba(255, 255, 255, 0.25);
+  -webkit-box-shadow: 1px -1px 10px -1px rgba(255, 255, 255, 0.25);
+  -moz-box-shadow: 1px -1px 10px -1px rgba(255, 255, 255, 0.25);
+}
+
+.quick-inventory-item-image {
+  height: 40px;
+  width: 40px;
+}
+
+.crafting-approval-actions {
+  flex-grow: 2;
+}
+
 .item-generic-minimal-description {
   font-size: 15 px;
   color: gray;
