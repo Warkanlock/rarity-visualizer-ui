@@ -314,7 +314,7 @@ function Crafting({ summonData, summonId }) {
                     </div>
                   </div>
                 </div>
-                <div className="items-title">
+                <div className="generic-crafting-options">
                   {!isGoldApproved ? (
                     <>
                       <button

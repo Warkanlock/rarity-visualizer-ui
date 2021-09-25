@@ -1539,8 +1539,9 @@ input[type="number"]::-webkit-outer-spin-button {
   align-content: center;
 }
 
-.items-title {
+.generic-crafting-options {
   display: flex;
+  flex-grow: 2;
   justify-content: center;
   font-weight: 700;
   font-size: 24px;
