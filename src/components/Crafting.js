@@ -10,6 +10,9 @@ const totalArmour = 18;
 const totalWeapons = 59;
 
 function Crafting({ summonData, summonId }) {
+  const MAX_APPROVAL_AMOUNT =
+    "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
+
   const [goods, setGoods] = React.useState(null);
   const [armours, setArmours] = React.useState(null);
   const [weapons, setWeapons] = React.useState(null);
@@ -19,14 +22,16 @@ function Crafting({ summonData, summonId }) {
   const [loadingApproval, setLoadingApproval] = React.useState(true);
   const [context] = useContext(RarityContext);
   const [isCraftApproved, setCraftApproval] = React.useState(false);
+  const [isGoldApproved, setGoldApproved] = React.useState(false);
   const [totalMaterials, setTotalMaterials] = React.useState(0);
   const [gold, setGold] = React.useState(0);
+  const [materialsToUse, setMaterialsToUse] = React.useState(0);
 
-  const onCraft = (itemId, base) => {
-    console.log(itemId, base);
+  const onIncreaseMaterial = (event) => {
+    setMaterialsToUse(event.target.value);
   };
 
-  const onApprove = (itemId, base) => {
+  const onCraft = (itemId, base) => {
     console.log(itemId, base);
   };
 
@@ -47,6 +52,47 @@ function Crafting({ summonData, summonId }) {
       toast.error(`Something went wrong! Try Again in a few seconds!`);
     } finally {
       setLoadingApproval(false);
+    }
+  };
+
+  const fetchGoldApproval = async () => {
+    if (!context || !context.contract_base) return;
+    try {
+      setLoadingApproval(true);
+      const response = await RetryContractCall(
+        context.contract_gold.methods.allowance(summonId, 1758709)
+      );
+      setGoldApproved(response === -1);
+    } catch (ex) {
+      setGoldApproved(false);
+      setLoadingApproval(true);
+      toast.error(`Something went wrong! Try Again in a few seconds!`);
+    } finally {
+      setLoadingApproval(false);
+    }
+  };
+
+  const approveGold = async () => {
+    const id = toast.loading("Approving gold spend...");
+    try {
+      await context.contract_gold.methods
+        .approve(summonId, 1758709, MAX_APPROVAL_AMOUNT)
+        .send({ from: context.accounts[0] });
+      setCraftApproval(true);
+      toast.update(id, {
+        render: `Gold approved`,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
+    } catch (err) {
+      console.log(err);
+      toast.update(id, {
+        render: `Something went wrong! Try Again in a few seconds!`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
@@ -132,6 +178,7 @@ function Crafting({ summonData, summonId }) {
 
   useEffect(() => {
     fetchIsApprovedForAll();
+    fetchGoldApproval();
     getItems({
       onLoading: setGoodsLoading,
       onSet: setGoods,
@@ -233,9 +280,6 @@ function Crafting({ summonData, summonId }) {
           {!isCraftApproved ? (
             <>
               <div className="craft-no-approved">
-                <div className="items-title">
-                  Crafting System not approved yet
-                </div>
                 <div className="items-desc">
                   <button
                     onClick={approveCrafting}
@@ -270,8 +314,50 @@ function Crafting({ summonData, summonId }) {
                     </div>
                   </div>
                 </div>
-                <div className="crafting-approval-actions">
-                  Place buttons here
+                <div className="items-title">
+                  {!isGoldApproved ? (
+                    <>
+                      <button
+                        onClick={approveGold}
+                        className="items-approve-button"
+                      >
+                        {loadingApproval ? (
+                          <div className="skill-spinner">
+                            <div className="spinner"></div>
+                          </div>
+                        ) : (
+                          <>Approve Gold Spend</>
+                        )}
+                      </button>
+                    </>
+                  ) : (
+                    <div className="items-desc">
+                      You have{" "}
+                      <span className="items-desc good">
+                        {totalMaterials - materialsToUse}
+                      </span>{" "}
+                      materials, use it to craft something!
+                      <input
+                        className="items-desc craft"
+                        type="number"
+                        min={0}
+                        max={totalMaterials}
+                        value={materialsToUse}
+                        defaultValue={0}
+                        disabled={totalMaterials - materialsToUse < 10}
+                        step={10}
+                        onInput={onIncreaseMaterial}
+                      />
+                      {materialsToUse > 0 && (
+                        <button
+                          onClick={() => setMaterialsToUse(0)}
+                          className="items-desc materials"
+                        >
+                          Reset
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="items">
@@ -289,7 +375,6 @@ function Crafting({ summonData, summonId }) {
                         <GenericItem
                           key={`base-goods-${item.id}`}
                           onCraft={onCraft}
-                          onApprove={onApprove}
                           {...item}
                         />
                       ))}
@@ -310,7 +395,6 @@ function Crafting({ summonData, summonId }) {
                         <GenericItem
                           key={`base-armours-${item.id}`}
                           onCraft={onCraft}
-                          onApprove={onApprove}
                           {...item}
                         />
                       ))}
@@ -331,7 +415,6 @@ function Crafting({ summonData, summonId }) {
                         <GenericItem
                           key={`base-weapons-${item.id}`}
                           onCraft={onCraft}
-                          onApprove={onApprove}
                           {...item}
                         />
                       ))}

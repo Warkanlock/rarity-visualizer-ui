@@ -10,7 +10,11 @@ function GenericItem({
   armourStat,
   weaponStat,
   onCraft,
-  onApprove
+  onIncreaseMaterial,
+  totalMaterials,
+  materialsLeft,
+  materialsToUse,
+  resetMaterials,
 }) {
   const humanize = (text) => {
     return text[0].toUpperCase() + text.slice(1).replaceAll("_", " ");
@@ -64,19 +68,13 @@ function GenericItem({
         </div>
       )}
       <div className="item-actions">
-          <button
-            className="item-generic-small-button approve"
-            onClick={() => onApprove(id, base)}
-          >
-            Approve
-          </button>
-          <button
-            className="item-generic-small-button craft"
-            onClick={() => onCraft(id, base)}
-          >
-            Craft
-          </button>
-        </div>
+        <button
+          className="item-generic-small-button craft"
+          onClick={() => onCraft(id, base)}
+        >
+          Craft
+        </button>
+      </div>
     </div>
   );
 }
