@@ -1467,15 +1467,50 @@ select:disabled {
 
 .items-desc {
   display: flex;
-  justify-content: right;
-  align-items: center;
-  text-align: center;
+  flex-direction: column;
 }
 
-.items-desc .craft {
+.items-desc .button-containers {
+  display: flex;
+  width: 100%;
+  justify-content: right;
+  align-content: flex-end;
+  align-items: flex-end;
+}
+
+.items-desc .title-materials .total {
+  color: gray;
+  font-weight: 700;
+  color: #bf9b30;
+  font-size: 24px;
+}
+
+.items-desc .title-name {
+  padding: 10px;
+  color: gray;
+  font-weight: 700;
+  color: #bf9b30;
+  font-size: 24px;
+}
+
+.items-desc .title-materials {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  border-radius: 5px;
+}
+
+.items-desc .title-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+.items-craft-input {
   color: white;
-  margin: 10px;
-  height: 45px;
+  padding: 10px;
+  margin-top: -10px;
+  height: 50%;
   border: 1px solid black;
   border-radius: 5px;
   background-color: #be6314;
@@ -1553,7 +1588,6 @@ input[type="number"]::-webkit-outer-spin-button {
   justify-content: center;
   font-weight: 700;
   font-size: 18px;
-  margin: 10px 0px;
 }
 
 .items-desc .good {
@@ -1562,6 +1596,42 @@ input[type="number"]::-webkit-outer-spin-button {
   font-weight: 700;
   color: #bf9b30;
   margin: 0px 5px;
+}
+
+.items-crafting-button {
+  color: white;
+  background-color: #be6314;
+  padding: 10px 15px;
+  font-size: 18px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.items-reset-button {
+  color: white;
+  background-color: gray;
+  padding: 10px 15px;
+  font-size: 18px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.items-reset-button:hover {
+  color: gray;
+  background-color: white;
+  padding: 10px 15px;
+  font-size: 18px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.items-crafting-button:hover {
+  color: #be6314;
+  background-color: white;
+  padding: 10px 15px;
+  font-size: 18px;
+  border: 1px solid black;
+  border-radius: 5px;
 }
 
 .items-approve-button {

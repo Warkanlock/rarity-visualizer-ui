@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { RarityContext } from "../context/RarityProvider";
 import { RARITY_CRAFT } from "../utils/config";
 import { RetryContractCall } from "../utils/fetchRetry";
+import CraftingModal from "./CraftingModal";
 import GenericItem from "./Items/GenericItem";
 
 const totalGoods = 24;
@@ -25,14 +26,12 @@ function Crafting({ summonData, summonId }) {
   const [isGoldApproved, setGoldApproved] = React.useState(false);
   const [totalMaterials, setTotalMaterials] = React.useState(0);
   const [gold, setGold] = React.useState(0);
-  const [materialsToUse, setMaterialsToUse] = React.useState(0);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [itemToCraft, setItemToCraft] = React.useState(null);
 
-  const onIncreaseMaterial = (event) => {
-    setMaterialsToUse(event.target.value);
-  };
-
-  const onCraft = (itemId, base) => {
-    console.log(itemId, base);
+  const onCraft = ({ id, base, name }) => {
+    setOpenModal(true);
+    setItemToCraft({ id, base, name });
   };
 
   const fetchIsApprovedForAll = async () => {
@@ -132,7 +131,7 @@ function Crafting({ summonData, summonId }) {
       toast.error(`Something went wrong! Try Again in a few seconds!`);
     }
   }, [context.contract_dungeons.methods, summonId]);
-  
+
   const getGold = React.useCallback(async () => {
     if (!summonId) {
       return;
@@ -141,7 +140,7 @@ function Crafting({ summonData, summonId }) {
       const amount = await RetryContractCall(
         context.contract_gold.methods.balanceOf(summonId)
       );
-      
+
       setGold(parseFloat(amount) / Math.pow(10, 18));
     } catch (ex) {
       toast.error(`Something went wrong! Try Again in a few seconds!`);
@@ -275,6 +274,14 @@ function Crafting({ summonData, summonId }) {
 
   return (
     <div>
+      {openModal && (
+        <CraftingModal
+          totalMaterials={totalMaterials}
+          setShowCraftingModal={setOpenModal}
+          itemToCraft={itemToCraft}
+          summonId={summonId}
+        />
+      )}
       <div className="summon-skills-container">
         <div>
           {!isCraftApproved ? (
@@ -301,21 +308,31 @@ function Crafting({ summonData, summonId }) {
               <div className="crafting-header">
                 <div className="quick-inventory">
                   <span>Quick Inventory</span>
-                  <hr/>
+                  <hr />
                   <div>
                     <div className="quick-inventory-item">
-                      <img className="gold-icon" alt="coin" src={process.env.PUBLIC_URL + "/img/coin.png"} />
+                      <img
+                        className="gold-icon"
+                        alt="coin"
+                        src={process.env.PUBLIC_URL + "/img/coin.png"}
+                      />
                       <span className="indicator">{gold}</span>
                     </div>
                     <div className="quick-inventory-item">
-                      <img src={process.env.PUBLIC_URL + "/img/chest.png"} alt="chest-img" class="quick-inventory-item-image"/>
-                      <span className="item-generic-minimal-description">(I)</span>
+                      <img
+                        src={process.env.PUBLIC_URL + "/img/chest.png"}
+                        alt="chest-img"
+                        class="quick-inventory-item-image"
+                      />
+                      <span className="item-generic-minimal-description">
+                        (I)
+                      </span>
                       <span className="indicator">{totalMaterials}</span>
                     </div>
                   </div>
                 </div>
                 <div className="generic-crafting-options">
-                  {!isGoldApproved ? (
+                  {!isGoldApproved && (
                     <>
                       <button
                         onClick={approveGold}
@@ -330,33 +347,6 @@ function Crafting({ summonData, summonId }) {
                         )}
                       </button>
                     </>
-                  ) : (
-                    <div className="items-desc">
-                      You have{" "}
-                      <span className="items-desc good">
-                        {totalMaterials - materialsToUse}
-                      </span>{" "}
-                      materials, use it to craft something!
-                      <input
-                        className="items-desc craft"
-                        type="number"
-                        min={0}
-                        max={totalMaterials}
-                        value={materialsToUse}
-                        defaultValue={0}
-                        disabled={totalMaterials - materialsToUse < 10}
-                        step={10}
-                        onInput={onIncreaseMaterial}
-                      />
-                      {materialsToUse > 0 && (
-                        <button
-                          onClick={() => setMaterialsToUse(0)}
-                          className="items-desc materials"
-                        >
-                          Reset
-                        </button>
-                      )}
-                    </div>
                   )}
                 </div>
               </div>
@@ -374,7 +364,8 @@ function Crafting({ summonData, summonId }) {
                       {goods?.map((item) => (
                         <GenericItem
                           key={`base-goods-${item.id}`}
-                          onCraft={onCraft}
+                          onCraft={() => onCraft(item)}
+                          isCraftDisabled={totalMaterials === 0}
                           {...item}
                         />
                       ))}
@@ -394,7 +385,8 @@ function Crafting({ summonData, summonId }) {
                       {armours?.map((item) => (
                         <GenericItem
                           key={`base-armours-${item.id}`}
-                          onCraft={onCraft}
+                          onCraft={() => onCraft(item)}
+                          isCraftDisabled={totalMaterials === 0}
                           {...item}
                         />
                       ))}
@@ -414,7 +406,8 @@ function Crafting({ summonData, summonId }) {
                       {weapons?.map((item) => (
                         <GenericItem
                           key={`base-weapons-${item.id}`}
-                          onCraft={onCraft}
+                          onCraft={() => onCraft(item)}
+                          isCraftDisabled={totalMaterials === 0}
                           {...item}
                         />
                       ))}

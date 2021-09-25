@@ -10,11 +10,7 @@ function GenericItem({
   armourStat,
   weaponStat,
   onCraft,
-  onIncreaseMaterial,
-  totalMaterials,
-  materialsLeft,
-  materialsToUse,
-  resetMaterials,
+  isCraftDisabled,
 }) {
   const humanize = (text) => {
     return text[0].toUpperCase() + text.slice(1).replaceAll("_", " ");
@@ -71,6 +67,7 @@ function GenericItem({
         <button
           className="item-generic-small-button craft"
           onClick={() => onCraft(id, base)}
+          disabled={isCraftDisabled}
         >
           Craft
         </button>
