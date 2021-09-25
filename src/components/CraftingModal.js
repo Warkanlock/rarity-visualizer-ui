@@ -82,7 +82,7 @@ const CraftingModal = ({
 
       if (!simulateCrafting.crafted) {
         toast.update(id, {
-          render: `You cannot craft this item!`,
+          render: `You cannot craft this item! You have ${simulateCrafting.check} Required: ${simulateCrafting.dc}`,
           type: "error",
           isLoading: false,
           autoClose: 3000,
@@ -120,41 +120,72 @@ const CraftingModal = ({
           ) : (
             <div className="items-desc">
               <div className="items-desc title">
-                You are about to craft{" "}
                 <div className="items-desc title-name">{itemToCraft.name}</div>
+                <div className="items-desc title-description">
+                  {itemToCraft.description}
+                </div>
               </div>
-              <div className="total-materials">
-                Total Materials: {totalMaterials - materialsToUse}
-                <input
-                  type="number"
-                  min={0}
-                  max={totalMaterials}
-                  value={materialsToUse}
-                  defaultValue={0}
-                  disabled={totalMaterials - materialsToUse < 10}
-                  step={10}
-                  onInput={onIncreaseMaterial}
-                />
-              </div>
-              <div className="difficulty">Difficulty: {dc}%</div>
-              <div className="difficulty">Cost: {itemCost}</div>
-              <div className="items-desc button-containers">
-                {materialsToUse > 0 && (
-                  <>
-                    <button
-                      onClick={() => setMaterialsToUse(0)}
-                      className="items-reset-button"
-                    >
-                      Clear
-                    </button>
-                    <button
-                      onClick={tryCrafting}
-                      className="items-crafting-button"
-                    >
-                      Start Crafting
-                    </button>
-                  </>
-                )}
+              <div className="total-materials"></div>
+              <div className="items-stat">
+                <div className="items-stat-left">
+                  <div className="quick-inventory-item">
+                    Difficulty
+                    <span className="indicator">{dc}%</span>
+                  </div>
+                  <div className="quick-inventory-item">
+                    <img
+                      src={process.env.PUBLIC_URL + "/img/chest.png"}
+                      alt="chest-img"
+                      class="quick-inventory-item-image"
+                    />{" "}
+                    {totalMaterials - materialsToUse}
+                  </div>
+                  <div className="quick-inventory-item">
+                    <img
+                      className="gold-icon"
+                      alt="coin"
+                      src={process.env.PUBLIC_URL + "/img/coin.png"}
+                    />
+                    <span className="indicator">{itemCost}</span>
+                  </div>
+                </div>
+                <div className="items-stat-right">
+                  <div className="quick-inventory-item">
+                    Materials to use
+                    <img
+                      src={process.env.PUBLIC_URL + "/img/chest.png"}
+                      alt="chest-img"
+                      class="quick-inventory-item-image"
+                    />
+                    <input
+                      type="number"
+                      className="quick-inventory-item-input"
+                      min={0}
+                      max={totalMaterials}
+                      value={materialsToUse}
+                      defaultValue={0}
+                      disabled={totalMaterials - materialsToUse < 10}
+                      step={10}
+                      onInput={onIncreaseMaterial}
+                    />
+                    {materialsToUse > 0 && (
+                      <>
+                        <button
+                          onClick={() => setMaterialsToUse(0)}
+                          className="items-reset-button"
+                        >
+                          Clear
+                        </button>
+                        <button
+                          onClick={tryCrafting}
+                          className="items-crafting-button"
+                        >
+                          Start Crafting
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           )}

@@ -29,9 +29,9 @@ function Crafting({ summonData, summonId }) {
   const [openModal, setOpenModal] = React.useState(false);
   const [itemToCraft, setItemToCraft] = React.useState(null);
 
-  const onCraft = ({ id, base, name }) => {
+  const onCraft = ({ id, base, name, description }) => {
     setOpenModal(true);
-    setItemToCraft({ id, base, name });
+    setItemToCraft({ id, base, name, description });
   };
 
   const fetchIsApprovedForAll = async () => {
