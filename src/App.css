@@ -1378,7 +1378,7 @@ select:disabled {
   display: flex;
   align-items: center;
   padding: 5px 10px;
-  margin: 0 5px;
+  margin: 5px;
   font-weight: bold;
   background: radial-gradient(
     circle,
@@ -1396,6 +1396,7 @@ select:disabled {
 .quick-inventory-item-image {
   height: 40px;
   width: 40px;
+  margin-left: -5px;
 }
 
 .crafting-approval-actions {
@@ -1468,6 +1469,7 @@ select:disabled {
 .items-desc {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .items-desc .button-containers {
@@ -1616,6 +1618,7 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 18px;
   border: 1px solid black;
   border-radius: 5px;
+  margin: 5px;
 }
 
 .quick-inventory-item-input {
@@ -1627,6 +1630,7 @@ input[type="number"]::-webkit-outer-spin-button {
   text-align: center;
   font-size: 24px;
   color: white;
+  margin: 5px;
 }
 
 .items-reset-button {
@@ -1638,10 +1642,16 @@ input[type="number"]::-webkit-outer-spin-button {
   border-radius: 5px;
 }
 
+.quick-summon-skill {
+  border: 3px solid black;
+  border-radius: 5px;
+}
+
 .items-stat {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: stretch;
+  margin-bottom: 10px;
 }
 
 .items-stat-left {

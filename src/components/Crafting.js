@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
 import { RarityContext } from "../context/RarityProvider";
 import { RARITY_CRAFT } from "../utils/config";
@@ -28,13 +28,40 @@ function Crafting({ summonData, summonId }) {
   const [gold, setGold] = React.useState(0);
   const [openModal, setOpenModal] = React.useState(false);
   const [itemToCraft, setItemToCraft] = React.useState(null);
+  const [craftSkillRank, setCraftSkillRank] = React.useState(0);
+  const [intModifier, setIntModifier] = React.useState(0);
 
   const onCraft = ({ id, base, name, description }) => {
     setOpenModal(true);
     setItemToCraft({ id, base, name, description });
   };
 
-  const fetchIsApprovedForAll = async () => {
+  const fetchIntModifier = useCallback(async () => {
+    try {
+      const modifier = await RetryContractCall(
+        context.contract_skills.base.methods.modifier_for_attribute(
+          summonData.attributes.intelligence
+        )
+      );
+
+      setIntModifier(modifier);
+    } catch (ex) {
+      toast.error(`Something went wrong! Try Again in a few seconds!`);
+    }
+  }, [context, summonData]);
+
+  const fetchCraftingSkill = useCallback(async () => {
+    try {
+      const playerSkills = await RetryContractCall(
+        context.contract_skills.base.methods.get_skills(summonId)
+      );
+      setCraftSkillRank(playerSkills[5]); // 5 = Craft skill in skill array
+    } catch (ex) {
+      toast.error(`Something went wrong! Try Again in a few seconds!`);
+    }
+  }, [context, summonId]);
+
+  const fetchIsApprovedForAll = useCallback(async () => {
     if (!context || !context.contract_base) return;
     try {
       setLoadingApproval(true);
@@ -52,16 +79,17 @@ function Crafting({ summonData, summonId }) {
     } finally {
       setLoadingApproval(false);
     }
-  };
+  }, [context]);
 
-  const fetchGoldApproval = async () => {
+  const fetchGoldApproval = useCallback(async () => {
     if (!context || !context.contract_base) return;
     try {
       setLoadingApproval(true);
       const response = await RetryContractCall(
         context.contract_gold.methods.allowance(summonId, 1758709)
       );
-      setGoldApproved(response === -1);
+      console.log(response);
+      setGoldApproved(response !== -1);
     } catch (ex) {
       setGoldApproved(false);
       setLoadingApproval(true);
@@ -69,7 +97,7 @@ function Crafting({ summonData, summonId }) {
     } finally {
       setLoadingApproval(false);
     }
-  };
+  }, [context, summonId]);
 
   const approveGold = async () => {
     const id = toast.loading("Approving gold spend...");
@@ -176,8 +204,6 @@ function Crafting({ summonData, summonId }) {
   };
 
   useEffect(() => {
-    fetchIsApprovedForAll();
-    fetchGoldApproval();
     getItems({
       onLoading: setGoodsLoading,
       onSet: setGoods,
@@ -272,6 +298,13 @@ function Crafting({ summonData, summonId }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    fetchIntModifier();
+    fetchCraftingSkill();
+    fetchIsApprovedForAll();
+    fetchGoldApproval();
+  }, [fetchIntModifier, fetchCraftingSkill, fetchIsApprovedForAll, fetchGoldApproval]);
+
   return (
     <div>
       {openModal && (
@@ -280,6 +313,9 @@ function Crafting({ summonData, summonId }) {
           setShowCraftingModal={setOpenModal}
           itemToCraft={itemToCraft}
           summonId={summonId}
+          craftSkillRank={craftSkillRank}
+          totalGold={gold}
+          intModifier={intModifier}
         />
       )}
       <div className="summon-skills-container">
