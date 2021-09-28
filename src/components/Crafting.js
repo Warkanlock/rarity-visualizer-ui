@@ -88,8 +88,7 @@ function Crafting({ summonData, summonId }) {
       const response = await RetryContractCall(
         context.contract_gold.methods.allowance(summonId, 1758709)
       );
-      console.log(response);
-      setGoldApproved(response !== -1);
+      setGoldApproved(response > 0);
     } catch (ex) {
       setGoldApproved(false);
       setLoadingApproval(true);
@@ -303,7 +302,12 @@ function Crafting({ summonData, summonId }) {
     fetchCraftingSkill();
     fetchIsApprovedForAll();
     fetchGoldApproval();
-  }, [fetchIntModifier, fetchCraftingSkill, fetchIsApprovedForAll, fetchGoldApproval]);
+  }, [
+    fetchIntModifier,
+    fetchCraftingSkill,
+    fetchIsApprovedForAll,
+    fetchGoldApproval,
+  ]);
 
   return (
     <div>
