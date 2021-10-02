@@ -138,7 +138,7 @@ const SummonSkills = ({
                 : totalRankPoints > 0
                 ? `Points Available: ${totalRankPoints}`
                 : "No points left to spend"}
-              {!noSkills && totalRankPoints > 0 && (
+              {!noSkills && (
                 <button onClick={trainSkills} className="assign-skills-points">
                   Assign Skills
                 </button>
