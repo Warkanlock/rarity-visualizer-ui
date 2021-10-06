@@ -8,12 +8,26 @@ import { RetryContractCall } from "../utils/fetchRetry";
 import { getAdventureTime } from "../utils/utils";
 import { ProgressBar } from "./ProgressBar";
 import ReactTooltip from "react-tooltip";
+import TrasnferModal from "./TransferModal";
 
 const WarriorCard = ({ summoner, goToWarrior }) => {
   const [context] = useContext(RarityContext);
   const [summonData, setSummonData] = useState({});
   const [adventureTime, setAdventureTime] = useState({});
   const [loading, setLoading] = useState(true);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [isOpenTransferModal, setIsOpenTransferModal] = useState(false);
+
+  const handleDeleteModal = (e) => {
+    e.preventDefault();
+    setIsOpenDeleteModal(!isOpenDeleteModal);
+  };
+
+  const handleOpenTransferModal = (e) => {
+    e.preventDefault();
+    setIsOpenTransferModal(true);
+    ReactTooltip.rebuild();
+  };
 
   useEffect(() => {
     getSummonerState();
@@ -143,6 +157,41 @@ const WarriorCard = ({ summoner, goToWarrior }) => {
     }
   };
 
+  const deleteSumonner = async (summonerId) => {
+    if (summonerId != null) {
+      const id = toast.loading("Deleting warrior...");
+      try {
+        // await context.contract_base.methods
+        //   .safeTransferFrom(
+        //     context.accounts[0],
+        //     "0x000000000000000000000000000000000000dEaD",
+        //     summonerId
+        //   )
+        //   .send({
+        //     from: context.accounts[0],
+        //   });
+
+        // Duplica los summoners en vez de eliminarlos
+
+        toast.update(id, {
+          render: `You just delete your player! ${summonerId}`,
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      } catch (ex) {
+        toast.update(id, {
+          render: `Something went wrong! Try Again in a few seconds!`,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      } finally {
+        setIsOpenDeleteModal(false);
+      }
+    }
+  };
+
   return (
     <div className="summoner-card">
       <div className="summoner-card-body">
@@ -194,19 +243,63 @@ const WarriorCard = ({ summoner, goToWarrior }) => {
                     summoner.id
                   )}
                   <ReactTooltip place="top"></ReactTooltip>
+                  {isOpenDeleteModal && (
+                    <div className="modal">
+                      <div style={{ width: "35%" }} className="modal-content">
+                        <div
+                          style={{ fontSize: "24px" }}
+                          className="modal-header"
+                        >
+                          <p>Are you sure you want to delete this summoner ?</p>
+                          <p>
+                            {"  " + summoner.id}{" "}
+                            {summonData?.name?.summonName === "" ? (
+                              <b> - Undefined Name</b>
+                            ) : (
+                              " - " + summonData?.name?.summonName
+                            )}
+                          </p>
+                        </div>
+                        <div style={{ textAlign: "center", padding: "10px" }}>
+                          <button
+                            onClick={() => deleteSumonner(summoner.id)}
+                            className="del-button"
+                          >
+                            Delete
+                          </button>
+                          <button
+                            className="close-button"
+                            onClick={(e) => handleDeleteModal(e)}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {isOpenTransferModal && (
+                    <TrasnferModal
+                      setIsOpenTransferModal={setIsOpenTransferModal}
+                      summonerID={summoner.id}
+                      walletFrom={context.accounts[0]}
+                      summonerName={summonData?.name?.summonName}
+                      context={context}
+                    />
+                  )}
 
                   <div className="summoner-card-buttons">
                     <img
                       className="summoner-card-delete"
                       src={`${process.env.PUBLIC_URL}/icons/exchange.png`}
                       alt="Exchange"
-                      onClick={() => console.log("Exchange Summoner")}
+                      onClick={(e) => handleOpenTransferModal(e)}
                     ></img>
                     <img
                       className="summoner-card-delete"
                       src={`${process.env.PUBLIC_URL}/icons/close2.png`}
                       alt="Close"
-                      onClick={() => console.log("Delete summoner")}
+                      onClick={(e) => handleDeleteModal(e)}
                     ></img>
                   </div>
                 </div>
