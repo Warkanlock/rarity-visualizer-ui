@@ -23,6 +23,7 @@ import {
   RARITY_ADDRESS_FEATS,
   RARITY_ABI_DAYCARE,
   RARITY_ADDRESS_DAYCARE,
+  RARITY_CRAFT,
 } from "../utils/config";
 
 export const setupContracts = async ({ provider }) => {
@@ -83,6 +84,26 @@ export const setupContracts = async ({ provider }) => {
     RARITY_ADDRESS_DAYCARE
   );
 
+  const craftingContract = new provider.eth.Contract(
+    RARITY_CRAFT.BASE.ABI,
+    RARITY_CRAFT.BASE.ADDRESS
+  );
+
+  const itemGoodsContract = new provider.eth.Contract(
+    RARITY_CRAFT.GOODS.ABI,
+    RARITY_CRAFT.GOODS.ADDRESS
+  );
+
+  const itemArmoursContract = new provider.eth.Contract(
+    RARITY_CRAFT.ARMOUR.ABI,
+    RARITY_CRAFT.ARMOUR.ADDRESS
+  );
+
+  const itemWeaponsContract = new provider.eth.Contract(
+    RARITY_CRAFT.WEAPONS.ABI,
+    RARITY_CRAFT.WEAPONS.ADDRESS
+  );
+
   return {
     accounts: accounts,
     contract_base: rarityContract,
@@ -91,6 +112,12 @@ export const setupContracts = async ({ provider }) => {
     contract_dungeons: dungeonsContract,
     contract_gold: goldContract,
     contract_forest: forestContract,
+    contract_crafting: {
+      base: craftingContract,
+      goods: itemGoodsContract,
+      armours: itemArmoursContract,
+      weapons: itemWeaponsContract,
+    },
     contract_feats: {
       base: featsContract,
       codex: {

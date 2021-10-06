@@ -14,6 +14,7 @@ import SummonSkills from "./SummonSkills";
 import SummonFeats from "./SummonFeats";
 import { getAdventureTime } from "../utils/utils";
 import Inventory from "./Inventory";
+import Crafting from "./Crafting";
 
 const WarriorPage = ({
   summonId,
@@ -584,6 +585,11 @@ const WarriorPage = ({
         </div>
         <div label="Inventory">
           {summonData != null && <Inventory summonId={summonId} />}
+        </div>
+        <div label="Crafting">
+          {summonData != null && (
+            <Crafting summonId={summonId} summonData={summonData} />
+          )}
         </div>
       </Tabs>
     </React.Fragment>
