@@ -43,6 +43,46 @@
   text-align: right;
 }
 
+.content-trasnfer {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.content-trasnfer-info {
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.modal-header-summoner {
+  text-align: center;
+  font-size: 25px;
+  width: auto;
+  height: auto;
+  color: white;
+}
+
+.content-transfer-info-input {
+  text-align: center;
+  width: 350px;
+  padding: 10px;
+  padding-inline: 10px;
+  margin-left: 5px;
+  text-overflow: ellipsis;
+  background: rgb(12, 12, 12);
+  color: white;
+  outline: none;
+  margin: 0 0 1rem;
+}
+
+.content-transfer-info-input:focus {
+  border: 1px solid #bf9b30;
+}
+
 .modal-header,
 .modal-footer {
   padding: 10px;
@@ -108,4 +148,62 @@
   width: 100px;
   margin: auto;
   padding: 5px;
+}
+
+.modal-header-notification {
+  text-align: center;
+  margin: 0;
+  font-size: 10px;
+}
+
+.del-button {
+  color: white;
+  background-color: #b10f0f;
+  border-top: 0.1875rem solid #b45757;
+  border-bottom: 0.1875rem solid #7e1414;
+  border-left: 0.1875rem solid #b45757;
+  border-right: 0.1875rem solid #7e1414;
+  padding: 15px 35px;
+  border-radius: 5px;
+  font-family: "cinzel", "Times", "Times New Roman", serif;
+  font-size: 16px;
+}
+
+.del-button:hover {
+  background-color: #b92727;
+}
+
+.transfer-button {
+  color: white;
+  background-color: #ce8a1d;
+  padding: 15px 35px;
+  border-top: 0.1875rem solid #f0d079;
+  border-bottom: 0.1875rem solid #9f4000;
+  border-left: 0.1875rem solid #f0d079;
+  border-right: 0.1875rem solid #9f4000;
+  border-radius: 5px;
+  font-family: "cinzel", "Times", "Times New Roman", serif;
+  font-size: 16px;
+}
+
+.transfer-button:hover {
+  background-color: #e0a546;
+}
+
+.close-button {
+  margin-left: 4.5rem;
+  color: black;
+  border-top: 0.1875rem solid #272422;
+  border-bottom: 0.1875rem solid #959595;
+  border-left: 0.1875rem solid #272422;
+  border-right: 0.1875rem solid #959595;
+  background-color: #615e5e;
+  padding: 15px 35px;
+  border-radius: 5px;
+  font-family: "cinzel", "Times", "Times New Roman", serif;
+  font-size: 16px;
+}
+
+.close-button:hover {
+  background-color: #797777;
 }
